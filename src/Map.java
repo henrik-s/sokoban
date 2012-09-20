@@ -17,7 +17,12 @@
 public class Map {
 	
 	public char[][] board;
+	Map prev_map;
 	private int rows, cols;
+	
+	public Map(char[][] newMap) {
+		board = newMap;
+	}
 	
 	public Map(int rows, int cols) {
 		board = new char[rows][cols];
@@ -53,4 +58,5 @@ public class Map {
 		sb.append('\n');
 		return sb.toString();
 	}
+
 }
