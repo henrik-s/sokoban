@@ -32,7 +32,7 @@ public class Map {
 	 */
 	public void insertRow(String s, int cRow) {
 		char current;
-		for(int i = 0; i < rows; i++) {
+		for(int i = 0; i < cols; i++) {
 			current = s.charAt(i);
 			board[cRow][i] = current;
 		}
