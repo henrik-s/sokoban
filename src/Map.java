@@ -16,8 +16,8 @@
 
 public class Map {
 	
-	public char[][] board;
 	Map prev_map;
+	private char[][] board;
 	private int rows, cols;
 	
 	public Map(char[][] newMap) {
@@ -58,5 +58,10 @@ public class Map {
 		sb.append('\n');
 		return sb.toString();
 	}
-
+	
+	public char[][] getBoard() {
+		return this.board;
+	}
+	
+	//public void update
 }
