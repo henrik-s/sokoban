@@ -79,7 +79,7 @@ public class Map {
 			map[fromPos.getRow()][fromPos.getCol()] = '@';
 		}
 		else {
-			throw new RuntimeException("Pushed a box when there was no box there!")
+			throw new RuntimeException("Pushed a box when there was no box there!");
 		}
 		
 		// 
@@ -90,11 +90,12 @@ public class Map {
 			map[fromPos.getRow()][toPos.getCol()] = '*';
 		}
 		else {
-			throw new RuntimeException("Pushed a box to an illegal position!")
-		}
+			throw new RuntimeException("Pushed a box to an illegal position!");
+		}		
 		
-
+		// update player and the moved box's positions
 		playerPos.set(fromPos);
+		boxes.get(move.getID()).getPosition().set(move.getPosition());
 	}
 	
 	/**
