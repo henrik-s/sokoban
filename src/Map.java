@@ -52,6 +52,10 @@ public class Map {
 	public Map(Map fromMap, Move withMove) {
 		prevMap = fromMap;
 		this.map = fromMap.getMap().clone();
+		this.rows = fromMap.getRows();
+		this.cols = fromMap.getCols();
+		
+		updateMove(withMove);
 	}
 	
 	
@@ -66,12 +70,29 @@ public class Map {
 			current = s.charAt(i);
 			map[cRow][i] = current;
 		}
+	}	
+	
+	// Return this map's char matrix
+	public char[][] getMap() {
+		return this.map;
+	}	 
+	
+	// Return the player's position on the map
+	public Position getPlayerPosition() {
+		return playerPos;
 	}
 	
-	/**
-	 * Return a string of the map
-	 * @return
-	 */
+	// Return number of columns
+	public int getCols() {
+		return this.cols;
+	}
+	
+	// Return number of rows
+	public int getRows() {
+		return this.rows;
+	}
+	
+	// Return a string of the map
 	public String print() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < rows; i++) {
@@ -82,15 +103,5 @@ public class Map {
 		}
 		sb.append('\n');
 		return sb.toString();
-	}
-	
-	public char[][] getMap() {
-		return this.map;
-	}
-	 
-	
-	// Return the player's position on the map
-	public Position getPlayerPosition() {
-		return playerPos;
 	}
 }
