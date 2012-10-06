@@ -16,6 +16,12 @@ public class Box {
 		this.currentPosition = startPos;
 	}
 	
+	// Construct new box from another box
+	public Box(Box box) {
+		this.id = box.getID();
+		currentPosition = new Position(box.getPosition());
+	}
+	
 	// Return the box's id
 	public int getID() {
 		return id;

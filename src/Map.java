@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class Map {
-	final Map prevMap;
+	final Map prevMap; // pointer to parentmap
 	private char[][] map;
 	private int rows, cols;
 	private Position playerPos;
@@ -52,12 +52,24 @@ public class Map {
 	 * @param withMove = new Move
 	 */
 	public Map(Map fromMap, Move withMove) {
-		prevMap = fromMap;
-		this.map = fromMap.getMap().clone();
+		// point
+		prevMap = fromMap; 
+		
+		// map
 		this.rows = fromMap.getRows();
 		this.cols = fromMap.getCols();
-		boxes = new ArrayList<Box>();
-		boxes = fromMap.getAllBoxes();
+		this.map = new char[rows][cols];
+		cloneMap(fromMap.getMap()); 
+		
+		// boxes
+		boxes = new ArrayList<Box>(); 
+		for(int i = 0; i<fromMap.getAllBoxes().size(); i++) {
+			Box newB = new Box(fromMap.getAllBoxes().get(i));
+			boxes.add(newB);
+		}	
+		
+		playerPos = new Position(); // player pos
+		playerPos.set(fromMap.getPlayerPosition());
 		doMove(withMove);
 	}
 	
@@ -67,39 +79,47 @@ public class Map {
 	 * @param move = the move
 	 */
 	private void doMove(Move move) {
-		Position fromPos = boxes.get(move.getID()).getPosition();
+		Box currentBox = boxes.get(move.getID());
+		Position fromPos = currentBox.getPosition();
 		Position toPos = move.getPosition();
 		char from = map[fromPos.getRow()][fromPos.getCol()];
 		char to = map[toPos.getRow()][toPos.getCol()];
 		
 		// Clear players prevoius position fram the map
-		map[playerPos.getRow()][playerPos.getCol()] = ' ';
-		
-		// Update 'from'-position on map
-		if(from == '*') {
-			map[fromPos.getRow()][fromPos.getCol()] = '+';
-		}
-		else if(from == '$') {
-			map[fromPos.getRow()][fromPos.getCol()] = '@';
+		if (map[playerPos.getRow()][playerPos.getCol()] == '+') {
+			map[playerPos.getRow()][playerPos.getCol()] = '.';
 		}
 		else {
+			map[playerPos.getRow()][playerPos.getCol()] = ' ';
+		}
+		
+		// Update 'from'-position on map
+		switch (from) {
+		case '*':
+			map[fromPos.getRow()][fromPos.getCol()] = '+'; break;
+		case '$':
+			map[fromPos.getRow()][fromPos.getCol()] = '@'; break;
+		default:
 			throw new RuntimeException("Pushed a box when there was no box there!");
 		}
 		
 		// Update 'to'-position on map
-		if(to == ' ') {
-			map[toPos.getRow()][toPos.getCol()] = '$';
-		}
-		else if(to == '.') {
-			map[fromPos.getRow()][toPos.getCol()] = '*';
-		}
-		else {
+		switch (to) {
+		case ' ':
+			map[toPos.getRow()][toPos.getCol()] = '$'; break;
+		case '@':
+			map[toPos.getRow()][toPos.getCol()] = '$'; break;
+		case '.':
+			map[toPos.getRow()][toPos.getCol()] = '*'; break;
+		case '+':
+			map[toPos.getRow()][toPos.getCol()] = '*'; break;
+		default:
 			throw new RuntimeException("Pushed a box to an illegal position!");
-		}		
+		}
 		
 		// update player and the moved box's positions
 		playerPos.set(fromPos);
-		boxes.get(move.getID()).getPosition().set(move.getPosition());
+		currentBox.setPosition(move.getPosition());
 	}
 	
 	/**
@@ -161,8 +181,12 @@ public class Map {
 		return this.rows;
 	}
 	
+	// Return pointer to parent
+	public Map getPrevMap() {
+		return prevMap;
+	}
+	
 	// Return a string of the map
-
 	public String print() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < rows; i++) {
@@ -173,5 +197,14 @@ public class Map {
 		}
 		sb.append('\n');
 		return sb.toString();
+	}
+	
+	// Clone a char matrix into this map object
+	private void cloneMap(char [][] fromMap) {
+		for (int i = 0; i < rows; i++) {
+			for(int j = 0; j < cols; j++) {
+				this.map[i][j] = fromMap[i][j];
+			}
+		}
 	}
 }

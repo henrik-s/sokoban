@@ -25,8 +25,7 @@ public class Move {
 		pos.setCol(box.getPosition().getCol() + col);
 		pos.setRow(box.getPosition().getRow() + row);
 		this.newPos = pos;
-	}
-	
+	}	
 	
 	// Return id
 	public int getID() {

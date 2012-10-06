@@ -7,6 +7,12 @@ public class Position {
 				row = -1;
 				col = -1;
 			}
+			
+			public Position(Position pos) {
+				this.row = pos.getRow();
+				this.col = pos.getCol();
+			}
+			
 			// Construct a new Position with coordinates
 			public Position(int row, int col) {
 				this.row = row;
@@ -45,6 +51,10 @@ public class Position {
 				if (pos.getCol() == col && pos.getRow() == row)
 					return true;
 			return false;
+			}
+			
+			public String print() {
+				return ("(" + this.row + "," + this.col + ")");
 			}
 }
 
