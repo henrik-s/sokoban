@@ -4,9 +4,14 @@ import java.util.Queue;
 
 
 public class Utility {
+		
+	private static final int WEST = 0;
+	private static final int EAST = 1;
+	private static final int NORTH = 2;
+	private static final int SOUTH = 3;
 	
 	public Utility(){
-		//behöver konstruktorn göra nått?
+		
 	}
 	
 	/**
@@ -14,13 +19,37 @@ public class Utility {
 	 * @return En lista av möjliga lådförflyttningar (Moves)
 	 */
 	public ArrayList<Move> findPossibleMoves(Map map){
-		//Startpostionen för spelaren
-		Position playerPos = map.getPlayerPosition();
-		//Startpositionen och id för alla lådor
-		ArrayList<Box> boxes = map.getAllBoxes();
-		//leta upp alla möjliga vägar till alla lådor
-		for(int boxNr = 0; boxNr > boxes.size(); boxNr++){
-			search(playerPos, boxes.get(boxNr), map.getMap());
+		ArrayList<Move> possibleMoves = new ArrayList<Move>();
+		Position playerPos = map.getPlayerPosition();//Startpostionen för spelaren
+		ArrayList<Box> boxes = map.getAllBoxes(); //Startpositionen och id för alla lådor
+		boolean[] directions = new boolean[4];
+		for(int boxNr = 0; boxNr > boxes.size(); boxNr++){ //leta upp alla möjliga vägar till alla lådor
+			Box currBox = boxes.get(boxNr);
+			directions = search(playerPos, currBox, map.getMap());
+			for(int i = 0; i < 4; i++){
+				if(directions[i]){
+					if(i == WEST){ //Push the box east
+						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()+1);
+						Move move = new Move(boxNr, newBoxPos);
+						possibleMoves.add(move);
+					}
+					if(i == EAST){ //Push the box west
+						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()-1);
+						Move move = new Move(boxNr, newBoxPos);
+						possibleMoves.add(move);
+					}
+					if(i == NORTH){ //Push the box south
+						Position newBoxPos = new Position(currBox.getPosition().getRow()+1, currBox.getPosition().getCol());
+						Move move = new Move(boxNr, newBoxPos);
+						possibleMoves.add(move);
+					}
+					if(i == SOUTH){ //Push the box north
+						Position newBoxPos = new Position(currBox.getPosition().getRow()-1, currBox.getPosition().getCol());
+						Move move = new Move(boxNr, newBoxPos);
+						possibleMoves.add(move);
+					}
+				}
+			}
 		}
 	}
 
@@ -55,34 +84,30 @@ public class Utility {
 				directions[3] = true;
 			}
 			for(int direction = 0; direction < 4; direction++){ //kolla grannar
-				if(direction == 0){ //west
+				if(direction == WEST){ 
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()-1); 
-					if(!visited.contains(newPos) && 
-							(map[newPos.getRow()][newPos.getCol()] == ' ' || map[newPos.getRow()][newPos.getCol()] == '.')){
+					if(!visited.contains(newPos) && isAvailiable(map, newPos)){
 						visited.add(newPos);
 						q.add(newPos);
 					}
 				}
-				if(direction == 2){ //east
+				if(direction == EAST){ 
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()+1);
-					if(!visited.contains(newPos) && 
-							(map[newPos.getRow()][newPos.getCol()] == ' ' || map[newPos.getRow()][newPos.getCol()] == '.')){
+					if(!visited.contains(newPos) && isAvailiable(map, newPos)){
 						visited.add(newPos);
 						q.add(newPos);
 					}
 				}
-				if(direction == 3){ //north
+				if(direction == NORTH){ 
 					Position newPos = new Position(currPos.getRow()-1, currPos.getCol());
-					if(!visited.contains(newPos) && 
-							(map[newPos.getRow()][newPos.getCol()] == ' ' || map[newPos.getRow()][newPos.getCol()] == '.')){
+					if(!visited.contains(newPos) && isAvailiable(map, newPos)){
 						visited.add(newPos);
 						q.add(newPos);
 					}
 				}
-				if(direction == 4){ //south
+				if(direction == SOUTH){ 
 					Position newPos = new Position(currPos.getRow()+1, currPos.getCol());
-					if(!visited.contains(newPos) && 
-							(map[newPos.getRow()][newPos.getCol()] == ' ' || map[newPos.getRow()][newPos.getCol()] == '.')){
+					if(!visited.contains(newPos) && isAvailiable(map, newPos)){
 						visited.add(newPos);
 						q.add(newPos);
 					}
@@ -90,22 +115,14 @@ public class Utility {
 			}
 			
 		}
-		
-		
-		
-		
-		enqueue v onto Q
-		4      mark v
-		5      while Q is not empty:
-		6          t ← Q.dequeue()
-		7          if t is what we are looking for:
-		8              return t
-		9          for all edges e in G.incidentEdges(t) do
-		10              // G.opposite returns adjacent vertex 
-		12             o ← G.opposite(t,e)
-		13             if o is not marked:
-		14                  mark o
-		15                  enqueue o onto Q
+	return directions;	
+	}
+	
+	public boolean isAvailiable(char[][] map, Position pos){
+		if(map[pos.getRow()][pos.getCol()] == ' ' || map[pos.getRow()][pos.getCol()] == '.'){
+			return true;
+		}
+		return false;
 	}
 	
 }
