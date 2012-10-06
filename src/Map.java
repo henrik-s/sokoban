@@ -71,7 +71,7 @@ public class Map {
 		char from = map[fromPos.getRow()][fromPos.getCol()];
 		char to = map[toPos.getRow()][toPos.getCol()];
 		
-		// Update from position on map
+		// Update 'from'-position on map
 		if(from == '*') {
 			map[fromPos.getRow()][fromPos.getCol()] = '+';
 		}
@@ -82,7 +82,7 @@ public class Map {
 			throw new RuntimeException("Pushed a box when there was no box there!");
 		}
 		
-		// 
+		// Update 'to'-position on map
 		if(to == ' ') {
 			map[toPos.getRow()][toPos.getCol()] = '$';
 		}
