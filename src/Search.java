@@ -1,6 +1,4 @@
 
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -13,9 +11,10 @@ import java.util.Queue;
 public class Search {
 
 	public Search() {
-		sdsd
+		
 	}
 	
+	public 
 	   
     Queue<Position> q = new LinkedList<Position>();
     q.add(map.startPos);
@@ -76,4 +75,4 @@ public class Search {
     }
 	
 	
-} */
+}*/

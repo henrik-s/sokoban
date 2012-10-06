@@ -6,7 +6,7 @@ import java.util.*;
  * HW1 test command: 
    java Client dd2380.csc.kth.se 5001 2sdsd
  * 
- * @author MacHenrik ssss
+ * @author MacHenrik
  *
  */
 
@@ -48,6 +48,7 @@ public class Client {
             
             String lMySol = "";
             
+            System.out.println(map.print());
             
             //we've found our solution
             //String lMySol="U R R U U L D L L U L L D R R R R L D D R U R U D L L U R";
