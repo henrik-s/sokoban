@@ -11,7 +11,7 @@
  * 			(space) = empty square
  * 		
  * 		- A list of all the boxes
- * 		- The position 		. 
+ * 		- The position of the players 
  * 	
  *  
  * @author MacHenriks
@@ -22,7 +22,8 @@ public class Map {
 	
 	final Map prevMap;
 	private char[][] map;
-	private int rows, cols;
+	private int rows, cols, playerPos;
+	private Box boxes[];
 	
 
 	
@@ -84,5 +85,10 @@ public class Map {
 	
 	public char[][] getMap() {
 		return this.map;
+	}
+	
+	// Return the player's position on the map
+	public int getPlayerPosition() {
+		return playerPos;
 	}
 }
