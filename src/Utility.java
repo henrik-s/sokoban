@@ -63,7 +63,7 @@ public class Utility {
 	}
 
 	private boolean legalPush(Position newBoxPos, Map map) {
-		boolean deadLock = checkDeadLock(newBoxPos, map);
+		boolean deadLock = checkDeadLock(newBoxPos);
 		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
 		if(!deadLock && !obstacle){
 			return true;
@@ -72,11 +72,8 @@ public class Utility {
 	}
 
 	private boolean checkDeadLock(Position newBoxPos) {
-		char[][] dMap = Deadlock.getMap();
-		if(dMap[newBoxPos.getRow()][newBoxPos.getCol()] == 'D'){
-			return true;
-		}
-		return false;
+		boolean[][] dMap = DeadLock.getDLM();
+		return dMap[newBoxPos.getRow()][newBoxPos.getCol()];
 	}
 
 	private boolean[] search(Position playerPos, Box box, char[][] map) {

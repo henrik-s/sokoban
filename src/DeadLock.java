@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class DeadLock {
 
 	private static boolean DEBUG = true;
-	private boolean[][] dlm;
+	private static boolean[][] dlm;
 
 
 
@@ -51,9 +51,10 @@ public class DeadLock {
 
 
 	public DeadLock(Map map){
-		if(map.board.length != 0){
-			dlm = new boolean[map.board.length][map.board[0].length];
-			initDLM(map.board.length,map.board[0].length);
+		char[][] board = map.getMap();
+		if(board.length != 0){
+			dlm = new boolean[board.length][board[0].length];
+			initDLM(board.length, board[0].length);
 		}
 		else{
 			throw new RuntimeException("DeadLock Constructor: The initializing" +
@@ -65,10 +66,11 @@ public class DeadLock {
 	}
 
 	private void analyzeDefiniteDeadlocks(Map map) {
+		char[][] board = map.getMap();
 		int res = 0;
-		for(int i = 1; i < map.board.length-1;i++){
-			for(int j = 1; j < map.board[0].length-1;j++){
-				if(map.board[i][j] == '#')
+		for(int i = 1; i < board.length-1;i++){
+			for(int j = 1; j < board[0].length-1;j++){
+				if(board[i][j] == '#')
 					continue;
 				if((res = isCorner(map,i,j)) != 0){
 					dlm[i][j] = true;
@@ -105,17 +107,17 @@ public class DeadLock {
 		List<Position> l = new ArrayList<Position>();
 		List<Position> b = new ArrayList<Position>();
 		List<Position> a = new ArrayList<Position>();
-
+		char[][] board = map.getMap();
 		//Search to the right of the given position
 		for(int j = col+1; j < dlm[0].length-1; j++){
-			if(map.board[row][j] == '#' ||map.board[row][j] == '.' || map.board[row][j] == '+' || map.board[row][j] == '*')
+			if(board[row][j] == '#' ||board[row][j] == '.' || board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if(isCorner(map,row,j) != 0){
 				System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
 				deadlocks.addAll(r);
 				break;
 			}	
-			else if(map.board[row+rowDiff][j]!='#'){
+			else if(board[row+rowDiff][j]!='#'){
 				break;
 			}
 			else{
@@ -125,15 +127,15 @@ public class DeadLock {
 		}
 
 		//Search below of the given position
-		for(int i = row+1; i<map.board.length-1; i++){
-			if(map.board[i][col] == '#' || map.board[i][col] == '.' || map.board[i][col] == '+' || map.board[i][col] == '*')
+		for(int i = row+1; i<board.length-1; i++){
+			if(board[i][col] == '#' || board[i][col] == '.' || board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if(isCorner(map,i,col) != 0){
 				System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
 				deadlocks.addAll(b);
 				break;
 			}	
-			else if(map.board[i][col + colDiff]!='#'){
+			else if(board[i][col + colDiff]!='#'){
 				break;
 			}
 			else{
@@ -145,18 +147,19 @@ public class DeadLock {
 		Position tmp;
 		for(int i = 0;i < deadlocks.size(); i++){
 			tmp = deadlocks.get(i);
-			dlm[tmp.y][tmp.x] = true;
+			dlm[tmp.getRow()][tmp.getCol()] = true;
 		}
 	}
 
 
 	private int isCorner(Map map,int i, int j) {
-		if(i == map.board.length || j == map.board[0].length)
+		char[][] board = map.getMap();
+		if(i == board.length || j == board[0].length)
 			return 0;
-		int up = ((map.board[i-1][j] == '#') ? 1:0);
-		int right = ((map.board[i][j+1] == '#') ? 1:0);
-		int down = ((map.board[i+1][j] == '#') ? 1:0);
-		int left = ((map.board[i][j-1] == '#') ? 1:0);
+		int up = ((board[i-1][j] == '#') ? 1:0);
+		int right = ((board[i][j+1] == '#') ? 1:0);
+		int down = ((board[i+1][j] == '#') ? 1:0);
+		int left = ((board[i][j-1] == '#') ? 1:0);
 
 		if(up+right == 2)
 			return 1;
@@ -171,12 +174,13 @@ public class DeadLock {
 	}
 
 	private void printDLM(Map map){
+		char[][] board = map.getMap();
 		for(int i = 0; i < dlm.length;i++){
 			for(int j = 0; j < dlm[0].length;j++){
 				if(dlm[i][j] == true)
 					System.out.print("D");
 				else{
-					System.out.print(map.board[i][j]);
+					System.out.print(board[i][j]);
 				}
 			}
 			System.out.println("");
@@ -191,5 +195,8 @@ public class DeadLock {
 	}
 	public static void main(String[] argv){
 		new DeadLock(argv[0]);
+	}
+	public static boolean[][] getDLM(){
+		return dlm;
 	}
 }
