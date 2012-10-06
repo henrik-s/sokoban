@@ -17,6 +17,17 @@ public class Move {
 		this.newPos = newPos;
 	}
 	
+	// Construct a new move using a Box object 
+	// and new changes to row and col value (-1, 0 or 1)
+	public Move(Box box, int row, int col) {
+		this.id = box.getID();
+		Position pos = new Position();
+		pos.setCol(box.getPosition().getCol() + col);
+		pos.setRow(box.getPosition().getRow() + row);
+		this.newPos = pos;
+	}
+	
+	
 	// Return id
 	public int getID() {
 		return this.id;

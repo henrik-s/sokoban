@@ -55,7 +55,9 @@ public class Map {
 		prevMap = fromMap;
 		this.map = fromMap.getMap().clone();
 		this.rows = fromMap.getRows();
-		this.cols = fromMap.getCols();		
+		this.cols = fromMap.getCols();
+		boxes = new ArrayList<Box>();
+		boxes = fromMap.getAllBoxes();
 		doMove(withMove);
 	}
 	
@@ -69,6 +71,9 @@ public class Map {
 		Position toPos = move.getPosition();
 		char from = map[fromPos.getRow()][fromPos.getCol()];
 		char to = map[toPos.getRow()][toPos.getCol()];
+		
+		// Clear players prevoius position fram the map
+		map[playerPos.getRow()][playerPos.getCol()] = ' ';
 		
 		// Update 'from'-position on map
 		if(from == '*') {
@@ -129,6 +134,11 @@ public class Map {
 	// Return all the boxes for the map
 	public ArrayList<Box> getAllBoxes() {
 		return boxes;
+	}
+	
+	// Return a specific box
+	public Box getBox(int id) {
+		return boxes.get(id);
 	}
 	
 	// Return this map's char matrix
