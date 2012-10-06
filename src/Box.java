@@ -9,10 +9,10 @@
 
 public class Box {
 	private final int id;
-	private int currentPosition;
+	private Position currentPosition;
 	
 	// Constructor
-	public Box(int id, int currentPosition) {
+	public Box(int id, Position currentPosition) {
 		this.id = id; 
 		this.currentPosition = currentPosition;
 	}
@@ -23,7 +23,7 @@ public class Box {
 	}
 	
 	//Return the box's currentPosition
-	public int getPosition() {
+	public Position getPosition() {
 		return currentPosition;
 	}
 }

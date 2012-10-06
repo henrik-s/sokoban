@@ -22,7 +22,8 @@ public class Map {
 	
 	final Map prevMap;
 	private char[][] map;
-	private int rows, cols, playerPos;
+	private int rows, cols;
+	private Position playerPos;
 	private Box boxes[];
 	
 
@@ -50,7 +51,7 @@ public class Map {
 	 */
 	public Map(Map fromMap, Move withMove) {
 		prevMap = fromMap;
-		this.map = fromMap.getMap();
+		this.map = fromMap.getMap().clone();
 	}
 	
 	
@@ -86,9 +87,10 @@ public class Map {
 	public char[][] getMap() {
 		return this.map;
 	}
+	 
 	
 	// Return the player's position on the map
-	public int getPlayerPosition() {
+	public Position getPlayerPosition() {
 		return playerPos;
 	}
 }
