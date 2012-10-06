@@ -30,27 +30,53 @@ public class Utility {
 				if(directions[i]){
 					if(i == WEST){ //Push the box east
 						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()+1);
-						Move move = new Move(boxNr, newBoxPos);
-						possibleMoves.add(move);
+						if(legalPush(newBoxPos, map)){
+							Move move = new Move(boxNr, newBoxPos);
+							possibleMoves.add(move);
+						}
 					}
 					if(i == EAST){ //Push the box west
 						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()-1);
+						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
 						possibleMoves.add(move);
+						}
 					}
 					if(i == NORTH){ //Push the box south
 						Position newBoxPos = new Position(currBox.getPosition().getRow()+1, currBox.getPosition().getCol());
+						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
 						possibleMoves.add(move);
+						}
 					}
 					if(i == SOUTH){ //Push the box north
 						Position newBoxPos = new Position(currBox.getPosition().getRow()-1, currBox.getPosition().getCol());
+						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
 						possibleMoves.add(move);
+						}
 					}
 				}
 			}
 		}
+		return possibleMoves;
+	}
+
+	private boolean legalPush(Position newBoxPos, Map map) {
+		boolean deadLock = checkDeadLock(newBoxPos, map);
+		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
+		if(!deadLock && !obstacle){
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkDeadLock(Position newBoxPos) {
+		char[][] dMap = Deadlock.getMap();
+		if(dMap[newBoxPos.getRow()][newBoxPos.getCol()] == 'D'){
+			return true;
+		}
+		return false;
 	}
 
 	private boolean[] search(Position playerPos, Box box, char[][] map) {
