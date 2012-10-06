@@ -15,5 +15,10 @@ public class Position {
 				this.row = pos.row;
 				this.col = pos.col;
 			}
+			public boolean isEqualTo(Position pos) {
+				if (pos.getCol() == col && pos.getRow() == row)
+					return true;
+			return false;
+			}
 }
 
