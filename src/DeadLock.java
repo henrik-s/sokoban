@@ -72,7 +72,7 @@ public class DeadLock {
 			for(int j = 1; j < board[0].length-1;j++){
 				if(board[i][j] == '#')
 					continue;
-				if((res = isCorner(map,i,j)) != 0){
+				if((res = isCorner(map,i,j)) != 0 && board[i][j] != '.'){
 					dlm[i][j] = true;
 					checkDeadlockSides(map,i,j,res);
 				}

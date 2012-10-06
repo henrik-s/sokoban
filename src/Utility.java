@@ -28,31 +28,39 @@ public class Utility {
 		for(int boxNr = 0; boxNr < boxes.size(); boxNr++){ //leta upp alla möjliga vägar till alla lådor
 			Box currBox = boxes.get(boxNr);
 			directions = search(playerPos, currBox, map);
-			System.out.println("Kommer ur search!");
+			System.out.println("Kommer ur search! Antal sätt att komma runt låda: " + boxNr + " = Väster: " + directions[0] + 
+					", Öster: " + directions[1] + ", Norr: " + directions[2] + ", Söder: " + directions[3]);
 			for(int i = 0; i < 4; i++){
+				System.out.println("Kollar riktning: " + i);
 				if(directions[i]){
+					System.out.println("Riktning: " + i + " är true");
 					if(i == WEST){ //Push the box east
 						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()+1);
 						if(legalPush(newBoxPos, map)){
 							Move move = new Move(boxNr, newBoxPos);
 							possibleMoves.add(move);
 						}
+						else {
+							continue;
+						}
 					}
-					if(i == EAST){ //Push the box west
+					else if(i == EAST){ //Push the box west
+						System.out.println("Kollar om man kan putta västerut");
 						Position newBoxPos = new Position(currBox.getPosition().getRow(), currBox.getPosition().getCol()-1);
+						System.out.println("Kollar om pos: (" + newBoxPos.getRow() + "," + newBoxPos.getCol() +") är OK");
 						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
 						possibleMoves.add(move);
 						}
 					}
-					if(i == NORTH){ //Push the box south
+					else if(i == NORTH){ //Push the box south
 						Position newBoxPos = new Position(currBox.getPosition().getRow()+1, currBox.getPosition().getCol());
 						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
 						possibleMoves.add(move);
 						}
 					}
-					if(i == SOUTH){ //Push the box north
+					else if(i == SOUTH){ //Push the box north
 						Position newBoxPos = new Position(currBox.getPosition().getRow()-1, currBox.getPosition().getCol());
 						if(legalPush(newBoxPos, map)){
 						Move move = new Move(boxNr, newBoxPos);
@@ -62,13 +70,16 @@ public class Utility {
 				}
 			}
 		}
+		System.out.println("Antal möjliga pushes: " + possibleMoves.size());
 		return possibleMoves;
 	}
 
 	private boolean legalPush(Position newBoxPos, Map map) {
+		System.out.println("Kollar deadlock");
 		boolean deadLock = checkDeadLock(newBoxPos);
 		if(deadLock)
 			System.out.println("deadlock detected!");
+		System.out.println("Kollar obstacle");
 		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
 		if(obstacle)
 			System.out.println("Obstacle detected!");
@@ -111,55 +122,55 @@ public class Utility {
 		while(!q.isEmpty()){
 			Position currPos = q.remove();
 			System.out.println("Kollar ny position: (" + currPos.getRow() + "," + currPos.getCol() + ")");
-			if(currPos.isEqualTo(boxPos)){ //kan komma till vänster om lådan 
+			if(currPos.isEqualTo(west)){ //kan komma till vänster om lådan 
 				System.out.println("Kan komma vänster om lådan!");
 				directions[0] = true;
 			}
-			if(currPos.isEqualTo(boxPos)){ //kan komma till höger om lådan 
+			if(currPos.isEqualTo(east)){ //kan komma till höger om lådan 
 				System.out.println("Kan komma höger om lådan!");
 				directions[1] = true;
 			}
-			if(currPos.isEqualTo(boxPos)){ //kan komma till positionen över lådan
+			if(currPos.isEqualTo(north)){ //kan komma till positionen över lådan
 				System.out.println("Kan komma över lådan!");
 				directions[2] = true;
 			}
-			if(currPos.isEqualTo(boxPos)){ //kan komma till positionen under lådan
+			if(currPos.isEqualTo(south)){ //kan komma till positionen under lådan
 				System.out.println("Kan komma under lådan!");
 				directions[3] = true;
 			}
 			for(int direction = 0; direction < 4; direction++){ //kolla grannar
 				if(direction == WEST){ 
-					System.out.println("Kollar grannen västerut");
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()-1); 
-					if(!visited[currPos.getRow()][currPos.getCol()] && isAvailiable(board, newPos)){
-						System.out.println("lägger på en granne");
-						visited[currPos.getRow()][currPos.getCol()] = true;
+					//System.out.println("Kollar grannen västerut: (" + newPos.getRow() + "," + newPos.getCol() + ")");
+					if(!visited[newPos.getRow()][newPos.getCol()] && isAvailiable(board, newPos)){
+						System.out.println("lägger på grannen västerut");
+						visited[newPos.getRow()][newPos.getCol()] = true;
 						q.add(newPos);
 					}
 				}
 				if(direction == EAST){ 
-					System.out.println("Kollar grannen österut");
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()+1);
-					if(!visited[currPos.getRow()][currPos.getCol()] && isAvailiable(board, newPos)){
-						System.out.println("lägger på en granne");
-						visited[currPos.getRow()][currPos.getCol()] = true;
+					//System.out.println("Kollar grannen österut: (" + newPos.getRow() + "," + newPos.getCol() + ")");
+					if(!visited[newPos.getRow()][newPos.getCol()] && isAvailiable(board, newPos)){
+						System.out.println("lägger på grannen österut");
+						visited[newPos.getRow()][newPos.getCol()] = true;
 						q.add(newPos);
 					}
 				}
 				if(direction == NORTH){ 
-					System.out.println("Kollar grannen norrut");
 					Position newPos = new Position(currPos.getRow()-1, currPos.getCol());
-					if(!visited[currPos.getRow()][currPos.getCol()] && isAvailiable(board, newPos)){
-						System.out.println("lägger på en granne");
-						visited[currPos.getRow()][currPos.getCol()] = true;
+					//System.out.println("Kollar grannen norrut: (" + newPos.getRow() + "," + newPos.getCol() + ")");
+					if(!visited[newPos.getRow()][newPos.getCol()] && isAvailiable(board, newPos)){
+						System.out.println("lägger på grannen norrut");
+						visited[newPos.getRow()][newPos.getCol()] = true;
 						q.add(newPos);
 					}
 				}
 				if(direction == SOUTH){ 
-					System.out.println("Kollar grannen söderut");
 					Position newPos = new Position(currPos.getRow()+1, currPos.getCol());
-					if(!visited[currPos.getRow()][currPos.getCol()] && isAvailiable(board, newPos)){
-						System.out.println("lägger på en granne");
+					//System.out.println("Kollar grannen söderut: (" + newPos.getRow() + "," + newPos.getCol() + ")");
+					if(!visited[newPos.getRow()][newPos.getCol()] && isAvailiable(board, newPos)){
+						System.out.println("lägger på grannen söderut");
 						visited[currPos.getRow()][currPos.getCol()] = true;
 						q.add(newPos);
 					}
