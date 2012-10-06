@@ -21,7 +21,6 @@ import java.util.ArrayList;
  */
 
 public class Map {
-	
 	final Map prevMap;
 	private char[][] map;
 	private int rows, cols;
