@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 /**
  * Map contains:
@@ -24,7 +26,7 @@ public class Map {
 	private char[][] map;
 	private int rows, cols;
 	private Position playerPos;
-	private Box boxes[];
+	private ArrayList<Box> boxes;
 	
 
 	
@@ -40,6 +42,7 @@ public class Map {
 		map = new char[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
+		boxes = new ArrayList<Box>();
 	}
 	
 	/**
@@ -53,14 +56,52 @@ public class Map {
 		prevMap = fromMap;
 		this.map = fromMap.getMap().clone();
 		this.rows = fromMap.getRows();
-		this.cols = fromMap.getCols();
-		
-		updateMove(withMove);
+		this.cols = fromMap.getCols();		
+		doMove(withMove);
 	}
 	
+	/**
+	 * Perform a move (push-a-box) and update 
+	 * the map. This method assume that the move is valid
+	 * @param move = the move
+	 */
+	private void doMove(Move move) {
+		Position fromPos = boxes.get(move.getID()).getPosition();
+		Position toPos = move.getPosition();
+		char from = map[fromPos.getRow()][fromPos.getCol()];
+		char to = map[toPos.getRow()][toPos.getCol()];
+		
+		// Update from position on map
+		if(from == '*') {
+			map[fromPos.getRow()][fromPos.getCol()] = '+';
+		}
+		else if(from == '$') {
+			map[fromPos.getRow()][fromPos.getCol()] = '@';
+		}
+		else {
+			throw new RuntimeException("Pushed a box when there was no box there!")
+		}
+		
+		// 
+		if(to == ' ') {
+			map[toPos.getRow()][toPos.getCol()] = '$';
+		}
+		else if(to == '.') {
+			map[fromPos.getRow()][toPos.getCol()] = '*';
+		}
+		else {
+			throw new RuntimeException("Pushed a box to an illegal position!")
+		}
+		
+
+		playerPos.set(fromPos);
+	}
 	
 	/**
 	 * Insert a row of the map into map matrix
+	 * and determine the player's and all the boxes
+	 * positions.
+	 * 
 	 * @param s = row string of the map
 	 * @param cRow = current row
 	 */
@@ -68,9 +109,27 @@ public class Map {
 		char current;
 		for(int i = 0; i < cols; i++) {
 			current = s.charAt(i);
+			switch (current) {
+				case '@':
+					playerPos = new Position(cRow, i); break;
+				case '+':
+					playerPos = new Position(cRow, i); break;
+				case '$':
+					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+				case '*':
+					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+				default:
+					break;
+			}
 			map[cRow][i] = current;
 		}
-	}	
+	}
+	
+	
+	// Return all the boxes for the map
+	public ArrayList<Box> getAllBoxes() {
+		return boxes;
+	}
 	
 	// Return this map's char matrix
 	public char[][] getMap() {
