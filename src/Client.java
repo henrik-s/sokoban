@@ -45,16 +45,10 @@ public class Client {
             	inputLine=lIn.readLine();
             	map.insertRow(inputLine, i);
             }
-            
-            String lMySol = "";
-            
+            Solver solver = new Solver(map);
+            String lMySol = solver.solve();
+            System.out.println(lMySol);
             System.out.println(map.print());
-            
-            //we've found our solution
-            //String lMySol="U R R U U L D L L U L L D R R R R L D D R U R U D L L U R";
-            //these formats are also valid:
-            //String lMySol="URRUULDLLULLDRRRRLDDRURUDLLUR";
-            //String lMySol="0 3 3 0 0 2 1 2 2 0 2 2 1 3 3 3 3 2 1 1 3 0 3 0 1 2 2 0 3";
 
             //send the solution to the server
             lOut.println(lMySol);

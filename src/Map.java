@@ -22,10 +22,12 @@ import java.util.ArrayList;
 
 public class Map {
 	final Map prevMap; // pointer to parentmap
+	public Map nextMap; // Pointer to childmap
 	private char[][] map;
 	private int rows, cols;
 	private Position playerPos;
 	private ArrayList<Box> boxes;
+	public Move withMove;
 	
 
 	
@@ -38,6 +40,7 @@ public class Map {
 	 */
 	public Map(int rows, int cols) {
 		prevMap = null;
+		nextMap = null;
 		map = new char[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
@@ -53,8 +56,9 @@ public class Map {
 	 */
 	public Map(Map fromMap, Move withMove) {
 		// point
-		prevMap = fromMap; 
-		
+		prevMap = fromMap;
+		nextMap = null;
+		this.withMove = withMove;
 		// map
 		this.rows = fromMap.getRows();
 		this.cols = fromMap.getCols();

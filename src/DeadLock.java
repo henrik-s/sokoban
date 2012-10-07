@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class DeadLock {
 
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	private static boolean[][] dlm;
 	private static boolean[][] player_dlm;
 	private static int rows, cols;
@@ -54,11 +54,19 @@ public class DeadLock {
 
 
 	public DeadLock(Map map){
+<<<<<<< HEAD
 		rows = map.getRows(); cols = map.getCols();
 		if(rows != 0 || cols != 0){
 			dlm = new boolean[rows][cols];
 			player_dlm = new boolean[rows][cols];
 			initDLM(rows, cols, map);
+=======
+		char[][] board = map.getMap();
+		if(board.length != 0){
+			dlm = new boolean[board.length][board[0].length];
+			//System.out.println("Deadlock matrisens antal rader: " + board.length + ", antal kolumner: " + board[0].length);
+			initDLM(board.length, board[0].length);
+>>>>>>> 94f8a3e8c8918cb01336495567fb62b9a703a827
 		}
 		else{
 			throw new RuntimeException("DeadLock Constructor: The initializing" +
@@ -119,8 +127,12 @@ public class DeadLock {
 			if(board[row][j] == '#' ||board[row][j] == '.' || board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if(isCorner(map,row,j) != 0){
+<<<<<<< HEAD
 				if(DEBUG)
 					System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
+=======
+				//System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
+>>>>>>> 94f8a3e8c8918cb01336495567fb62b9a703a827
 				deadlocks.addAll(r);
 				break;
 			}	
@@ -138,8 +150,12 @@ public class DeadLock {
 			if(board[i][col] == '#' || board[i][col] == '.' || board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if(isCorner(map,i,col) != 0){
+<<<<<<< HEAD
 				if(DEBUG)
 					System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+=======
+				//System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+>>>>>>> 94f8a3e8c8918cb01336495567fb62b9a703a827
 				deadlocks.addAll(b);
 				break;
 			}	
@@ -239,8 +255,8 @@ public class DeadLock {
 	public static void main(String[] argv){
 		new DeadLock(argv[0]);
 	}
-	public static boolean[][] getDLM(){
-		return dlm;
+	public static boolean getDL(Position pos){
+		return dlm[pos.getRow()][pos.getCol()];
 	}
 	public static boolean[][] getPlayerDLM(){
 		return player_dlm;
