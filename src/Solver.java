@@ -29,6 +29,7 @@ public class Solver {
 		try {
 			while (tmp.prevMap != null) { // Backtracka till originalplanen
 				tmp.prevMap.nextMap = tmp;
+				tmp.prevMap.hasNextMap = true;
 				tmp = tmp.prevMap;
 			}
 		} catch (NullPointerException e) {
@@ -49,9 +50,9 @@ public class Solver {
 				sb.append(path);
 				if (xDiff != 0) {
 					if (xDiff > 0) {
-						sb.append("R");
-					} else {
 						sb.append("L");
+					} else {
+						sb.append("R");
 					}
 				} else {
 					if (yDiff > 0) {
@@ -74,28 +75,34 @@ public class Solver {
 		Map curr;
 		queue.add(startMap);
 		// setVisited(startMap);
-		// while (!queue.isEmpty()) {
-		for (int i = 0; i < 10; i++) {
+		while (!queue.isEmpty()) {
+//		for (int i = 0; i < 10; i++) {
 			curr = queue.remove();
 			//System.out.println("Map: " + (i + 1));
-	
+				
 
 			if (allBoxesOnGoal(curr)) {
 				System.out.println("Hittat en lösning");
 				return curr;
 			}
-			if (i == 9){
-				System.out.println("----------Sista kartan--------------");
+//			if (i == 9){
+//				System.out.println("----------Sista kartan--------------");
 				System.out.println(curr.print());
-				return curr;
-			}
+				System.out.println("#Queue: " +queue.size());
+//				return curr;
+//			}
 			// }
 			moves = Utility.findPossibleMoves(curr);
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m);
+//				System.out.println("nextMap");
+//				System.out.println(nextMap.print());
 				// if (!visited(nextMap)) {
 				// setVisited(nextMap);
 				if (Utility.findPossibleMoves(nextMap).size() != 0) {
+					queue.add(nextMap);
+				}
+				else if(allBoxesOnGoal(nextMap)){
 					queue.add(nextMap);
 				}
 				// }

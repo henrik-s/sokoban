@@ -28,6 +28,8 @@ public class Map {
 	private Position playerPos;
 	private ArrayList<Box> boxes;
 	public Move withMove;
+	public boolean hasNextMap = false;
+	public boolean hasPrevMap = false;
 	
 
 	
@@ -57,6 +59,7 @@ public class Map {
 	public Map(Map fromMap, Move withMove) {
 		// point
 		prevMap = fromMap;
+		hasPrevMap = true;
 		nextMap = null;
 		this.withMove = withMove;
 		// map
