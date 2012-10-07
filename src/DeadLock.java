@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class DeadLock {
 
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	private static boolean[][] dlm;
 
 
@@ -54,6 +54,7 @@ public class DeadLock {
 		char[][] board = map.getMap();
 		if(board.length != 0){
 			dlm = new boolean[board.length][board[0].length];
+			//System.out.println("Deadlock matrisens antal rader: " + board.length + ", antal kolumner: " + board[0].length);
 			initDLM(board.length, board[0].length);
 		}
 		else{
@@ -113,7 +114,7 @@ public class DeadLock {
 			if(board[row][j] == '#' ||board[row][j] == '.' || board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if(isCorner(map,row,j) != 0){
-				System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
+				//System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
 				deadlocks.addAll(r);
 				break;
 			}	
@@ -131,7 +132,7 @@ public class DeadLock {
 			if(board[i][col] == '#' || board[i][col] == '.' || board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if(isCorner(map,i,col) != 0){
-				System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+				//System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
 				deadlocks.addAll(b);
 				break;
 			}	
@@ -196,7 +197,7 @@ public class DeadLock {
 	public static void main(String[] argv){
 		new DeadLock(argv[0]);
 	}
-	public static boolean[][] getDLM(){
-		return dlm;
+	public static boolean getDL(Position pos){
+		return dlm[pos.getRow()][pos.getCol()];
 	}
 }
