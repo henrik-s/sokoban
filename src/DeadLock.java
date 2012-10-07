@@ -248,6 +248,9 @@ public class DeadLock {
 	public static boolean[][] getPlayerDLM(){
 		return player_dlm;
 	}
+	public static boolean[][] getDLM(){
+		return dlm;
+	}
 	public int getRows() {
 		return rows;
 	}

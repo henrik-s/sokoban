@@ -123,5 +123,44 @@ public class MapTest {
 		Map newMap4 = new Map(newMap3, move);
 		System.out.println("Map4\n" +newMap4.print());		
 	}
+	
+	@Test
+	public void win() {
+		Reader reader = new Reader("test/all", LEVELS);
+		Map map = reader.getLevel(1);
+		System.out.println("Map0\n" +map.print());
+		
+		// Let's cheat n win!
+		map = new Map(map, new Move(map.getBox(7), -1, 0));		
+		System.out.println("Map1\n" +map.print());
+		
+		// We havent won yet
+		assertFalse(map.isWon());
+		
+		map = new Map(map, new Move(map.getBox(7), -1, 0));
+		assertFalse(map.isWon());
+		System.out.println("Map1\n" +map.print());
+		
+		map = new Map(map, new Move(map.getBox(7), 0, -1));
+		assertFalse(map.isWon());
+		System.out.println("Map1\n" +map.print());
+		
+		map = new Map(map, new Move(map.getBox(9), -1, 0));
+		assertFalse(map.isWon());
+		System.out.println("Map1\n" +map.print());
+		
+		map = new Map(map, new Move(map.getBox(3), 1, 0));
+		assertFalse(map.isWon());
+		System.out.println("Map1\n" +map.print());
+		
+		map = new Map(map, new Move(map.getBox(0), 0, 1));	
+		assertFalse(map.isWon());
+		System.out.println("Map1\n" +map.print());
+		
+		map = new Map(map, new Move(map.getBox(0), 1, 0));
+		// We won
+		assertTrue(map.isWon()); 
+		System.out.println("Map1\n" +map.print());
+	}
 
 }

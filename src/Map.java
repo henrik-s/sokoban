@@ -217,4 +217,13 @@ public class Map {
 			}
 		}
 	}
+	
+	// Return true if this board is winning one!
+	public boolean isWon() {
+		for(int i = 0; i<boxes.size(); i++) {
+			if(!boxes.get(i).isOnGoal()) 
+				return false;
+		}
+		return true;
+	}
 }
