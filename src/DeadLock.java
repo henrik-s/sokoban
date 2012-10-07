@@ -9,6 +9,8 @@ public class DeadLock {
 
 	private static boolean DEBUG = true;
 	private static boolean[][] dlm;
+	private static boolean[][] player_dlm;
+	private static int rows, cols;
 
 
 
@@ -17,14 +19,15 @@ public class DeadLock {
 		String row;
 		Scanner s;
 		Map map;
-		int cols,rows,rowLength = 0;
+		int rowLength = 0;
 		try {
 			s = new Scanner(file).useDelimiter("\n");
 			rows = Integer.parseInt(s.next());
 			cols = Integer.parseInt(s.next());
 			map = new Map(rows,cols);
 			dlm = new boolean[rows][cols];
-			initDLM(rows,cols);
+			player_dlm = new boolean[rows][cols];
+			initDLM(rows,cols, map);
 
 			for(int i = 0; i<rows;i++){
 				row = s.next();
@@ -51,18 +54,21 @@ public class DeadLock {
 
 
 	public DeadLock(Map map){
-		char[][] board = map.getMap();
-		if(board.length != 0){
-			dlm = new boolean[board.length][board[0].length];
-			initDLM(board.length, board[0].length);
+		rows = map.getRows(); cols = map.getCols();
+		if(rows != 0 || cols != 0){
+			dlm = new boolean[rows][cols];
+			player_dlm = new boolean[rows][cols];
+			initDLM(rows, cols, map);
 		}
 		else{
 			throw new RuntimeException("DeadLock Constructor: The initializing" +
 					" map is empty");
 		}
 		analyzeDefiniteDeadlocks(map);
-		if(DEBUG)
-			printDLM(map);
+		if(DEBUG) {
+			printDLM(map); System.out.println();
+			printPlayerDLM(map);
+		}
 	}
 
 	private void analyzeDefiniteDeadlocks(Map map) {
@@ -113,7 +119,8 @@ public class DeadLock {
 			if(board[row][j] == '#' ||board[row][j] == '.' || board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if(isCorner(map,row,j) != 0){
-				System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
+				if(DEBUG)
+					System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
 				deadlocks.addAll(r);
 				break;
 			}	
@@ -131,7 +138,8 @@ public class DeadLock {
 			if(board[i][col] == '#' || board[i][col] == '.' || board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if(isCorner(map,i,col) != 0){
-				System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+				if(DEBUG)
+					System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
 				deadlocks.addAll(b);
 				break;
 			}	
@@ -173,7 +181,7 @@ public class DeadLock {
 			return 0;
 	}
 
-	private void printDLM(Map map){
+	public void printDLM(Map map){
 		char[][] board = map.getMap();
 		for(int i = 0; i < dlm.length;i++){
 			for(int j = 0; j < dlm[0].length;j++){
@@ -186,10 +194,45 @@ public class DeadLock {
 			System.out.println("");
 		}
 	}
-	private void initDLM(int rows, int cols){
+	public void printPlayerDLM(Map map){
+		char[][] board = map.getMap();
+		for(int i = 0; i < player_dlm.length;i++){
+			for(int j = 0; j < player_dlm[0].length;j++){
+				if(player_dlm[i][j] == true)
+					System.out.print("D");
+				else{
+					System.out.print(board[i][j]);
+				}
+			}
+			System.out.println("");
+		}
+	}
+	private void initDLM(int rows, int cols, Map map){
+		char[][] board = map.getMap();
+		boolean found;
 		for(int i = 0; i< rows;i++){
+			found = false;
+			// check from left
 			for(int j = 0; j <cols;j++){
-				dlm[i][j] = false;
+				if(board[i][j] == '#') {
+					found = true;
+				}
+				if(!found || board[i][j] == '#') {
+					dlm[i][j] = true; player_dlm[i][j] = true;
+				}
+				else {
+					dlm[i][j] = false;	player_dlm[i][j] = false;				
+				}
+			}
+			found = false;
+			// check from right
+			for(int j = cols-1; j >= 0;j--){
+				if(board[i][j] == '#') {
+					found = true;
+				}
+				if(!found) {
+					dlm[i][j] = true;  player_dlm[i][j] = true;
+				}
 			}
 		}
 	}
@@ -198,5 +241,14 @@ public class DeadLock {
 	}
 	public static boolean[][] getDLM(){
 		return dlm;
+	}
+	public static boolean[][] getPlayerDLM(){
+		return player_dlm;
+	}
+	public int getRows() {
+		return rows;
+	}
+	public int getCols() {
+		return cols;
 	}
 }

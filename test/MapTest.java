@@ -24,17 +24,23 @@ public class MapTest {
 		
 		// The last box's position
 		Position newPos = new Position(map.getRows()-3, map.getCols()-5);
-		exp.set(newPos);
-		
+		exp.set(newPos);		
 		Box box = map.getBox(9);
 		assertTrue(box.getPosition().isEqualTo(exp));
 		
 		// The second last box's position, a * box
 		newPos = new Position(map.getRows()-4, map.getCols()-4);
-		exp.set(newPos);
-		
+		exp.set(newPos);		
 		box = map.getBox(8);
 		assertTrue(box.getPosition().isEqualTo(exp));
+		
+		// Box 9 should NOT be standing on goal
+		box = map.getBox(9);
+		assertFalse(box.isOnGoal());
+		
+		// Box 8 should be standing on goal
+		box = map.getBox(8);
+		assertTrue(box.isOnGoal());
 	}
 	
 	@Test
@@ -87,27 +93,35 @@ public class MapTest {
 	public void moves() {
 		Reader reader = new Reader("test/all", LEVELS);
 		Map map = reader.getLevel(1);
-		System.out.println(map.print());
+		System.out.println("Map0\n" +map.print());
 		
 		// Create push on the last box (id 9) to right
 		Move move = new Move(map.getBox(9), 0, 1);
 		Map newMap1 = new Map(map, move);		
-		System.out.println(newMap1.print());
+		System.out.println("Map1\n" +newMap1.print());
 		
 		// Now push goal box (id 7) up
 		move = new Move(newMap1.getBox(7), -1, 0);
 		Map newMap2 = new Map(newMap1, move);
-		System.out.println(newMap2.print());
+		System.out.println("Map2\n" +newMap2.print());
+		
+		// Box 8 is standing on goal on map2
+		assertTrue(newMap2.getBox(8).isOnGoal());
 		
 		// Now push goal box (id 8) right
 		move = new Move(newMap2.getBox(8), 0, 1);
 		Map newMap3 = new Map(newMap2, move);
-		System.out.println(newMap3.print());
+		System.out.println("Map3\n" +newMap3.print());
+		
+		// Box 8 should still be standing on goal on map2
+		// but not on map3
+		assertTrue(newMap2.getBox(8).isOnGoal());
+		assertFalse(newMap3.getBox(8).isOnGoal());
 		
 		// Now teleport and push goal box (id 5) down
 		move = new Move(newMap3.getBox(5), 1, 0);
 		Map newMap4 = new Map(newMap3, move);
-		System.out.println(newMap4.print());		
+		System.out.println("Map4\n" +newMap4.print());		
 	}
 
 }

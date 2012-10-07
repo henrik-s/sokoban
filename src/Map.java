@@ -104,15 +104,20 @@ public class Map {
 		}
 		
 		// Update 'to'-position on map
+		boolean toGoal = false;
 		switch (to) {
 		case ' ':
 			map[toPos.getRow()][toPos.getCol()] = '$'; break;
 		case '@':
 			map[toPos.getRow()][toPos.getCol()] = '$'; break;
 		case '.':
-			map[toPos.getRow()][toPos.getCol()] = '*'; break;
+			map[toPos.getRow()][toPos.getCol()] = '*';
+			toGoal = true;
+			break;
 		case '+':
-			map[toPos.getRow()][toPos.getCol()] = '*'; break;
+			map[toPos.getRow()][toPos.getCol()] = '*';
+			toGoal = true;
+			break;
 		default:
 			throw new RuntimeException("Pushed a box to an illegal position!");
 		}
@@ -120,6 +125,7 @@ public class Map {
 		// update player and the moved box's positions
 		playerPos.set(fromPos);
 		currentBox.setPosition(move.getPosition());
+		currentBox.setIsOnGoal(toGoal);
 	}
 	
 	/**
@@ -140,9 +146,9 @@ public class Map {
 				case '+':
 					playerPos = new Position(cRow, i); break;
 				case '$':
-					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+					boxes.add(new Box(boxes.size(), new Position(cRow, i), false)); break;
 				case '*':
-					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+					boxes.add(new Box(boxes.size(), new Position(cRow, i), true)); break;
 				default:
 					break;
 			}
