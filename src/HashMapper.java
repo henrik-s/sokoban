@@ -15,8 +15,17 @@ public class HashMapper {
 		initBoards(dl);
 	}
 	
-	private int getBoxHash(int [] boxes, int firstBit, int lastBit) {
-		
+	private int getBoxHash(int [] boxes, int offset) {
+		int res = 0;
+		int mask = 1;
+		for(int i = 0; i < boxes.length; i++) {
+			mask = 1;
+			if(boxes[i] - offset < 32) {
+				 mask <<= (boxes[i] - offset);
+				 res = res ^ mask;
+			}
+		}
+		return res;
 	}
 	
 	private int[] getBoxPositions(ArrayList<Box> boxes) {
@@ -29,16 +38,16 @@ public class HashMapper {
 		return res;
 	}
 	
-	public void createEntry(Map map) {
+	public int createEntry(Map map) {
 		Position playerPos = map.getPlayerPosition();
 		int playerHash = playerBoard[playerPos.getRow()][playerPos.getCol()];
-		System.out.println(playerHash);
+		System.out.println("Playerhash = " +playerHash);
 		
-		int [] boxPositions = getBoxPositions(map.getAllBoxes());
-		
-		
+		int [] boxPositions = getBoxPositions(map.getAllBoxes());	
 		if(possibleBoxCells < 33) {
-			int boxHash1 = getBoxHash(boxPositions, 0, 32);
+			int boxHash1 = getBoxHash(boxPositions, 0);
+			System.out.println("BoxHash1 = "+ boxHash1);
+			return boxHash1;
 		}
 		
 		// Need 2 hash int's
@@ -60,6 +69,7 @@ public class HashMapper {
 		else {
 			throw new RuntimeException("Sorry but this map is huge as fuck");
 		}
+		return 0;
 	}
 	
 	private void initBoards(DeadLock dl) {
