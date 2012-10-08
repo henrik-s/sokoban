@@ -48,7 +48,6 @@ public class Client {
             Solver solver = new Solver(map);
             String lMySol = solver.solve();
             System.out.println(lMySol);
-            System.out.println(map.print());
 
             //send the solution to the server
             lOut.println(lMySol);
