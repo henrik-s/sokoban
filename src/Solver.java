@@ -13,15 +13,15 @@ public class Solver {
 
 	public Solver(Map map) {
 		startMap = map;
-		System.out.println(map.print());
+		//System.out.println(map.print());
 		DL = new DeadLock(map);
+		//DL.printDLM(startMap);
 		hm = new HashMapper(DL);
 	}
 
 	public String solve() {
-		DL.printDLM(startMap);
 		Map finalMap = BFS();
-		System.out.println("in i backtrack");
+		//System.out.println("in i backtrack");
 		String solution = backtrack(finalMap);
 		return solution;
 	}
@@ -80,11 +80,12 @@ public class Solver {
 		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
+
 		Map curr = null;
 		prioQueue.add(startMap);
 		while (!prioQueue.isEmpty()) {
 			curr = prioQueue.remove();
-			System.out.println(curr.print());
+			//System.out.println(curr.print());
 			//
 			if(!curr.evaluated){
 				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
