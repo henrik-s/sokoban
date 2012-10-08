@@ -14,8 +14,10 @@ public class Solver {
 	}
 
 	public String solve() {
+		System.out.println(startMap.print());
 		Map finalMap = BFS();
 		String solution = backtrack(finalMap);
+		DL.printDLM(startMap);
 		return solution;
 	}
 
@@ -74,44 +76,56 @@ public class Solver {
 		ArrayList<Move> moves = new ArrayList<Move>();
 		Map curr;
 		queue.add(startMap);
-		// setVisited(startMap);
 		while (!queue.isEmpty()) {
-//		for (int i = 0; i < 10; i++) {
-			curr = queue.remove();
-			//System.out.println("Map: " + (i + 1));
-				
+			curr = queue.remove();				
 
 			if (curr.isWon()) {
 				System.out.println("Hittat en lösning");
 				return curr;
 			}
-//			if (i == 9){
-//				System.out.println("----------Sista kartan--------------");
-//				System.out.println(curr.print());
-				//System.out.println("#Queue: " +queue.size());
-//				return curr;
-//			}
-			// }
+
 			moves = Utility.findPossibleMoves(curr);
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m);
-//				System.out.println("nextMap");
-//				System.out.println(nextMap.print());
-				// if (!visited(nextMap)) {
-				// setVisited(nextMap);
 				if (Utility.findPossibleMoves(nextMap).size() != 0) {
 					queue.add(nextMap);
 				}
 				else if(nextMap.isWon()){
 					return nextMap;
 				}
-				// }
 			}
 		}
 
 		return null;
 	}
+	
+	private Map doubleBFS(){
+		Queue<Map> queue = new LinkedList<Map>();
+		ArrayList<Move> moves = new ArrayList<Move>();
+		Map curr;
+		queue.add(startMap);
+		while (!queue.isEmpty()) {
+			curr = queue.remove();				
 
+			if (curr.isWon()) {
+				System.out.println("Hittat en lösning");
+				return curr;
+			}
+
+			moves = Utility.findPossibleMoves(curr);
+			for (Move m : moves) {
+				Map nextMap = new Map(curr, m);
+				if (Utility.findPossibleMoves(nextMap).size() != 0) {
+					queue.add(nextMap);
+				}
+				else if(nextMap.isWon()){
+					return nextMap;
+				}
+			}
+		}
+		
+		return null;
+	}
 	private boolean allBoxesOnGoal(Map map) {
 		ArrayList<Box> boxes = map.getAllBoxes();
 		for(int i = 0; i < boxes.size(); i++){
