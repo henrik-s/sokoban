@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class DeadLock {
 
-	private static boolean DEBUG = false;
+	private static boolean DEBUG = true;
 	private static boolean[][] dlm;
 	private static boolean[][] player_dlm;
 	private static int rows, cols;
@@ -43,8 +43,11 @@ public class DeadLock {
 
 			analyzeDefiniteDeadlocks(map);
 
-			if(DEBUG)
+			if(DEBUG){
+				System.out.println("Rows: " + rows);
+				System.out.println("Cols: " + cols);
 				printDLM(map);
+			}
 
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
@@ -111,23 +114,24 @@ public class DeadLock {
 	private void checkSides(Map map,int row, int col, int rowDiff,int colDiff){
 		List<Position> deadlocks = new ArrayList<Position>();
 		List<Position> r = new ArrayList<Position>();
-		List<Position> l = new ArrayList<Position>();
 		List<Position> b = new ArrayList<Position>();
-		List<Position> a = new ArrayList<Position>();
 		char[][] board = map.getMap();
+		
 		//Search to the right of the given position
 		for(int j = col+1; j < dlm[0].length-1; j++){
 			if(board[row][j] == '#' ||board[row][j] == '.' || board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if(isCorner(map,row,j) != 0){
-				if(DEBUG)
+				if(DEBUG){
 					System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
-
+				}
 				deadlocks.addAll(r);
-				break;
+				break;	
 			}	
 			else if(board[row+rowDiff][j]!='#'){
-				break;
+					if(!isTunnel(map, row, col, false, colDiff)){
+						break;
+					}
 			}
 			else{
 				if(dlm[row][j]==false)
@@ -140,9 +144,9 @@ public class DeadLock {
 			if(board[i][col] == '#' || board[i][col] == '.' || board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if(isCorner(map,i,col) != 0){
-				if(DEBUG)
-					System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
-
+				if(DEBUG){
+		 			System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+				}
 				deadlocks.addAll(b);
 				break;
 			}	
@@ -160,6 +164,43 @@ public class DeadLock {
 			tmp = deadlocks.get(i);
 			dlm[tmp.getRow()][tmp.getCol()] = true;
 		}
+	}
+
+
+	private boolean isTunnel(Map map,int row, int col,boolean horizontal,int diff) {
+		if(!horizontal){ //Tunneln går vertikalt
+			
+			if(!(map.getMap()[row][col-1] == '#')){
+				return false;
+			}
+			else if(!(map.getMap()[row][col+1] == '#')){
+				return false;
+			}
+			
+			if(diff > 0){ // tunneln går neråt
+					
+			}
+			else if(diff < 0){
+
+			}
+		}
+		else if(horizontal){ //Tunneln går horizontelt
+			
+			if(!(map.getMap()[row-1][col] == '#')){
+				return false;
+			}
+			else if(!(map.getMap()[row+1][col] == '#')){
+				return false;
+			}
+			
+			if(diff > 0){ // tunneln går neråt
+					
+			}
+			else if(diff < 0){
+
+			}
+		}
+		return true;
 	}
 
 

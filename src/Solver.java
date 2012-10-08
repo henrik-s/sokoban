@@ -16,6 +16,7 @@ public class Solver {
 	public String solve() {
 		Map finalMap = BFS();
 		String solution = backtrack(finalMap);
+		DL.printDLM(finalMap);
 		return solution;
 	}
 
@@ -81,13 +82,13 @@ public class Solver {
 			//System.out.println("Map: " + (i + 1));
 				
 
-			if (allBoxesOnGoal(curr)) {
+			if (curr.isWon()) {
 				System.out.println("Hittat en lösning");
 				return curr;
 			}
 //			if (i == 9){
 //				System.out.println("----------Sista kartan--------------");
-				System.out.println(curr.print());
+//				System.out.println(curr.print());
 				System.out.println("#Queue: " +queue.size());
 //				return curr;
 //			}
@@ -102,8 +103,8 @@ public class Solver {
 				if (Utility.findPossibleMoves(nextMap).size() != 0) {
 					queue.add(nextMap);
 				}
-				else if(allBoxesOnGoal(nextMap)){
-					queue.add(nextMap);
+				else if(nextMap.isWon()){
+					return nextMap;
 				}
 				// }
 			}

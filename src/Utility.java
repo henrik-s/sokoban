@@ -158,7 +158,7 @@ public class Utility {
 						q.add(newPos);
 					}
 				}
-				if (direction == EAST) {
+				else if (direction == EAST) {
 					Position newPos = new Position(currPos.getRow(),
 							currPos.getCol() + 1);
 					if (!visited[newPos.getRow()][newPos.getCol()]
@@ -167,7 +167,7 @@ public class Utility {
 						q.add(newPos);
 					}
 				}
-				if (direction == NORTH) {
+				else if (direction == NORTH) {
 					Position newPos = new Position(currPos.getRow() - 1,
 							currPos.getCol());
 					if (!visited[newPos.getRow()][newPos.getCol()]
@@ -176,7 +176,7 @@ public class Utility {
 						q.add(newPos);
 					}
 				}
-				if (direction == SOUTH) {
+				else 	if (direction == SOUTH) {
 					Position newPos = new Position(currPos.getRow() + 1,
 							currPos.getCol());
 					if (!visited[newPos.getRow()][newPos.getCol()]
@@ -231,22 +231,21 @@ public class Utility {
 						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
 					}
 				}
-				if (i == 1 && distance[currPos.getRow() - 1][currPos.getCol()] == -1) { // UPP!
+				else if (i == 1 && distance[currPos.getRow() - 1][currPos.getCol()] == -1) { // UPP!
 					Position newPos = new Position(currPos.getRow()-1, currPos.getCol());
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
 						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
 					}
 				}
-
-				if (i == 2 && distance[currPos.getRow()][currPos.getCol() + 1] == -1) { // HÖGER!
+				else if (i == 2 && distance[currPos.getRow()][currPos.getCol() + 1] == -1) { // HÖGER!
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()+1);
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
 						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
 					}
 				}
-				if (i == 3 && distance[currPos.getRow()][currPos.getCol() - 1] == -1) { // VÄNSTER!
+				else if (i == 3 && distance[currPos.getRow()][currPos.getCol() - 1] == -1) { // VÄNSTER!
 					Position newPos = new Position(currPos.getRow(), currPos.getCol()-1);
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
