@@ -88,7 +88,7 @@ public class Solver {
 //			if (i == 9){
 //				System.out.println("----------Sista kartan--------------");
 //				System.out.println(curr.print());
-				System.out.println("#Queue: " +queue.size());
+				//System.out.println("#Queue: " +queue.size());
 //				return curr;
 //			}
 			// }

@@ -116,19 +116,11 @@ public class DeadLock {
 					|| board[row][j] == '+' || board[row][j] == '*')
 				break;
 			if (isCorner(map, row, j) != 0) {
-				if (DEBUG) {
-					// System.out.println("Adding to deadlocks r y:" + row +
-					// " x: " + j);
-				}
 				deadlocks.addAll(r);
 				break;
 			} else if (board[row + rowDiff][j] != '#') {
-				if (!isTunnel(map, row + rowDiff, j, false, rowDiff))
-					break;
-				else {
-					if (dlm[row][j] == false)
-						r.add(new Position(row, j));
-				}
+				isTunnel(map, row + rowDiff, j, false, rowDiff);
+				break;
 			} else {
 				if (dlm[row][j] == false)
 					r.add(new Position(row, j));
@@ -141,13 +133,10 @@ public class DeadLock {
 					|| board[i][col] == '+' || board[i][col] == '*')
 				break;
 			if (isCorner(map, i, col) != 0) {
-				if (DEBUG) {
-					// System.out.println("Adding to deadlocks r y:" + i +
-					// " x: " + col);
-				}
 				deadlocks.addAll(b);
 				break;
 			} else if (board[i][col + colDiff] != '#') {
+				isTunnel(map, i, col+colDiff, true, colDiff);
 				break;
 			} else {
 				if (dlm[i][col] == false)
@@ -161,12 +150,7 @@ public class DeadLock {
 	private boolean isTunnel(Map map, int row, int col, boolean horizontal,
 			int diff) {
 		ArrayList<Position> deadlocks = new ArrayList<Position>();
-
-		System.out.println("Running isTunnel with RowDiff: " + diff);
-		System.out.println("On pos: (" + row + "," + col + ")");
-
 		if (!horizontal) { // Tunneln går vertikalt
-			deadlocks.add(new Position(row, col));
 
 			if (!(map.getMap()[row][col - 1] == '#')) {
 				return false;
@@ -177,8 +161,10 @@ public class DeadLock {
 			int rowDiff = diff;
 			while (isCorner(map, row + rowDiff, col) == 0) {
 				if (!(map.getMap()[row + rowDiff][col - 1] == '#')) {
+					isTunnel(map, row+rowDiff, col-1, true, -1); //Tunneln går horizontelt
 					return false;
 				} else if (!(map.getMap()[row + rowDiff][col + 1] == '#')) {
+					isTunnel(map, row+rowDiff, col+1, true, 1);//Tunneln går horizontelt
 					return false;
 				}
 				deadlocks.add(new Position(row + rowDiff, col));
@@ -191,12 +177,14 @@ public class DeadLock {
 			} else if (!(map.getMap()[row + 1][col] == '#')) {
 				return false;
 			}
-			
+
 			int colDiff = diff;
-			while (isCorner(map,row, col +colDiff) == 0) {
-				if (!(map.getMap()[row -1][col + colDiff] == '#')) {
+			while (isCorner(map, row, col + colDiff) == 0) {
+				if (!(map.getMap()[row - 1][col + colDiff] == '#')) {
+					isTunnel(map, row-1, col + colDiff, false, -1); //Tunneln går vertikalt
 					return false;
-				} else if (!(map.getMap()[row +1 ][col + colDiff] == '#')) {
+				} else if (!(map.getMap()[row + 1][col + colDiff] == '#')) {
+					isTunnel(map, row+1, col+colDiff, false, 1); //Tunneln går vertikalt
 					return false;
 				}
 				deadlocks.add(new Position(row, col + colDiff));
