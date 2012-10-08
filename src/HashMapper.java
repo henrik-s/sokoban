@@ -144,6 +144,7 @@ public class HashMapper {
 
 	private void initHashMap() {
 		int i = numberOfBoxHashes + 1;
+		System.out.println("BoxCells: " + possibleBoxCells + " numberOfHashKeys: " + i);
 		switch(i) {
 		case 1:
 			throw new RuntimeException("Init hashmap, seems there are no possibleBoxCells");
