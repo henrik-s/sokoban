@@ -1,6 +1,8 @@
 import java.awt.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Solver {
@@ -15,6 +17,7 @@ public class Solver {
 
 	public String solve() {
 		Map finalMap = BFS();
+		System.out.println("in i backtrack");
 		String solution = backtrack(finalMap);
 		return solution;
 	}
@@ -70,42 +73,38 @@ public class Solver {
 	}
 
 	public Map BFS() {
-		Queue<Map> queue = new LinkedList<Map>();
+		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		Map curr;
-		queue.add(startMap);
+		prioQueue.add(startMap);
 		// setVisited(startMap);
-		while (!queue.isEmpty()) {
-//		for (int i = 0; i < 10; i++) {
-			curr = queue.remove();
-			//System.out.println("Map: " + (i + 1));
-				
-
+		while (!prioQueue.isEmpty()) {
+			curr = prioQueue.remove();
+			if(!curr.evaluated){
+				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
+			} else {
+				System.out.println("karta redan utvärderad!");
+			}
 			if (curr.isWon()) {
 				System.out.println("Hittat en lösning");
 				return curr;
 			}
-//			if (i == 9){
-//				System.out.println("----------Sista kartan--------------");
-//				System.out.println(curr.print());
-				System.out.println("#Queue: " +queue.size());
-//				return curr;
-//			}
-			// }
-			moves = Utility.findPossibleMoves(curr);
+			moves = curr.getMoves();
+			if(!prioQueue.isEmpty())
+				System.out.println("Bästa värde: " + prioQueue.peek().value);
 			for (Move m : moves) {
-				Map nextMap = new Map(curr, m);
+				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
+				nextMap.evaluateMap();
 //				System.out.println("nextMap");
 //				System.out.println(nextMap.print());
 				// if (!visited(nextMap)) {
 				// setVisited(nextMap);
-				if (Utility.findPossibleMoves(nextMap).size() != 0) {
-					queue.add(nextMap);
+				if (nextMap.getMoves().size() != 0) {
+					prioQueue.add(nextMap);
 				}
 				else if(nextMap.isWon()){
 					return nextMap;
 				}
-				// }
 			}
 		}
 

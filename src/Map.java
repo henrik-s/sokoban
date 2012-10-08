@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Map {
+public class Map implements Comparable<Map>{
 	final Map prevMap; // pointer to parentmap
 	public Map nextMap; // Pointer to childmap
 	private char[][] map;
@@ -30,6 +30,9 @@ public class Map {
 	public Move withMove;
 	public boolean hasNextMap = false;
 	public boolean hasPrevMap = false;
+	private ArrayList<Move> moves;
+	public int value;
+	public boolean evaluated;
 	
 
 	
@@ -41,6 +44,7 @@ public class Map {
 	 * @param cols = number of columns of the map
 	 */
 	public Map(int rows, int cols) {
+		evaluated = false;
 		prevMap = null;
 		nextMap = null;
 		map = new char[rows][cols];
@@ -78,8 +82,24 @@ public class Map {
 		playerPos = new Position(); // player pos
 		playerPos.set(fromMap.getPlayerPosition());
 		doMove(withMove);
+		
+		evaluated = false;
 	}
 	
+	public void evaluateMap() {
+		evaluated = true;
+		int moveVal = 0;
+		int boxVal = 0;
+		moves = Utility.findPossibleMoves(this);
+		moveVal = moves.size();
+		for(int box = 0; box < boxes.size(); box++){
+			if(boxes.get(box).isOnGoal()){
+				boxVal++;
+			}
+		}
+		value = moveVal + boxVal;
+	}
+
 	/**
 	 * Perform a move (push-a-box) and update 
 	 * the map. This method assume that the move is valid
@@ -228,5 +248,20 @@ public class Map {
 				return false;
 		}
 		return true;
+	}
+	/**
+	 * Compares the value of two different maps
+	 * returns 1 if the current map is better than the one being compared, 0 otherwise.
+	 */
+	
+	public int compareTo(Map map){
+		return map.value - value;
+	}
+	/**
+	 * Hämta alla moves för det här brädet
+	 * @return moves
+	 */
+	public ArrayList<Move> getMoves(){
+		return moves;
 	}
 }
