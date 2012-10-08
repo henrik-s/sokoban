@@ -273,13 +273,5 @@ public class Utility {
 		String sol = sb.toString();
 		return sol;
 	}
-	
-//	public static int evaluateMove(Move move){
-//		int boxesOnGoals;
-//		int boxPositions;
-//		int numberOfMoves;
-//		
-//		return evaluation;
-//	}
 
 }

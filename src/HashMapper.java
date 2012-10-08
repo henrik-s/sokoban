@@ -19,7 +19,6 @@ public class HashMapper {
 		playerBoard = new int[rows][cols];
 		boxBoard = new int[rows][cols];
 		init(dl);
-		System.out.println("NumBoxKeys: " + numberOfBoxHashes);
 	}
 
 
@@ -70,6 +69,8 @@ public class HashMapper {
 		return res;
 	}
 	
+	// Init with dl object to reduce the number
+	// of cells the boxes may be located at
 	private void init(DeadLock dl) {
 		boolean [][] player_dlm = DeadLock.getPlayerDLM();
 		boolean [][] dlm = DeadLock.getDLM();
@@ -100,6 +101,7 @@ public class HashMapper {
 		initHashMap();
 	}
 	
+	// Get number of hashkeys needed for the boxes
 	private int getNumberOfHashes() {
 		int tot = 1;
 		int tmp = possibleBoxCells;
@@ -110,6 +112,7 @@ public class HashMapper {
 		return tot;
 	}
 	
+	// Print a board's position values
 	public void print() {
 		System.out.println("BoxBoard with: " + possibleBoxCells + " possible cells");
 		for (int i = 0; i<rows; i++) {
@@ -128,7 +131,7 @@ public class HashMapper {
 		System.out.println("NumberOfBoxHashes: " + numberOfBoxHashes);
 	}
 	
-	
+	// Get an array of all boxes position value
 	private int[] getBoxPositions(ArrayList<Box> boxes) {
 		int []res = new int[boxes.size()];
 		Position currentPos;
@@ -141,7 +144,6 @@ public class HashMapper {
 
 	private void initHashMap() {
 		int i = numberOfBoxHashes + 1;
-		System.out.println("PossibleBoxCells: " + possibleBoxCells + " numberOfHashes: " + i);
 		switch(i) {
 		case 1:
 			throw new RuntimeException("Init hashmap, seems there are no possibleBoxCells");
@@ -154,11 +156,11 @@ public class HashMapper {
 		case 4:
 			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>();
 			break;
-		case 5:
-			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>>();
-			break;
+		//case 5:
+			//hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>>();
+			//break;
 		default:
-			throw new RuntimeException("Init hashmap, number of needed hashes is 6 or more =(");			
+			throw new RuntimeException("Init hashmap, number of needed keys is 5 or more =(");			
 		}
 	}
 	

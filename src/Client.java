@@ -45,11 +45,9 @@ public class Client {
             	inputLine=lIn.readLine();
             	map.insertRow(inputLine, i);
             }
-            System.out.println("Nu kör vi!");
             Solver solver = new Solver(map);
             String lMySol = solver.solve();
             System.out.println(lMySol);
-            System.out.println(map.print());
 
             //send the solution to the server
             lOut.println(lMySol);

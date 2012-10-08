@@ -1,23 +1,28 @@
 import java.awt.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Solver {
 	Map startMap;
 	DeadLock DL;
 	private static final int FINAL_SOLUTION = -1337;
+	HashMapper hm;
 
 	public Solver(Map map) {
 		startMap = map;
+		//System.out.println(map.print());
 		DL = new DeadLock(map);
+		//DL.printDLM(startMap);
+		hm = new HashMapper(DL);
 	}
 
 	public String solve() {
-		System.out.println(startMap.print());
 		Map finalMap = BFS();
+		//System.out.println("in i backtrack");
 		String solution = backtrack(finalMap);
-		DL.printDLM(startMap);
 		return solution;
 	}
 
@@ -72,79 +77,34 @@ public class Solver {
 	}
 
 	public Map BFS() {
-		Queue<Map> queue = new LinkedList<Map>();
+		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
+		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
-		Map curr;
-		queue.add(startMap);
-		while (!queue.isEmpty()) {
-			curr = queue.remove();				
 
-			if (curr.isWon()) {
-				System.out.println("Hittat en lösning");
-				return curr;
+		Map curr = null;
+		prioQueue.add(startMap);
+		while (!prioQueue.isEmpty()) {
+			curr = prioQueue.remove();
+			//System.out.println(curr.print());
+			//
+			if(!curr.evaluated){
+				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
 			}
-
-			moves = Utility.findPossibleMoves(curr);
+			moves = curr.getMoves();
 			for (Move m : moves) {
-				Map nextMap = new Map(curr, m);
-				if (Utility.findPossibleMoves(nextMap).size() != 0) {
-					queue.add(nextMap);
-				}
-				else if(nextMap.isWon()){
+				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
+				nextMap.evaluateMap();
+				if(nextMap.isWon()){
 					return nextMap;
 				}
+				else if (nextMap.getMoves().size() != 0 && hm.checkEntry(nextMap)) {
+					prioQueue.add(nextMap);
+				}
+				
 			}
 		}
 
 		return null;
 	}
 	
-	private Map doubleBFS(){
-		Queue<Map> queue = new LinkedList<Map>();
-		ArrayList<Move> moves = new ArrayList<Move>();
-		Map curr;
-		queue.add(startMap);
-		while (!queue.isEmpty()) {
-			curr = queue.remove();				
-
-			if (curr.isWon()) {
-				System.out.println("Hittat en lösning");
-				return curr;
-			}
-
-			moves = Utility.findPossibleMoves(curr);
-			for (Move m : moves) {
-				Map nextMap = new Map(curr, m);
-				if (Utility.findPossibleMoves(nextMap).size() != 0) {
-					queue.add(nextMap);
-				}
-				else if(nextMap.isWon()){
-					return nextMap;
-				}
-			}
-		}
-		
-		return null;
-	}
-	private boolean allBoxesOnGoal(Map map) {
-		ArrayList<Box> boxes = map.getAllBoxes();
-		for(int i = 0; i < boxes.size(); i++){
-			if(!boxes.get(i).isOnGoal()){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void setVisited(Map map) {
-
-	}
-
-	public boolean visited(Map map) {
-		return true;
-	}
-
-	public int Hash(Map map) {
-		return 1;
-	}
 }
