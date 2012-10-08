@@ -17,11 +17,15 @@ public class Solver {
 		DL = new DeadLock(map);
 		DL.printDLM(startMap);
 		hm = new HashMapper(DL);
+		
 	}
 
 	public String solve() {
+		if(!hm.isGreen()) { // kartan f�r stor f�r hashMapper
+			return "";
+		}
 		Map finalMap = BFS();
-		//System.out.println("in i backtrack");
+		//System.out.println(finalMap.print());
 		String solution = backtrack(finalMap);
 		return solution;
 	}
@@ -29,6 +33,7 @@ public class Solver {
 	private String backtrack(Map finalMap) {
 		Map tmp = finalMap;
 		StringBuilder sb = new StringBuilder();
+		sb.append("");
 		Position origBoxPos;
 		Position endPosBox;
 		Position posBeforePush;
@@ -71,7 +76,7 @@ public class Solver {
 				tmp = tmp.nextMap; // kolla nästa
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return sb.toString();
 	}
