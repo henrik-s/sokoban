@@ -304,17 +304,23 @@ public class DeadLock {
 		for (int i = 0; i < rows; i++) {
 			found = false;
 			// check from left
-			for (int j = 0; j < cols; j++) {
-				if (board[i][j] == '#') {
-					found = true;
+			for (int j = 0; j < cols; j++) {				
+				if(i == 0 || i == rows-1) {
+					dlm[i][j] = true;	
+					player_dlm[i][j] = true;				
 				}
-				if (!found || board[i][j] == '#') {
-					dlm[i][j] = true;
-					player_dlm[i][j] = true;
-				} else {
-					dlm[i][j] = false;
-					player_dlm[i][j] = false;
-				}
+				else {
+					if (board[i][j] == '#') {
+						found = true;
+					}
+					if (!found || board[i][j] == '#') {
+						dlm[i][j] = true;
+						player_dlm[i][j] = true;
+					} else {
+						dlm[i][j] = false;
+						player_dlm[i][j] = false;
+					}
+				}				
 			}
 			found = false;
 			// check from right
