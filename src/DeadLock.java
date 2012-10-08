@@ -188,9 +188,11 @@ public class DeadLock {
 			if(isCorner(map, rowPos, col) == 0){
 				if (!(map.getMap()[rowPos][col -1] == '#')) {
 					isTunnel(map, row, col -1 , true, -1); //Tunneln går vertikalt
+					deadlocks.clear();
 					break;
 				} else if (!(map.getMap()[rowPos][col + 1] == '#')) {
 					isTunnel(map, row, col+ 1, true, 1); //Tunneln går vertikalt
+					deadlocks.clear();
 					break;
 				}
 				deadlocks.add(new Position(rowPos, col));
@@ -222,10 +224,12 @@ public class DeadLock {
 			if(isCorner(map, row, colPos) == 0){
 				if (!(map.getMap()[row - 1][colPos] == '#')) {
 					isTunnel(map, row -1, colPos, false, -1); //Tunneln går vertikalt
-					return deadlocks;
+					deadlocks.clear();
+					break;
 				} else if (!(map.getMap()[row + 1][colPos] == '#')) {
 					isTunnel(map, row+1, colPos, false, 1); //Tunneln går vertikalt
-					return deadlocks;
+					deadlocks.clear();
+					break;
 				}
 				deadlocks.add(new Position(row, colPos));
 				colPos += diff;
