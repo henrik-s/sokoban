@@ -9,13 +9,16 @@ public class Solver {
 	Map startMap;
 	DeadLock DL;
 	private static final int FINAL_SOLUTION = -1337;
+	HashMapper hm;
 
 	public Solver(Map map) {
 		startMap = map;
 		DL = new DeadLock(map);
+		hm = new HashMapper(DL);
 	}
 
 	public String solve() {
+		DL.printDLM(startMap);
 		Map finalMap = BFS();
 		System.out.println("in i backtrack");
 		String solution = backtrack(finalMap);
@@ -75,41 +78,29 @@ public class Solver {
 	public Map BFS() {
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
-		Map curr;
+		Map curr = null;
 		prioQueue.add(startMap);
-		// setVisited(startMap);
+		System.out.println(startMap.print());
 		while (!prioQueue.isEmpty()) {
-			curr = prioQueue.remove();
+			boolean visited = true;
+			while(visited){
+				curr = prioQueue.remove();
+				if(hm.checkEntry(curr)){
+					visited = false;
+					break;
+				}
+			}
+			System.out.println(curr.print());
 			if(!curr.evaluated){
 				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
-			} else {
-				System.out.println("karta redan utvärderad!");
 			}
 			if (curr.isWon()) {
-				System.out.println("Hittat en lösning");
 				return curr;
 			}
-<<<<<<< HEAD
 			moves = curr.getMoves();
-			if(!prioQueue.isEmpty())
-				System.out.println("Bästa värde: " + prioQueue.peek().value);
-=======
-//			if (i == 9){
-//				System.out.println("----------Sista kartan--------------");
-//				System.out.println(curr.print());
-				//System.out.println("#Queue: " +queue.size());
-//				return curr;
-//			}
-			// }
-			moves = Utility.findPossibleMoves(curr);
->>>>>>> c89d55ef708f508f007cd86e05c1e52d95884049
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
 				nextMap.evaluateMap();
-//				System.out.println("nextMap");
-//				System.out.println(nextMap.print());
-				// if (!visited(nextMap)) {
-				// setVisited(nextMap);
 				if (nextMap.getMoves().size() != 0) {
 					prioQueue.add(nextMap);
 				}
@@ -120,16 +111,6 @@ public class Solver {
 		}
 
 		return null;
-	}
-
-	private boolean allBoxesOnGoal(Map map) {
-		ArrayList<Box> boxes = map.getAllBoxes();
-		for(int i = 0; i < boxes.size(); i++){
-			if(!boxes.get(i).isOnGoal()){
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public void setVisited(Map map) {
