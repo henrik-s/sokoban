@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class DeadLock {
 
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	private static boolean[][] dlm;
 	private static boolean[][] player_dlm;
 	private static int rows, cols;
