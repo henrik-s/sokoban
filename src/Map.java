@@ -97,7 +97,7 @@ public class Map implements Comparable<Map>{
 				boxVal++;
 			}
 		}
-		value = moveVal + boxVal;
+		value = moveVal + 5*boxVal;
 	}
 
 	/**

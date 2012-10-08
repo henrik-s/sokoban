@@ -13,6 +13,7 @@ public class Solver {
 
 	public Solver(Map map) {
 		startMap = map;
+		System.out.println(map.print());
 		DL = new DeadLock(map);
 		hm = new HashMapper(DL);
 	}
@@ -76,52 +77,33 @@ public class Solver {
 	}
 
 	public Map BFS() {
+		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		Map curr = null;
 		prioQueue.add(startMap);
-		System.out.println(startMap.print());
 		while (!prioQueue.isEmpty()) {
-			boolean visited = true;
-			while(visited){
-				curr = prioQueue.remove();
-				if(hm.checkEntry(curr)){
-					visited = false;
-					break;
-				}
-			}
+			curr = prioQueue.remove();
 			System.out.println(curr.print());
+			//
 			if(!curr.evaluated){
 				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
-			}
-			if (curr.isWon()) {
-				return curr;
 			}
 			moves = curr.getMoves();
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
 				nextMap.evaluateMap();
-				if (nextMap.getMoves().size() != 0) {
-					prioQueue.add(nextMap);
-				}
-				else if(nextMap.isWon()){
+				if(nextMap.isWon()){
 					return nextMap;
 				}
+				else if (nextMap.getMoves().size() != 0 && hm.checkEntry(nextMap)) {
+					prioQueue.add(nextMap);
+				}
+				
 			}
 		}
 
 		return null;
 	}
-
-	public void setVisited(Map map) {
-
-	}
-
-	public boolean visited(Map map) {
-		return true;
-	}
-
-	public int Hash(Map map) {
-		return 1;
-	}
+	
 }

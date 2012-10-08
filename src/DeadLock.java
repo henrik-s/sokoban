@@ -205,9 +205,13 @@ public class DeadLock {
 	}
 
 	private int isCorner(Map map, int i, int j) {
+		System.out.println("i:" + i + " j:" + j);
 		char[][] board = map.getMap();
-		if (i == board.length || j == board[0].length)
+		if (i >= board.length || j >= board[0].length)
 			return 0;
+		if(i <= 0 || j <= 0){
+			return 0;
+		}
 		int up = ((board[i - 1][j] == '#') ? 1 : 0);
 		int right = ((board[i][j + 1] == '#') ? 1 : 0);
 		int down = ((board[i + 1][j] == '#') ? 1 : 0);
