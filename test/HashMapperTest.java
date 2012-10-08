@@ -50,7 +50,7 @@ public class HashMapperTest {
 	@Test
 	public void test_3Keys() {
 		Reader reader = new Reader("test/all", LEVELS);
-		Map map = reader.getLevel(15);
+		Map map = reader.getLevel(1);
 		DeadLock dl = new DeadLock(map);
 		HashMapper hm = new HashMapper(dl);
 		boolean checkEntry;
