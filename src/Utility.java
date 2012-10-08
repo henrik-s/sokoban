@@ -80,24 +80,18 @@ public class Utility {
 		}
 //		System.out.println("Antal möjliga pushes: " + possibleMoves.size());
 //		System.out.println("----------------------");
-		for (int i = 0; i < possibleMoves.size(); i++) {
-			Move move = possibleMoves.get(i);
+//		for (int i = 0; i < possibleMoves.size(); i++) {
+//			Move move = possibleMoves.get(i);
 //			System.out.println("Låda nr: " + move.getID() + " till: " + "("
 //					+ move.getPosition().getRow() + ","
 //					+ move.getPosition().getCol() + ")");
-		}
+//		}
 		return possibleMoves;
 	}
 
 	private static boolean legalPush(Position newBoxPos, Map map) {
 		boolean deadLock = DeadLock.getDL(newBoxPos);
-//		if (deadLock)
-//			System.out.println("deadlock detected in position: ("
-//					+ newBoxPos.getRow() + "," + newBoxPos.getCol() + ")");
 		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
-//		if (obstacle)
-//			System.out.println("Obstacle detected in position: ("
-//					+ newBoxPos.getRow() + "," + newBoxPos.getCol() + ")");
 		if (!deadLock && !obstacle) {
 			return true;
 		}
@@ -131,8 +125,6 @@ public class Utility {
 		visited[playerPos.getRow()][playerPos.getCol()] = true;
 		while (!q.isEmpty()) {
 			Position currPos = q.remove();
-			// System.out.println("Kollar ny position: (" + currPos.getRow() +
-			// "," + currPos.getCol() + ")");
 			if (currPos.isEqualTo(west)) { // kan komma till vänster om lådan
 				directions[0] = true;
 			}
@@ -281,5 +273,13 @@ public class Utility {
 		String sol = sb.toString();
 		return sol;
 	}
+	
+//	public static int evaluateMove(Move move){
+//		int boxesOnGoals;
+//		int boxPositions;
+//		int numberOfMoves;
+//		
+//		return evaluation;
+//	}
 
 }

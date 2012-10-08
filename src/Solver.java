@@ -16,7 +16,6 @@ public class Solver {
 	public String solve() {
 		Map finalMap = BFS();
 		String solution = backtrack(finalMap);
-		DL.printDLM(finalMap);
 		return solution;
 	}
 

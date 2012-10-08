@@ -71,7 +71,7 @@ public class DeadLock {
 		analyzeDefiniteDeadlocks(map);
 		if(DEBUG) {
 			printDLM(map); System.out.println();
-			printPlayerDLM(map);
+			//printPlayerDLM(map);
 		}
 	}
 
@@ -123,15 +123,18 @@ public class DeadLock {
 				break;
 			if(isCorner(map,row,j) != 0){
 				if(DEBUG){
-					System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
+					//System.out.println("Adding to deadlocks r y:" + row + " x: " + j);
 				}
 				deadlocks.addAll(r);
 				break;	
 			}	
 			else if(board[row+rowDiff][j]!='#'){
-					if(!isTunnel(map, row, col, false, colDiff)){
-						break;
-					}
+				if(!isTunnel(map,row+rowDiff, j, false, rowDiff))
+					break;
+				else{
+					if(dlm[row][j]==false)
+						r.add(new Position(row,j));
+				}
 			}
 			else{
 				if(dlm[row][j]==false)
@@ -145,7 +148,7 @@ public class DeadLock {
 				break;
 			if(isCorner(map,i,col) != 0){
 				if(DEBUG){
-		 			System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
+		 			//System.out.println("Adding to deadlocks r y:" + i + " x: " + col);
 				}
 				deadlocks.addAll(b);
 				break;
@@ -176,11 +179,19 @@ public class DeadLock {
 			else if(!(map.getMap()[row][col+1] == '#')){
 				return false;
 			}
-			
+			int rowDiff = diff;
 			if(diff > 0){ // tunneln går neråt
-					
+					while(isCorner(map, row, col) == 0){
+						if(!(map.getMap()[row+rowDiff][col-1] == '#')){
+							return false;
+						}
+						else if(!(map.getMap()[row+rowDiff][col+1] == '#')){
+							return false;
+						}
+						rowDiff+=diff;
+					}
 			}
-			else if(diff < 0){
+			else if(diff < 0){ //Tunneln går uppåt
 
 			}
 		}
@@ -193,10 +204,10 @@ public class DeadLock {
 				return false;
 			}
 			
-			if(diff > 0){ // tunneln går neråt
+			if(diff > 0){ // tunneln går åt höger
 					
 			}
-			else if(diff < 0){
+			else if(diff < 0){ //tunneln går åt vänster
 
 			}
 		}
