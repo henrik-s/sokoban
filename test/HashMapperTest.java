@@ -13,6 +13,7 @@ public class HashMapperTest {
 	public void test_2Keys() {
 		Reader reader = new Reader("test/all", LEVELS);
 		Map map = reader.getLevel(1); 
+		System.out.println(map.print());
 		DeadLock dl = new DeadLock(map);
 		HashMapper hm = new HashMapper(dl);
 		boolean checkEntry;
@@ -50,7 +51,9 @@ public class HashMapperTest {
 	@Test
 	public void test_3Keys() {
 		Reader reader = new Reader("test/all", LEVELS);
-		Map map = reader.getLevel(1);
+		Map map = reader.getLevel(3);
+
+		System.out.println(map.print());
 		DeadLock dl = new DeadLock(map);
 		HashMapper hm = new HashMapper(dl);
 		boolean checkEntry;

@@ -9,7 +9,7 @@ public class SolverTest {
 	@Test
 	public void test() {
 		Reader reader = new Reader("test/all", LEVELS);
-		Map map = reader.getLevel(4);
+		Map map = reader.getLevel(15);
 		String sol = new Solver(map).solve();
 		
 		System.out.println(sol);
