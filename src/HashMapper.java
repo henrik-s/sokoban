@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class HashMapper {
@@ -6,15 +7,56 @@ public class HashMapper {
 	private int[][] playerBoard;
 	private int[][] boxBoard;
 	private int rows, cols;
-	private static int possiblePlayerCells, possibleBoxCells;
+	private static int possiblePlayerCells, possibleBoxCells, numberOfBoxHashes;
+	private HashMap hm;
 	
+	
+	// Create a new hashMapper object
+	// it requires a deadlock object for a specific
+	// map as input
 	public HashMapper(DeadLock dl) {
 		rows = dl.getRows(); cols = dl.getCols();
 		playerBoard = new int[rows][cols];
 		boxBoard = new int[rows][cols];
-		initBoards(dl);
+		init(dl);
+		System.out.println("NumBoxKeys: " + numberOfBoxHashes);
+	}
+
+
+	/**
+	 * Input is a map, output is true if the map and the move
+	 * is new, else false. If the move is new it will be inserted
+	 * into the hashmap hm 
+	 * @param map
+	 * @return true if new map, false if map seen before
+	 */
+	public boolean checkEntry(Map map) {
+		Position playerPos = map.getPlayerPosition();
+		
+		// Get player's hashkey
+		int playerHKey = playerBoard[playerPos.getRow()][playerPos.getCol()];
+
+		int [] boxPositions = getBoxPositions(map.getAllBoxes());
+		switch(numberOfBoxHashes) {
+		case 1:
+			int b_1_1 = getBoxHash(boxPositions, 0);
+			return isNewEntry_1(playerHKey, b_1_1);
+		case 2:
+			int b_2_1 = getBoxHash(boxPositions, 0);
+			int b_2_2 = getBoxHash(boxPositions, 32);
+			return isNewEntry_2(playerHKey, b_2_1, b_2_2);
+		case 3:
+			int b_3_1 = getBoxHash(boxPositions, 0);
+			int b_3_2 = getBoxHash(boxPositions, 32);
+			int b_3_3 = getBoxHash(boxPositions, 64);
+			return isNewEntry_3(playerHKey, b_3_1, b_3_2, b_3_3);
+		}
+		return false;
+		
 	}
 	
+	// Get the hashKey for boxes with positions
+	// between [0 + offset, 31 + offset]
 	private int getBoxHash(int [] boxes, int offset) {
 		int res = 0;
 		int mask = 1;
@@ -28,51 +70,7 @@ public class HashMapper {
 		return res;
 	}
 	
-	private int[] getBoxPositions(ArrayList<Box> boxes) {
-		int []res = new int[boxes.size()];
-		Position currentPos;
-		for(int i = 0; i<boxes.size(); i++) {
-			currentPos = boxes.get(i).getPosition();
-			res[i] = boxBoard[currentPos.getRow()][currentPos.getCol()];
-		}
-		return res;
-	}
-	
-	public int createEntry(Map map) {
-		Position playerPos = map.getPlayerPosition();
-		int playerHash = playerBoard[playerPos.getRow()][playerPos.getCol()];
-		System.out.println("Playerhash = " +playerHash);
-		
-		int [] boxPositions = getBoxPositions(map.getAllBoxes());	
-		if(possibleBoxCells < 33) {
-			int boxHash1 = getBoxHash(boxPositions, 0);
-			System.out.println("BoxHash1 = "+ boxHash1);
-			return boxHash1;
-		}
-		
-		// Need 2 hash int's
-		else if(possibleBoxCells > 32 && possibleBoxCells < 65) {
-			
-		}		
-		// Need 3 hash int's
-		else if(possibleBoxCells > 64 && possibleBoxCells < 97) {
-				
-		}
-		// Need 4 hash int's
-		else if(possibleBoxCells > 96 && possibleBoxCells < 129) {
-						
-		}
-		// Need 5 hash int's
-		else if(possibleBoxCells > 128 && possibleBoxCells < 161) {
-								
-		}	
-		else {
-			throw new RuntimeException("Sorry but this map is huge as fuck");
-		}
-		return 0;
-	}
-	
-	private void initBoards(DeadLock dl) {
+	private void init(DeadLock dl) {
 		boolean [][] player_dlm = DeadLock.getPlayerDLM();
 		boolean [][] dlm = DeadLock.getDLM();
 		int playerCounter = 0; int boxCounter = 0;
@@ -95,9 +93,21 @@ public class HashMapper {
 					boxBoard[i][j] = -1;
 				}
 			}
-			possiblePlayerCells = playerCounter;
+			possiblePlayerCells = playerCounter;			
 			possibleBoxCells = boxCounter;
+			numberOfBoxHashes = getNumberOfHashes();
 		}
+		initHashMap();
+	}
+	
+	private int getNumberOfHashes() {
+		int tot = 1;
+		int tmp = possibleBoxCells;
+		while (tmp > 32) {
+			tot++;
+			tmp -= 32;
+		}
+		return tot;
 	}
 	
 	public void print() {
@@ -115,6 +125,129 @@ public class HashMapper {
 			}
 			System.out.println();
 		}
+		System.out.println("NumberOfBoxHashes: " + numberOfBoxHashes);
 	}
 	
+	
+	private int[] getBoxPositions(ArrayList<Box> boxes) {
+		int []res = new int[boxes.size()];
+		Position currentPos;
+		for(int i = 0; i<boxes.size(); i++) {
+			currentPos = boxes.get(i).getPosition();
+			res[i] = boxBoard[currentPos.getRow()][currentPos.getCol()];
+		}
+		return res;
+	}
+
+	private void initHashMap() {
+		int i = numberOfBoxHashes + 1;
+		System.out.println("PossibleBoxCells: " + possibleBoxCells + " numberOfHashes: " + i);
+		switch(i) {
+		case 1:
+			throw new RuntimeException("Init hashmap, seems there are no possibleBoxCells");
+		case 2:
+			hm =  new HashMap<Integer, HashMap<Integer, Object>>();
+			break;
+		case 3:
+			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>();
+			break;
+		case 4:
+			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>();
+			break;
+		case 5:
+			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>>();
+			break;
+		default:
+			throw new RuntimeException("Init hashmap, number of needed hashes is 6 or more =(");			
+		}
+	}
+	
+	
+	// Check entry for one box key
+	private boolean isNewEntry_1(int pKey, int boxKey) {
+		HashMap<Integer, HashMap<Integer, Object>> tmpHM;
+		tmpHM = hm;
+		
+		// hm does'nt contain playerkey
+		if(!tmpHM.containsKey(pKey)) {
+			tmpHM.put(pKey, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).put(boxKey, new Object());
+			return true;
+		}
+		// hm contain playerkey but not boxkey
+		else if(!tmpHM.get(pKey).containsKey(boxKey)) {
+			tmpHM.get(pKey).put(boxKey, new Object());
+			return true;
+		}
+		// hm contain this entry
+		else {
+			return false;
+		}
+	}
+	
+	// Check entry for two box keys
+	private boolean isNewEntry_2(int pKey, int boxKey1, int boxKey2) {
+		HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>> tmpHM;
+		tmpHM = hm;
+		
+		// hm does'nt contain playerkey
+		if(!tmpHM.containsKey(pKey)) {
+			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2,new Object());
+			return true;
+		}
+		// hm contains playerkey but not boxkey1
+		else if(!tmpHM.get(pKey).containsKey(boxKey1)) {
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2,new Object());
+			return true;
+		}
+		// hm contains playerkey, boxkey1 but not boxkey 2
+		else if(!tmpHM.get(pKey).get(boxKey1).containsKey(boxKey2)) {
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2,new Object());
+			return true;
+		}		
+		// hm contain this entry
+		else {
+			return false;
+		}
+	}
+	
+	// Check entry for three box keys
+	private boolean isNewEntry_3(int pKey, int boxKey1, int boxKey2, int boxKey3) {
+		HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>> tmpHM;
+		tmpHM = hm;
+		
+		// hm does'nt contain playerkey
+		if(!tmpHM.containsKey(pKey)) {
+			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			return true;
+		}
+		// hm contain playerkey but not boxkey1
+		else if(!tmpHM.get(pKey).containsKey(boxKey1)) {
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			return true;
+		}
+		// hm contain playerkey, boxkey1 but not boxkey2
+		else if(!tmpHM.get(pKey).get(boxKey1).containsKey(boxKey2)) {
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			return true;
+		}
+		// hm contains playerkey, boxkey1 and boxkey2 but not boxkey3
+		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).containsKey(boxKey3)) {
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			return true;
+		}
+		// hm contain this entry
+		else {
+			return false;
+		}
+	}
 }
