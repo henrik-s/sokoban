@@ -21,11 +21,11 @@ public class Solver {
 	}
 
 	public String solve() {
-		if(!hm.isGreen()) { // kartan fšr stor fšr hashMapper
+		if(!hm.isGreen()) { // kartan fï¿½r stor fï¿½r hashMapper
 			return "";
 		}
 		Map finalMap = BFS();
-		//System.out.println("in i backtrack");
+		//System.out.println(finalMap.print());
 		String solution = backtrack(finalMap);
 		return solution;
 	}
@@ -33,6 +33,7 @@ public class Solver {
 	private String backtrack(Map finalMap) {
 		Map tmp = finalMap;
 		StringBuilder sb = new StringBuilder();
+		sb.append("");
 		Position origBoxPos;
 		Position endPosBox;
 		Position posBeforePush;
@@ -75,7 +76,7 @@ public class Solver {
 				tmp = tmp.nextMap; // kolla nÃ¤sta
 			}
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return sb.toString();
 	}
