@@ -89,9 +89,20 @@ public class Solver {
 				System.out.println("Hittat en lösning");
 				return curr;
 			}
+<<<<<<< HEAD
 			moves = curr.getMoves();
 			if(!prioQueue.isEmpty())
 				System.out.println("Bästa värde: " + prioQueue.peek().value);
+=======
+//			if (i == 9){
+//				System.out.println("----------Sista kartan--------------");
+//				System.out.println(curr.print());
+				//System.out.println("#Queue: " +queue.size());
+//				return curr;
+//			}
+			// }
+			moves = Utility.findPossibleMoves(curr);
+>>>>>>> c89d55ef708f508f007cd86e05c1e52d95884049
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
 				nextMap.evaluateMap();
