@@ -84,7 +84,7 @@ public class Solver {
 		prioQueue.add(startMap);
 		while (!prioQueue.isEmpty()) {
 			curr = prioQueue.remove();
-			System.out.println(curr.print());
+			//System.out.println(curr.print());
 			//
 			if(!curr.evaluated){
 				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
