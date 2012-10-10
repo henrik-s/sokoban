@@ -92,9 +92,96 @@ public class Utility {
 	private static boolean legalPush(Position newBoxPos, Map map) {
 		boolean deadLock = DeadLock.getDL(newBoxPos);
 		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
-		if (!deadLock && !obstacle) {
+		boolean boxDeadLock = createsDeadlock(map.getMap(), newBoxPos);
+		if (!deadLock && !obstacle && !boxDeadLock) {
 			return true;
 		}
+		return false;
+	}
+	
+	private static boolean shareWall(char[][] map, Position box1, Position box2) {
+		//System.out.println("dela vägg!?");
+		int row1 = box1.getRow(); int row2 = box2.getRow();
+		int col1 = box1.getCol(); int col2 = box2.getCol();
+		if		(map[row1+1][col1] == '#' &&
+				 map[row2+1][col2] == '#') {
+			return true;
+		}
+		else if (map[row1-1][col1] == '#' &&
+				 map[row2-1][col2] == '#') {
+			return true;
+		}
+		else if (map[row1][col1-1] == '#' &&
+				 map[row2][col2-1] == '#') {
+			return true;
+		}
+		else if (map[row1][col1+1] == '#' &&
+				 map[row2][col2+1] == '#') {
+			return true;
+		}
+		return false;
+			
+	}
+	
+	private static boolean createsDeadlock(char[][] map, Position pos) {
+		int row = pos.getRow(); int col = pos.getCol();
+		Position tmp = new Position();
+		boolean left = false;
+		boolean right = false;
+		boolean up = false;
+		boolean down = false;
+		if(map[row][col] == ' ') {
+			// Up
+			if (map[row-1][col] == '$'||
+					map[row-1][col] == '*') {
+				tmp.setRow(row-1); tmp.setCol(col);
+				up = shareWall(map, pos, tmp);
+			}
+			// Down
+			if (map[row+1][col] == '$'||
+					map[row+1][col] == '*') {
+				tmp.setRow(row+1); tmp.setCol(col);
+				down = shareWall(map, pos, tmp);
+			}
+			// Left
+			if (map[row][col-1] == '$'||
+					map[row][col-1] == '*') {
+				tmp.setRow(row); tmp.setCol(col-1);	
+				left = shareWall(map, pos, tmp);		
+			}
+			// Right
+			if (map[row][col+1] == '$' ||
+					map[row][col+1] == '*') {
+				tmp.setRow(row); tmp.setCol(col+1);
+				right = shareWall(map, pos, tmp);
+			}
+		}
+		else if(map[row][col] == '.')  {
+			// Up
+			if (map[row-1][col] == '$') {
+				tmp.setRow(row-1); tmp.setCol(col);
+				up = shareWall(map, pos, tmp);
+			}
+			// Down
+			if (map[row+1][col] == '$') {
+				tmp.setRow(row+1); tmp.setCol(col);
+				down = shareWall(map, pos, tmp);
+			}
+			// Left
+			if (map[row][col-1] == '$') {
+				tmp.setRow(row); tmp.setCol(col-1);	
+				left = shareWall(map, pos, tmp);		
+			}
+			// Right
+			if (map[row][col+1] == '$') {
+				tmp.setRow(row); tmp.setCol(col+1);
+				right = shareWall(map, pos, tmp);
+			}
+		}
+		if(up || down || right || left) {
+			return true;
+		}
+		
 		return false;
 	}
 

@@ -21,7 +21,7 @@ public class Solver {
 	}
 
 	public String solve() {
-		if(!hm.isGreen()) { // kartan fÔøΩr stor fÔøΩr hashMapper
+		if(!hm.isGreen()) { // kartan for stor for hashMapper
 			return "";
 		}
 		Map finalMap = BFS();
@@ -45,7 +45,7 @@ public class Solver {
 				tmp = tmp.prevMap;
 			}
 		} catch (NullPointerException e) {
-			//Lugna er, hittat f√∂rsta kartan bara..
+			//Lugna er, hittat första kartan bara..
 		}
 		try {
 			while (tmp.nextMap != null) {
@@ -73,7 +73,7 @@ public class Solver {
 						sb.append("D");
 					}
 				}
-				tmp = tmp.nextMap; // kolla n√§sta
+				tmp = tmp.nextMap; // kolla nästa
 			}
 		} catch (NullPointerException e) {
 			//e.printStackTrace();
@@ -90,14 +90,14 @@ public class Solver {
 		prioQueue.add(startMap);
 		while (!prioQueue.isEmpty()) {
 			curr = prioQueue.remove();
-			//System.out.println(curr.print());
+			System.out.println(curr.print());
 			//
 			if(!curr.evaluated){
-				curr.evaluateMap(); //s√§tt ett v√§rde p√• br√§det om det inte redan finns!
+				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
 			}
 			moves = curr.getMoves();
 			for (Move m : moves) {
-				Map nextMap = new Map(curr, m); //Skapa en ny karta, v√§rdet av den ber√§knas via konstruktorn
+				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
 				nextMap.evaluateMap();
 				if(nextMap.isWon()){
 					return nextMap;
