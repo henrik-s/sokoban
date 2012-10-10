@@ -148,7 +148,8 @@ public class DeadLock {
 		setDeadLocks(deadlocks);
 	}
 
-	private boolean isTunnel(Map map, int row, int col, boolean horizontal,int diff) {
+	private boolean isTunnel(Map map, int row, int col, boolean horizontal
+			,int diff) {
 		char[][] board = map.getMap();
 
 		if (row >= board.length || col >= board[0].length)
@@ -168,13 +169,15 @@ public class DeadLock {
 		return true;
 	}
 	
-	public ArrayList<Position> checkVertical(Map map, int row, int col, int diff){
+	public ArrayList<Position> checkVertical(Map map, int row, int col, 
+			int diff){
 		ArrayList<Position> deadlocks = new ArrayList<Position>();
 		char[][] board = map.getMap();
 		
 		if (col-1 < 0 || !(map.getMap()[row][col - 1] == '#')) {
 			return deadlocks;
-		} else if (col + 1 > board[0].length -1 || !(map.getMap()[row][col + 1] == '#')) {
+		} else if (col + 1 > board[0].length -1 || 
+				!(map.getMap()[row][col + 1] == '#')) {
 			return deadlocks;
 		}
 		
@@ -185,17 +188,20 @@ public class DeadLock {
 		int rowPos = row + diff;
 				
 		while(rowPos < board.length && rowPos > 0){
-			if(board[rowPos][col] == '.' || board[rowPos][col] == '+' || board[rowPos][col] == '*'){
+			if(board[rowPos][col] == '.' || board[rowPos][col] == '+' 
+					|| board[rowPos][col] == '*'){
 				deadlocks.clear();
 				break;
 			}
 			if(isCorner(map, rowPos, col) == 0){
 				if (!(map.getMap()[rowPos][col -1] == '#')) {
-					isTunnel(map, row, col -1 , true, -1); //Tunneln går vertikalt
+					// Vertical tunnel
+					isTunnel(map, row, col -1 , true, -1); 
 					deadlocks.clear();
 					break;
 				} else if (!(map.getMap()[rowPos][col + 1] == '#')) {
-					isTunnel(map, row, col+ 1, true, 1); //Tunneln går vertikalt
+					// Horizontal tunnel
+					isTunnel(map, row, col+ 1, true, 1); 
 					deadlocks.clear();
 					break;
 				}
@@ -209,13 +215,15 @@ public class DeadLock {
 		return deadlocks;
 	}
 	
-	public ArrayList<Position> checkHorizontal(Map map, int row, int col, int diff){
+	public ArrayList<Position> checkHorizontal(Map map, int row, 
+			int col, int diff){
 		ArrayList<Position> deadlocks = new ArrayList<Position>();
 		char[][] board = map.getMap();
 		
 		if ((row -1) < 0 || !(map.getMap()[row - 1][col] == '#')) {
 			return deadlocks;
-		} else if ((row +1) > board.length -1 || !(map.getMap()[row + 1][col] == '#')) {
+		} else if ((row +1) > board.length -1 
+				|| !(map.getMap()[row + 1][col] == '#')) {
 			return deadlocks;
 		}
 		
@@ -225,17 +233,20 @@ public class DeadLock {
 		
 		int colPos = col + diff;
 		while (colPos > 0 && colPos< board[0].length) {
-			if(board[row][colPos] == '.' || board[row][colPos] == '+' || board[row][colPos] == '*'){
+			if(board[row][colPos] == '.' || board[row][colPos] == '+' 
+					|| board[row][colPos] == '*'){
 				deadlocks.clear();
 				break;
 			}
 			if(isCorner(map, row, colPos) == 0){
 				if (!(map.getMap()[row - 1][colPos] == '#')) {
-					isTunnel(map, row -1, colPos, false, -1); //Tunneln går vertikalt
+					// Vertical tunnel
+					isTunnel(map, row -1, colPos, false, -1); 
 					deadlocks.clear();
 					break;
 				} else if (!(map.getMap()[row + 1][colPos] == '#')) {
-					isTunnel(map, row+1, colPos, false, 1); //Tunneln går vertikalt
+					// Horizontal tunnel
+					isTunnel(map, row+1, colPos, false, 1); 
 					deadlocks.clear();
 					break;
 				}
@@ -258,7 +269,6 @@ public class DeadLock {
 	}
 
 	private int isCorner(Map map, int i, int j) {
-		//System.out.println("i:" + i + " j:" + j);
 		char[][] board = map.getMap();
 		if (i >= board.length || j >= board[0].length)
 			return 0;

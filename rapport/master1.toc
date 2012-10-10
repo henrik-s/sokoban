@@ -1,0 +1,11 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {2}Problem}{1}
+\contentsline {section}{\numberline {3}Approach}{1}
+\contentsline {subsection}{\numberline {3.1}Design Approaches}{1}
+\contentsline {subsection}{\numberline {3.2}Our Approach}{1}
+\contentsline {subsection}{\numberline {3.3}Pseudo code}{2}
+\contentsline {section}{\numberline {4}Results}{3}
+\contentsline {section}{\numberline {5}Discussion}{3}
+\contentsline {section}{\numberline {6}Conclusion}{4}
+\contentsline {section}{\numberline {7}Reflection}{4}

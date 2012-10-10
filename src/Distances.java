@@ -18,7 +18,7 @@ public class Distances {
 		boolean[][] board = DeadLock.getDLM();
 		distanceMap = new int[board.length][board[0].length];
 		int maxVal = 0;
-		//Gå igenom varje position
+		//Check every position
 		for(int row = 0; row < board.length; row++){
 			if(DEBUG)
 				System.out.println();
@@ -27,15 +27,16 @@ public class Distances {
 					if(DEBUG){
 						System.out.print(" D");
 					}
-					continue; //behöver inte sätta nått värde här (deadlock)
+					continue; // No need to set a value here (deadlock)
 				}
-				else if(origMap.getMap()[row][col] == '.' || origMap.getMap()[row][col] == '*'){
+				else if(origMap.getMap()[row][col] == '.' 
+						|| origMap.getMap()[row][col] == '*'){
 					if(DEBUG){
 						System.out.print(" .");
 					}
-					distanceMap[row][col] = GOAL_VAL; //Hittat ett mål
+					distanceMap[row][col] = GOAL_VAL; //Found a goal
 				}
-				else{ //Hittat en vanlig ruta
+				else{ //Found a regular cell
 					calcDistance(new Position(row, col), origMap);
 				}
 			}
@@ -47,7 +48,8 @@ public class Distances {
 		int minDistance = Integer.MAX_VALUE;
 		int distance = Integer.MIN_VALUE;
 		int rowDist, colDist;
-		for(int goal = 0; goal < goals.size(); goal++){ //Gå igenom avståndet till varje mål
+		for(int goal = 0; goal < goals.size(); goal++){ 
+			//Check the distance to every goal
 			rowDist = Math.abs(goals.get(goal).getRow() - currPos.getRow()); 
 			colDist = Math.abs(goals.get(goal).getCol() - currPos.getCol());
 			distance = colDist + rowDist;
@@ -61,6 +63,7 @@ public class Distances {
 			}else 
 				System.out.print(" " + minDistance);
 		}
-		distanceMap[currPos.getRow()][currPos.getCol()] = minDistance; //Kommer va lägre värde ju närmare man är!
+		// Will be a smaller value the closer you are
+		distanceMap[currPos.getRow()][currPos.getCol()] = minDistance;
 	}
 }

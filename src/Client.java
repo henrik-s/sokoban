@@ -2,14 +2,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-/**
- * HW1 test command: 
-   java Client dd2380.csc.kth.se 5001 2sdsd
- * 
- * @author MacHenrik
- *
- */
-
 public class Client {	
 	public static void main(String[] pArgs) 
 	{
@@ -23,7 +15,8 @@ public class Client {
 		{
 			Socket lSocket=new Socket(pArgs[0],Integer.parseInt(pArgs[1]));
 			PrintWriter lOut=new PrintWriter(lSocket.getOutputStream());
-			BufferedReader lIn=new BufferedReader(new InputStreamReader(lSocket.getInputStream()));
+			BufferedReader lIn=new BufferedReader(new InputStreamReader(
+					lSocket.getInputStream()));
 	
             lOut.println(pArgs[2]);
             lOut.flush();
