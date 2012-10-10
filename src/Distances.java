@@ -29,7 +29,7 @@ public class Distances {
 					}
 					continue; //behöver inte sätta nått värde här (deadlock)
 				}
-				else if(origMap.getMap()[row][col] == '.' || origMap.getMap()[row][col] == '*'){
+				else if(origMap.getMap()[row][col] == '.'){
 					if(DEBUG){
 						System.out.print(" .");
 					}
@@ -43,7 +43,7 @@ public class Distances {
 	}
 
 	private void calcDistance(Position currPos, Map map) {
-		ArrayList<Position> goals = map.getGoals();
+		ArrayList<Position> goals = map.getUnoccupiedGoals();
 		int minDistance = Integer.MAX_VALUE;
 		int distance = Integer.MIN_VALUE;
 		int rowDist, colDist;

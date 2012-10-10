@@ -1,4 +1,4 @@
-import java.awt.List;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,11 +15,10 @@ public class Solver {
 		startMap = map;
 		System.out.println(map.print());
 		DL = new DeadLock(map);
-		dist = new Distances(map);
+		dist = new Distances(startMap);
 		//System.out.println(dist.print());
 		//DL.printDLM(startMap);
 		hm = new HashMapper(DL);
-		
 	}
 
 	public String solve() {
@@ -47,7 +46,7 @@ public class Solver {
 				tmp = tmp.prevMap;
 			}
 		} catch (NullPointerException e) {
-			//Lugna er, hittat fšrsta kartan bara..
+			//Lugna er, hittat fï¿½rsta kartan bara..
 		}
 		try {
 			while (tmp.nextMap != null) {
@@ -75,7 +74,7 @@ public class Solver {
 						sb.append("D");
 					}
 				}
-				tmp = tmp.nextMap; // kolla nŠsta
+				tmp = tmp.nextMap; // kolla nï¿½sta
 			}
 		} catch (NullPointerException e) {
 			//e.printStackTrace();
@@ -87,14 +86,25 @@ public class Solver {
 		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
+		int boxesOnGoals = -1;
+		int last = -1;
 		startMap.evaluateMap();
 		Map curr = null;
 		prioQueue.add(startMap);
 		while (!prioQueue.isEmpty()) {
 			curr = prioQueue.remove();
+			for(int i = 0; i < curr.getAllBoxes().size(); i++){
+				if(curr.getBox(i).isOnGoal()){
+					boxesOnGoals++;
+					last = boxesOnGoals;
+				}
+			}
+			if(boxesOnGoals != last){
+				dist = new Distances(curr);
+			}
 			moves = curr.getMoves();
 			for (Move m : moves) {
-				Map nextMap = new Map(curr, m); //Skapa en ny karta, vŠrdet av den berŠknas via konstruktorn
+				Map nextMap = new Map(curr, m); //Skapa en ny karta, vï¿½rdet av den berï¿½knas via konstruktorn
 				nextMap.evaluateMap();
 				if(nextMap.isWon()){
 					return nextMap;

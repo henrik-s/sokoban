@@ -32,7 +32,7 @@ public class Map implements Comparable<Map>{
 	public boolean hasPrevMap = false;
 	private ArrayList<Move> moves;
 	public int value;
-	private ArrayList<Position> goals;
+	private ArrayList<Position> unOccupiedGoals;
 	
 
 	
@@ -50,7 +50,7 @@ public class Map implements Comparable<Map>{
 		this.rows = rows;
 		this.cols = cols;
 		boxes = new ArrayList<Box>();
-		goals = new ArrayList<Position>();
+		unOccupiedGoals = new ArrayList<Position>();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Map implements Comparable<Map>{
 				boxVal++;
 			}
 		}
-		value = moveVal + 5*boxVal - distanceVal;
+		value = moveVal + 3*boxVal - distanceVal;
 	}
 
 	/**
@@ -171,15 +171,14 @@ public class Map implements Comparable<Map>{
 				case '@':
 					playerPos = new Position(cRow, i); break;
 				case '+':
-					goals.add(new Position(cRow, i));
+					unOccupiedGoals.add(new Position(cRow, i));
 					playerPos = new Position(cRow, i); break;
 				case '$':
 					boxes.add(new Box(boxes.size(), new Position(cRow, i), false)); break;
 				case '*':
-					goals.add(new Position(cRow, i));
 					boxes.add(new Box(boxes.size(), new Position(cRow, i), true)); break;
 				case '.':
-					goals.add(new Position(cRow, i)); break;
+					unOccupiedGoals.add(new Position(cRow, i)); break;
 				default:
 					break;
 			}
@@ -191,6 +190,17 @@ public class Map implements Comparable<Map>{
 	// Return all the boxes for the map
 	public ArrayList<Box> getAllBoxes() {
 		return boxes;
+	}
+	
+	public void setUnoccupiedGoals() {
+		unOccupiedGoals.clear();
+		for(int row = 0; row < rows; row++) {
+			for(int col = 0; col < cols; col++){
+				if(map[row][col] == '.'){
+					unOccupiedGoals.add(new Position(row, col));
+				}
+			}
+		}
 	}
 	
 	// Return a specific box
@@ -272,7 +282,7 @@ public class Map implements Comparable<Map>{
 	 * returnerar poitionen för alla mål i banan
 	 * @return
 	 */
-	public ArrayList<Position> getGoals(){
-		return goals;
+	public ArrayList<Position> getUnoccupiedGoals(){
+		return unOccupiedGoals;
 	}
 }

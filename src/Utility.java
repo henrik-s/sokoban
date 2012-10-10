@@ -92,15 +92,15 @@ public class Utility {
 	private static boolean legalPush(Position newBoxPos, Map map) {
 		boolean deadLock = DeadLock.getDL(newBoxPos);
 		boolean obstacle = !isAvailiable(map.getMap(), newBoxPos);
-		boolean boxDeadLock = createsDeadlock(map.getMap(), newBoxPos);
-		if (!deadLock && !obstacle && !boxDeadLock) {
+		//boolean boxDeadLock = createsDeadlock(map.getMap(), newBoxPos);
+		if (!deadLock && !obstacle) {
 			return true;
 		}
 		return false;
 	}
 	
 	private static boolean shareWall(char[][] map, Position box1, Position box2) {
-		//System.out.println("dela vŠgg!?");
+		//System.out.println("dela vï¿½gg!?");
 		int row1 = box1.getRow(); int row2 = box2.getRow();
 		int col1 = box1.getCol(); int col2 = box2.getCol();
 		if		(map[row1+1][col1] == '#' &&
