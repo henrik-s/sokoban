@@ -87,14 +87,13 @@ public class Solver {
 		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
-
+		startMap.evaluateMap();
 		Map curr = null;
 		prioQueue.add(startMap);
 		while (!prioQueue.isEmpty()) {
 			curr = prioQueue.remove();
 			//System.out.println(curr.print());
 			//
-			curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
 			
 			moves = curr.getMoves();
 			for (Move m : moves) {
