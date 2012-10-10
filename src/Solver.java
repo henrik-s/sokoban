@@ -15,18 +15,15 @@ public class Solver {
 		startMap = map;
 		System.out.println(map.print());
 		DL = new DeadLock(map);
-		dist = new Distances(startMap);
-		//System.out.println(dist.print());
-		//DL.printDLM(startMap);
-		hm = new HashMapper(DL);
+		dist = new Distances(map);
+		hm = new HashMapper(DL);		
 	}
 
 	public String solve() {
-		if(!hm.isGreen()) { // kartan for stor for hashMapper
+		if(!hm.isGreen()) { // map is to big for hashmapper
 			return "";
 		}
 		Map finalMap = BFS();
-		//System.out.println(finalMap.print());
 		String solution = backtrack(finalMap);
 		return solution;
 	}
@@ -40,13 +37,13 @@ public class Solver {
 		Position posBeforePush;
 		String path;
 		try {
-			while (tmp.prevMap != null) { // Backtracka till originalplanen
+			while (tmp.prevMap != null) { // Backtrack to start map
 				tmp.prevMap.nextMap = tmp;
 				tmp.prevMap.hasNextMap = true;
 				tmp = tmp.prevMap;
 			}
 		} catch (NullPointerException e) {
-			//Lugna er, hittat f�rsta kartan bara..
+			//Calm down
 		}
 		try {
 			while (tmp.nextMap != null) {
@@ -74,16 +71,15 @@ public class Solver {
 						sb.append("D");
 					}
 				}
-				tmp = tmp.nextMap; // kolla n�sta
+				tmp = tmp.nextMap; // check next
 			}
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			//e.printStackTrace(); No please
 		}
 		return sb.toString();
 	}
 
 	public Map BFS() {
-		//PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		PriorityQueue<Map> prioQueue = new PriorityQueue<Map>();
 		ArrayList<Move> moves = new ArrayList<Move>();
 		int boxesOnGoals = -1;
@@ -104,19 +100,19 @@ public class Solver {
 			}
 			moves = curr.getMoves();
 			for (Move m : moves) {
-				Map nextMap = new Map(curr, m); //Skapa en ny karta, v�rdet av den ber�knas via konstruktorn
-				nextMap.evaluateMap();
+				Map nextMap = new Map(curr, m); 
+				// Create a new map, the value is calculated 
+				// by the constructor
+				nextMap.evaluateMap();		
 				if(nextMap.isWon()){
 					return nextMap;
 				}
-				else if (nextMap.getMoves().size() != 0 && hm.checkEntry(nextMap)) {
+				else if (nextMap.getMoves().size() != 0 && 
+						hm.checkEntry(nextMap)) {
 					prioQueue.add(nextMap);
-				}
-				
+				}		
 			}
 		}
-
 		return null;
-	}
-	
+	}	
 }

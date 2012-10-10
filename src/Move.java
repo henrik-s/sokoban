@@ -2,8 +2,6 @@
  * Move holds info of
  * 		- the id of the box that shall be pushed
  * 		- a Position at where the box will be pushed
- * @author MacHenrik
- *
  */
 
 public class Move {

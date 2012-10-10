@@ -2,8 +2,6 @@
  * A box in the game, holding information of 
  * 		- what box is supposed to be moved
  * 		- to what position the box will be pushed
- * @author MacHenrik
- *
  */
 
 public class Box {

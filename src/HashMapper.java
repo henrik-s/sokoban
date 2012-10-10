@@ -7,7 +7,8 @@ public class HashMapper {
 	private int[][] playerBoard;
 	private int[][] boxBoard;
 	private int rows, cols;
-	private static int possiblePlayerCells, possibleBoxCells, numberOfBoxHashes;
+	private static int possiblePlayerCells, possibleBoxCells, 
+	numberOfBoxHashes;
 	private HashMap hm;
 	private boolean isGreen;
 	
@@ -122,21 +123,18 @@ public class HashMapper {
 	
 	// Print a board's position values
 	public void print() {
-		System.out.println("BoxBoard with: " + possibleBoxCells + " possible cells");
 		for (int i = 0; i<rows; i++) {
 			for (int j = 0; j<cols; j++) {
 				System.out.print(boxBoard[i][j] + " ");
 			}
 			System.out.println();
 		}
-		System.out.println("\nPlayerBoard: " + possiblePlayerCells + " possible cells");
 		for (int i = 0; i<rows; i++) {
 			for (int j = 0; j<cols; j++) {
 				System.out.print(playerBoard[i][j] + " ");
 			}
 			System.out.println();
 		}
-		System.out.println("NumberOfBoxHashes: " + numberOfBoxHashes);
 	}
 	
 	// Get an array of all boxes position value
@@ -152,27 +150,28 @@ public class HashMapper {
 
 	private void initHashMap() {
 		int i = numberOfBoxHashes + 1;
-		//System.out.println("BoxCells: " + possibleBoxCells + " numberOfHashKeys: " + i);
 		switch(i) {
 		case 1:
-			throw new RuntimeException("Init hashmap, seems there are no possibleBoxCells");
+			throw new RuntimeException("Init hashmap, " +
+					"seems there are no possibleBoxCells");
 		case 2:
 			hm =  new HashMap<Integer, HashMap<Integer, Object>>();
 			break;
 		case 3:
-			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>();
+			hm =  new HashMap<Integer, HashMap<Integer, 
+			HashMap<Integer, Object>>>();
 			break;
 		case 4:
-			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>();
+			hm =  new HashMap<Integer, HashMap<Integer, 
+			HashMap<Integer, HashMap<Integer, Object>>>>();
 			break;
 		case 5:
-			hm =  new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>>();
+			hm =  new HashMap<Integer, HashMap<Integer, 
+			HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>>();
 			break;
 		default:
-			//throw new RuntimeException("Init hashmap, number of needed keys is 5 or more =(");
 			isGreen = false;
-			break;
-			
+			break;			
 		}
 	}
 	
@@ -232,34 +231,47 @@ public class HashMapper {
 	}
 	
 	// Check entry for three box keys
-	private boolean isNewEntry_3(int pKey, int boxKey1, int boxKey2, int boxKey3) {
-		HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>> tmpHM;
+	private boolean isNewEntry_3(int pKey, int boxKey1, 
+			int boxKey2, int boxKey3) {
+		HashMap<Integer, HashMap<Integer, HashMap<Integer, 
+		HashMap<Integer, Object>>>> tmpHM;
 		tmpHM = hm;
 		
 		// hm does'nt contain playerkey
 		if(!tmpHM.containsKey(pKey)) {
-			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>());
-			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, Object>>());
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer,
+					HashMap<Integer, Object>>>());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, 
+					HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new 
+					HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new Object());
 			return true;
 		}
 		// hm contain playerkey but not boxkey1
 		else if(!tmpHM.get(pKey).containsKey(boxKey1)) {
-			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, Object>>());
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer,
+					HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new 
+					HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new Object());
 			return true;
 		}
 		// hm contain playerkey, boxkey1 but not boxkey2
 		else if(!tmpHM.get(pKey).get(boxKey1).containsKey(boxKey2)) {
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, 
+					new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new Object());
 			return true;
 		}
 		// hm contains playerkey, boxkey1 and boxkey2 but not boxkey3
-		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).containsKey(boxKey3)) {
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new Object());
+		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+				containsKey(boxKey3)) {
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new Object());
 			return true;
 		}
 		// hm contain this entry
@@ -268,43 +280,61 @@ public class HashMapper {
 		}
 	}
 	// Check entry for three box keys
-	private boolean isNewEntry_4(int pKey, int boxKey1, int boxKey2, int boxKey3, int boxKey4) {
-		HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>> tmpHM;
+	private boolean isNewEntry_4(int pKey, int boxKey1, int boxKey2, 
+			int boxKey3, int boxKey4) {
+		HashMap<Integer, HashMap<Integer, HashMap<Integer, 
+		HashMap<Integer, HashMap<Integer, Object>>>>> tmpHM;
 		tmpHM = hm;
 		
 		// hm does'nt contain playerkey
 		if(!tmpHM.containsKey(pKey)) {
-			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>>());
-			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>());
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, HashMap<Integer, Object>>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).put(boxKey4, new Object());
+			tmpHM.put(pKey, new HashMap<Integer, HashMap<Integer, 
+					HashMap<Integer, HashMap<Integer, Object>>>>());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, 
+					HashMap<Integer, HashMap<Integer, Object>>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new 
+					HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			get(boxKey3).put(boxKey4, new Object());
 			return true;
 		}
 		// hm contain playerkey but not boxkey1
 		else if(!tmpHM.get(pKey).containsKey(boxKey1)) {
-			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, HashMap<Integer, HashMap<Integer, Object>>>());
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, HashMap<Integer, Object>>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).put(boxKey4, new Object());
+			tmpHM.get(pKey).put(boxKey1, new HashMap<Integer, 
+					HashMap<Integer, HashMap<Integer, Object>>>());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new 
+					HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			get(boxKey3).put(boxKey4, new Object());
 			return true;
 		}
 		// hm contain playerkey, boxkey1 but not boxkey2
 		else if(!tmpHM.get(pKey).get(boxKey1).containsKey(boxKey2)) {
-			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new HashMap<Integer, HashMap<Integer, Object>>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).put(boxKey4, new Object());
+			tmpHM.get(pKey).get(boxKey1).put(boxKey2, new 
+					HashMap<Integer, HashMap<Integer, Object>>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			get(boxKey3).put(boxKey4, new Object());
 			return true;
 		}
 		// hm contains playerkey, boxkey1 and boxkey2 but not boxkey3
 		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).containsKey(boxKey3)) {
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).put(boxKey3, new HashMap<Integer, Object>());
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).put(boxKey4, new Object());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			put(boxKey3, new HashMap<Integer, Object>());
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			get(boxKey3).put(boxKey4, new Object());
 			return true;
 		}
 		// hm contains playerkey, boxkey 1-3 but not 4
-		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).containsKey(boxKey4)) {
-			tmpHM.get(pKey).get(boxKey1).get(boxKey2).get(boxKey3).put(boxKey4, new Object());
+		else if(!tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+				get(boxKey3).containsKey(boxKey4)) {
+			tmpHM.get(pKey).get(boxKey1).get(boxKey2).
+			get(boxKey3).put(boxKey4, new Object());
 			return true;
 		}
 		// hm contain this entry

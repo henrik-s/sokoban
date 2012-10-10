@@ -14,10 +14,6 @@ import java.util.ArrayList;
  * 		
  * 		- A list of all the boxes
  * 		- The position of the players 
- * 	
- *  
- * @author MacHenriks
- *
  */
 
 public class Map implements Comparable<Map>{
@@ -127,7 +123,8 @@ public class Map implements Comparable<Map>{
 		case '$':
 			map[fromPos.getRow()][fromPos.getCol()] = '@'; break;
 		default:
-			throw new RuntimeException("Pushed a box when there was no box there!");
+			throw new RuntimeException("Pushed a box when there " +
+					"was no box there!");
 		}
 		
 		// Update 'to'-position on map
@@ -146,7 +143,8 @@ public class Map implements Comparable<Map>{
 			toGoal = true;
 			break;
 		default:
-			throw new RuntimeException("Pushed a box to an illegal position!");
+			throw new RuntimeException("Pushed a box to an " +
+					"illegal position!");
 		}
 		
 		// update player and the moved box's positions
@@ -174,9 +172,11 @@ public class Map implements Comparable<Map>{
 					unOccupiedGoals.add(new Position(cRow, i));
 					playerPos = new Position(cRow, i); break;
 				case '$':
-					boxes.add(new Box(boxes.size(), new Position(cRow, i), false)); break;
+					boxes.add(new Box(boxes.size(), 
+							new Position(cRow, i), false)); break;
 				case '*':
 					boxes.add(new Box(boxes.size(), new Position(cRow, i), true)); break;
+
 				case '.':
 					unOccupiedGoals.add(new Position(cRow, i)); break;
 				default:
@@ -265,21 +265,22 @@ public class Map implements Comparable<Map>{
 	}
 	/**
 	 * Compares the value of two different maps
-	 * returns 1 if the current map is better than the one being compared, 0 otherwise.
+	 * returns 1 if the current map is better than 
+	 * the one being compared, 0 otherwise.
 	 */
 	
 	public int compareTo(Map map){
 		return map.value - value;
 	}
 	/**
-	 * Hämta alla moves för det här brädet
+	 * Get all moves for this map
 	 * @return moves
 	 */
 	public ArrayList<Move> getMoves(){
 		return moves;
 	}
 	/**
-	 * returnerar poitionen för alla mål i banan
+	 * Return all the goal positions of this map
 	 * @return
 	 */
 	public ArrayList<Position> getUnoccupiedGoals(){

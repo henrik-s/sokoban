@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011/MacPorts 2011_1) (format=pdflatex 2011.10.6)  10 OCT 2012 18:25
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011/MacPorts 2011_1) (format=latex 2011.10.6)  10 OCT 2012 21:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -239,7 +239,7 @@ Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
 )
 (/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
+Package ifpdf Info: pdfTeX in PDF mode is not detected.
 ))
 (/opt/local/share/texmf-texlive-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
@@ -247,12 +247,7 @@ Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 (/opt/local/share/texmf-texlive-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
-Package xcolor Info: Driver file: pdftex.def on input line 225.
-
-(/opt/local/share/texmf-texlive-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-\Gread@gobject=\count119
-)
+Package xcolor Info: Driver file: dvips.def on input line 225.
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
 Package xcolor Info: Model `RGB' extended on input line 1353.
 Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
@@ -264,13 +259,21 @@ Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 ))
 (/opt/local/share/texmf-texlive-dist/tex/latex/pdfpages/pppdftex.def
 File: pppdftex.def 2011/03/10 v0.4n Pdfpages driver for pdfTeX (AM)
-)
+
+(/opt/local/share/texmf-texlive-dist/tex/latex/pdfpages/ppnull.def
+File: ppnull.def 2011/03/10 v0.4n Pdfpages dummy driver (AM)
+
+
+Package pdfpages Warning: I will use a dummy \includepdf command
+(pdfpages)                which will NOT insert any pages, because
+(pdfpages)                you are producing DVI output.
+
+))
 \AM@pagebox=\box32
 \AM@toc@title=\toks28
-\c@AM@survey=\count120
+\c@AM@survey=\count119
 \AM@templatesizebox=\box33
-)
-(/opt/local/share/texmf-texlive-dist/tex/latex/url/url.sty
+) (/opt/local/share/texmf-texlive-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
@@ -297,84 +300,25 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
-
-(/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
-
-(/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/opt/local/share/texmf-texlive-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/opt/local/share/texmf-texlive-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Managing graphics extensions (HO)
-
-(/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
-))
-(/opt/local/share/texmf-texlive-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2010/12/23 v3.10 Keyval support for LaTeX options (HO)
-
-(/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
-
-(/opt/local/share/texmf-texlive-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Prefix for e-TeX command names (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-34.
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/opt/local/share/texmf-texlive-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-\c@lstlisting=\count121
+\c@lstlisting=\count120
 \AtBeginShipoutBox=\box34
+File: 2.eps Graphic file (type eps)
+ <2.eps> [1
 
-(/opt/local/share/texmf-texlive-dist/tex/context/base/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
-\scratchdimen=\dimen123
-\scratchbox=\box35
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\everyMPshowfont=\toks29
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen124
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
-\everyMPtoPDFconversion=\toks30
-) [1
-
-{/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1
+] [1
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 77--79
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--79
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--79
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
 
  []
 
@@ -391,59 +335,45 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[1] (/opt/local/share/texmf-texlive-dist/tex/latex/listings/lstlang1.sty
+[1]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[3]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5] (/opt/local/share/texmf-texlive-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-(../src/Solver.java
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
-
-Overfull \hbox (9.4126pt too wide) in paragraph at lines 24--25
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][] 
- []
-
-
-Overfull \hbox (97.61243pt too wide) in paragraph at lines 42--43
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][] 
- []
-
-
-! Package inputenc Error: Keyboard character used is undefined
-(inputenc)                in inputencoding `latin1'.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.48 			//Lugna er, hittat fšrsta 
-                                  kartan bara..
-? x
- 
+(./master1.aux) ) 
 Here is how much of TeX's memory you used:
- 5911 strings out of 495055
- 79512 string characters out of 3181196
- 190033 words of memory out of 3000000
- 8988 multiletter control sequences out of 15000+200000
- 11923 words of font info for 43 fonts, out of 3000000 for 9000
+ 4783 strings out of 495056
+ 64186 string characters out of 3181219
+ 157826 words of memory out of 3000000
+ 7896 multiletter control sequences out of 15000+200000
+ 12269 words of font info for 44 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 38i,11n,43p,958b,1103s stack positions out of 5000i,500n,10000p,200000b,50000s
-</opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-</opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
-</opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
-</opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-/opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
-opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></
-opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></
-opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></
-opt/local/share/texmf-texlive-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on master1.pdf (5 pages, 120460 bytes).
-PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 37i,11n,43p,914b,503s stack positions out of 5000i,500n,10000p,200000b,50000s
 
+Output written on master1.dvi (9 pages, 20816 bytes).

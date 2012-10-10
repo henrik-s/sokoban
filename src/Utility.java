@@ -14,34 +14,17 @@ public class Utility {
 	}
 
 	/**
-	 * Hittar alla sätt som man från utgångspositionen kan flytta på lådor.
-	 * 
-	 * @return En lista av möjliga lådförflyttningar (Moves)
+	 * Find all possible directions from where the player is standing,
+	 * to boxes that can be pushed
 	 */
 	public static ArrayList<Move> findPossibleMoves(Map map) {
 		ArrayList<Move> possibleMoves = new ArrayList<Move>();
-		Position playerPos = map.getPlayerPosition();// Startpostionen för
-														// spelaren
-//		System.out.println("Startpos: (" + playerPos.getRow() + ","
-//				+ playerPos.getCol() + ")");
-		ArrayList<Box> boxes = map.getAllBoxes(); // Startpositionen och id för
-													// alla lådor
+		Position playerPos = map.getPlayerPosition();
+		ArrayList<Box> boxes = map.getAllBoxes(); 
 		boolean[] directions = new boolean[4];
-		for (int boxNr = 0; boxNr < boxes.size(); boxNr++) { // leta upp alla
-																// möjliga vägar
-																// till alla
-																// lådor
+		for (int boxNr = 0; boxNr < boxes.size(); boxNr++) { 
 			Box currBox = boxes.get(boxNr);
 			directions = search(playerPos, currBox, map);
-//			System.out
-//					.println("Kommer ur search! Antal sätt att komma runt låda "
-//							+ boxNr
-//							+ " => Väster: "
-//							+ directions[0]
-//							+ ", Öster: "
-//							+ directions[1]
-//							+ ", Norr: "
-//							+ directions[2] + ", Söder: " + directions[3]);
 			for (int i = 0; i < 4; i++) {
 				if (directions[i]) {
 					if (i == WEST) { // Push the box east
@@ -78,14 +61,6 @@ public class Utility {
 				}
 			}
 		}
-//		System.out.println("Antal möjliga pushes: " + possibleMoves.size());
-//		System.out.println("----------------------");
-//		for (int i = 0; i < possibleMoves.size(); i++) {
-//			Move move = possibleMoves.get(i);
-//			System.out.println("Låda nr: " + move.getID() + " till: " + "("
-//					+ move.getPosition().getRow() + ","
-//					+ move.getPosition().getCol() + ")");
-//		}
 		return possibleMoves;
 	}
 
@@ -99,8 +74,8 @@ public class Utility {
 		return false;
 	}
 	
-	private static boolean shareWall(char[][] map, Position box1, Position box2) {
-		//System.out.println("dela v�gg!?");
+	private static boolean shareWall(char[][] map, Position 
+			box1, Position box2) {
 		int row1 = box1.getRow(); int row2 = box2.getRow();
 		int col1 = box1.getCol(); int col2 = box2.getCol();
 		if		(map[row1+1][col1] == '#' &&
@@ -180,8 +155,7 @@ public class Utility {
 		}
 		if(up || down || right || left) {
 			return true;
-		}
-		
+		}		
 		return false;
 	}
 
@@ -190,18 +164,15 @@ public class Utility {
 		// Directions[0-4] = west, east, north, south!
 		boolean[] directions = new boolean[4];
 		for (int i = 0; i < 4; i++) {
-			directions[i] = false; // initiera till false
+			directions[i] = false; 
 		}
 		Position boxPos = box.getPosition();
-		// System.out.println("Lådpos: (" + boxPos.getRow() + "," +
-		// boxPos.getCol() + ")");
-		// directions of the box
 		Position west = new Position(boxPos.getRow(), boxPos.getCol() - 1);
 		Position east = new Position(boxPos.getRow(), boxPos.getCol() + 1);
 		Position north = new Position(boxPos.getRow() - 1, boxPos.getCol());
 		Position south = new Position(boxPos.getRow() + 1, boxPos.getCol());
 		boolean[][] visited = new boolean[map.getRows()][map.getCols()];
-		// initiera visited till false.
+		// Initialize visited to false
 		for (int row = 0; row < map.getRows(); row++) {
 			for (int col = 0; col < map.getCols(); col++) {
 				visited[row][col] = false;
@@ -212,22 +183,23 @@ public class Utility {
 		visited[playerPos.getRow()][playerPos.getCol()] = true;
 		while (!q.isEmpty()) {
 			Position currPos = q.remove();
-			if (currPos.isEqualTo(west)) { // kan komma till vänster om lådan
+			// may reach left position of the box
+			if (currPos.isEqualTo(west)) { 
 				directions[0] = true;
 			}
-			if (currPos.isEqualTo(east)) { // kan komma till höger om lådan
+			// may reach right position of the box
+			if (currPos.isEqualTo(east)) {
 				directions[1] = true;
 			}
-			if (currPos.isEqualTo(north)) { // kan komma till positionen över
-											// lådan
+			// may reach peter north position of the box
+			if (currPos.isEqualTo(north)) {
 				directions[2] = true;
 			}
-			if (currPos.isEqualTo(south)) { // kan komma till positionen under
-											// lådan
+			// may reach south position of the box
+			if (currPos.isEqualTo(south)) { 
 				directions[3] = true;
 			}
-			for (int direction = 0; direction < 4; direction++) { // kolla
-																	// grannar
+			for (int direction = 0; direction < 4; direction++) { 
 				if (direction == WEST) {
 					Position newPos = new Position(currPos.getRow(),
 							currPos.getCol() - 1);
@@ -265,7 +237,6 @@ public class Utility {
 					}
 				}
 			}
-
 		}
 		return directions;
 	}
@@ -278,11 +249,12 @@ public class Utility {
 		return false;
 	}
 
-	public static String findPath(Position startPos, Position endPos, char[][] board) {
+	public static String findPath(Position startPos, 
+			Position endPos, char[][] board) {
 		String solution = null;
 		int[][] distance = new int[board.length][board[0].length];
 		for (int a = 0; a < board.length; a++) {
-			for (int b = 1; b < board[0].length; b++) { // initierar till -1
+			for (int b = 1; b < board[0].length; b++) { 
 				distance[a][b] = -1;
 			}
 		}
@@ -290,45 +262,58 @@ public class Utility {
 		return solution;
 	}
 
-	public static String bfs(Position pos, Position endPos, char[][] board, String sol, int[][] distance) {
+	public static String bfs(Position pos, Position endPos, 
+			char[][] board, String sol, int[][] distance) {
 		Queue<Position> q = new LinkedList<Position>();
 		q.add(pos);
 		distance[pos.getRow()][pos.getCol()] = 0;
 		int currDistance = 0;
 		while (!q.isEmpty()) {
 			Position currPos = q.remove();
-			if (currPos.isEqualTo(endPos)) { //Återskapa svars-strängen
+			if (currPos.isEqualTo(endPos)) { //Recreate the start string
 				sol = printSolution(distance, currDistance, currPos);
 				return sol;
 			}
 			
 			for (int i = 0; i < 4; i++) {
-				if (i == 0 && (distance[currPos.getRow() + 1][currPos.getCol()] == -1)) { // NED!
-					Position newPos = new Position(currPos.getRow()+1, currPos.getCol());
+				if (i == 0 && (distance[currPos.getRow() + 1]
+						[currPos.getCol()] == -1)) { // Down
+					Position newPos = new Position
+							(currPos.getRow()+1, currPos.getCol());
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
-						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
+						distance[newPos.getRow()]
+								[newPos.getCol()] = currDistance + 1;
 					}
 				}
-				else if (i == 1 && distance[currPos.getRow() - 1][currPos.getCol()] == -1) { // UPP!
-					Position newPos = new Position(currPos.getRow()-1, currPos.getCol());
+				else if (i == 1 && distance[currPos.getRow() - 1]
+						[currPos.getCol()] == -1) { // Up
+					Position newPos = new Position
+							(currPos.getRow()-1, currPos.getCol());
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
-						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
+						distance[newPos.getRow()]
+								[newPos.getCol()] = currDistance + 1;
 					}
 				}
-				else if (i == 2 && distance[currPos.getRow()][currPos.getCol() + 1] == -1) { // HÖGER!
-					Position newPos = new Position(currPos.getRow(), currPos.getCol()+1);
+				else if (i == 2 && distance[currPos.getRow()]
+						[currPos.getCol() + 1] == -1) { // Right
+					Position newPos = new Position
+							(currPos.getRow(), currPos.getCol()+1);
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
-						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
+						distance[newPos.getRow()]
+								[newPos.getCol()] = currDistance + 1;
 					}
 				}
-				else if (i == 3 && distance[currPos.getRow()][currPos.getCol() - 1] == -1) { // VÄNSTER!
-					Position newPos = new Position(currPos.getRow(), currPos.getCol()-1);
+				else if (i == 3 && distance[currPos.getRow()]
+						[currPos.getCol() - 1] == -1) { // Left
+					Position newPos = new Position
+							(currPos.getRow(), currPos.getCol()-1);
 					if (isAvailiable(board, newPos)) {
 						q.add(new Position(newPos));
-						distance[newPos.getRow()][newPos.getCol()] = currDistance + 1;
+						distance[newPos.getRow()]
+								[newPos.getCol()] = currDistance + 1;
 					}
 				}
 			}
@@ -338,27 +323,34 @@ public class Utility {
 		return null;
 	}
 	
-	public static String printSolution(int[][] distance, int currDistance, Position currPos){
+	public static String printSolution(int[][] distance, 
+			int currDistance, Position currPos){
 		StringBuilder sb = new StringBuilder();
 		for (int i = currDistance; i > 0; i--) { 
-			if (distance[currPos.getRow() + 1][currPos.getCol()] == i - 1) { // NER
+			if (distance[currPos.getRow() + 1]
+					[currPos.getCol()] == i - 1) { // Down
 				sb.append("U");
-				currPos = new Position(currPos.getRow() + 1, currPos.getCol());
-			} else if (distance[currPos.getRow() - 1][currPos.getCol()] == i - 1) { // UPP
+				currPos = new Position(currPos.getRow() 
+						+ 1, currPos.getCol());
+			} else if (distance[currPos.getRow() - 1]
+					[currPos.getCol()] == i - 1) { // Up
 				sb.append("D");
-				currPos = new Position(currPos.getRow() - 1, currPos.getCol());
-			} else if (distance[currPos.getRow()][currPos.getCol() + 1] == i - 1) { // HÖGER
+				currPos = new Position(currPos.getRow()
+						- 1, currPos.getCol());
+			} else if (distance[currPos.getRow()]
+					[currPos.getCol() + 1] == i - 1) { // Right
 				sb.append("L");
-				currPos = new Position(currPos.getRow(), currPos.getCol() + 1);
-			} else if (distance[currPos.getRow()][currPos.getCol() - 1] == i - 1) { // VÄNSTER
+				currPos = new Position(currPos.getRow(), currPos.getCol()
+						+ 1);
+			} else if (distance[currPos.getRow()]
+					[currPos.getCol() - 1] == i - 1) { // Left
 				sb.append("R");
-				currPos = new Position(currPos.getRow(), currPos.getCol() - 1);
+				currPos = new Position(currPos.getRow(), currPos.getCol()
+						- 1);
 			}
-
 		}
 		sb.reverse();
 		String sol = sb.toString();
 		return sol;
 	}
-
 }
