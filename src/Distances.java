@@ -31,7 +31,7 @@ public class Distances {
 				}
 				else if(origMap.getMap()[row][col] == '.' || origMap.getMap()[row][col] == '*'){
 					if(DEBUG){
-						System.out.print(" G");
+						System.out.print(" .");
 					}
 					distanceMap[row][col] = GOAL_VAL; //Hittat ett mål
 				}
@@ -56,7 +56,10 @@ public class Distances {
 			}
 		}
 		if(DEBUG){
-			System.out.print(" " + minDistance);
+			if(minDistance > 9){
+				System.out.print(minDistance);
+			}else 
+				System.out.print(" " + minDistance);
 		}
 		distanceMap[currPos.getRow()][currPos.getCol()] = minDistance; //Kommer va lägre värde ju närmare man är!
 	}

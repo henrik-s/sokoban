@@ -92,7 +92,7 @@ public class Map implements Comparable<Map>{
 		moves = Utility.findPossibleMoves(this);
 		moveVal = moves.size();
 		distanceVal = Distances.getDistance(playerPos);
-		for(int box = 0; box < boxes.size(); box++){
+ 		for(int box = 0; box < boxes.size(); box++){
 			if(boxes.get(box).isOnGoal()){
 				boxVal++;
 			}

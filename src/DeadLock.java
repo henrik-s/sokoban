@@ -185,6 +185,10 @@ public class DeadLock {
 		int rowPos = row + diff;
 				
 		while(rowPos < board.length && rowPos > 0){
+			if(board[rowPos][col] == '.' || board[rowPos][col] == '+' || board[rowPos][col] == '*'){
+				deadlocks.clear();
+				break;
+			}
 			if(isCorner(map, rowPos, col) == 0){
 				if (!(map.getMap()[rowPos][col -1] == '#')) {
 					isTunnel(map, row, col -1 , true, -1); //Tunneln går vertikalt
@@ -221,6 +225,10 @@ public class DeadLock {
 		
 		int colPos = col + diff;
 		while (colPos > 0 && colPos< board[0].length) {
+			if(board[row][colPos] == '.' || board[row][colPos] == '+' || board[row][colPos] == '*'){
+				deadlocks.clear();
+				break;
+			}
 			if(isCorner(map, row, colPos) == 0){
 				if (!(map.getMap()[row - 1][colPos] == '#')) {
 					isTunnel(map, row -1, colPos, false, -1); //Tunneln går vertikalt
