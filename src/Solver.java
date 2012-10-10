@@ -8,13 +8,15 @@ import java.util.Queue;
 public class Solver {
 	Map startMap;
 	DeadLock DL;
-	private static final int FINAL_SOLUTION = -1337;
 	HashMapper hm;
+	Distances dist;
 
 	public Solver(Map map) {
 		startMap = map;
-		//System.out.println(map.print());
+		System.out.println(map.print());
 		DL = new DeadLock(map);
+		dist = new Distances(map);
+		//System.out.println(dist.print());
 		//DL.printDLM(startMap);
 		hm = new HashMapper(DL);
 		
@@ -92,9 +94,8 @@ public class Solver {
 			curr = prioQueue.remove();
 			//System.out.println(curr.print());
 			//
-			if(!curr.evaluated){
-				curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
-			}
+			curr.evaluateMap(); //sätt ett värde på brädet om det inte redan finns!
+			
 			moves = curr.getMoves();
 			for (Move m : moves) {
 				Map nextMap = new Map(curr, m); //Skapa en ny karta, värdet av den beräknas via konstruktorn
