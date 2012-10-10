@@ -32,7 +32,7 @@ public class Map implements Comparable<Map>{
 	public boolean hasPrevMap = false;
 	private ArrayList<Move> moves;
 	public int value;
-	public boolean evaluated;
+	private ArrayList<Position> goals;
 	
 
 	
@@ -44,13 +44,13 @@ public class Map implements Comparable<Map>{
 	 * @param cols = number of columns of the map
 	 */
 	public Map(int rows, int cols) {
-		evaluated = false;
 		prevMap = null;
 		nextMap = null;
 		map = new char[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
 		boxes = new ArrayList<Box>();
+		goals = new ArrayList<Position>();
 	}
 	
 	/**
@@ -83,21 +83,21 @@ public class Map implements Comparable<Map>{
 		playerPos.set(fromMap.getPlayerPosition());
 		doMove(withMove);
 		
-		evaluated = false;
 	}
 	
 	public void evaluateMap() {
-		evaluated = true;
 		int moveVal = 0;
 		int boxVal = 0;
+		int distanceVal = Distances.getDistance(playerPos);
 		moves = Utility.findPossibleMoves(this);
 		moveVal = moves.size();
-		for(int box = 0; box < boxes.size(); box++){
+		distanceVal = Distances.getDistance(playerPos);
+ 		for(int box = 0; box < boxes.size(); box++){
 			if(boxes.get(box).isOnGoal()){
 				boxVal++;
 			}
 		}
-		value = moveVal + 5*boxVal;
+		value = moveVal + 5*boxVal - distanceVal;
 	}
 
 	/**
@@ -171,11 +171,15 @@ public class Map implements Comparable<Map>{
 				case '@':
 					playerPos = new Position(cRow, i); break;
 				case '+':
+					goals.add(new Position(cRow, i));
 					playerPos = new Position(cRow, i); break;
 				case '$':
 					boxes.add(new Box(boxes.size(), new Position(cRow, i), false)); break;
 				case '*':
+					goals.add(new Position(cRow, i));
 					boxes.add(new Box(boxes.size(), new Position(cRow, i), true)); break;
+				case '.':
+					goals.add(new Position(cRow, i)); break;
 				default:
 					break;
 			}
@@ -263,5 +267,12 @@ public class Map implements Comparable<Map>{
 	 */
 	public ArrayList<Move> getMoves(){
 		return moves;
+	}
+	/**
+	 * returnerar poitionen för alla mål i banan
+	 * @return
+	 */
+	public ArrayList<Position> getGoals(){
+		return goals;
 	}
 }
