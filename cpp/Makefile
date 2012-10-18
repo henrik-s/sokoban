@@ -1,7 +1,9 @@
 SRC_ROOT = src
 OBJS:=
 CFLAGS = ""
+
 SRC = $(SRC_ROOT)
+include $(SRC)/gcd.mk
 include $(SRC)/pollard_roh.mk
 
 make:
