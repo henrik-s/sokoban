@@ -1,3 +1,4 @@
+*.elf
 *.class
 # Package Files #
 *.jar
