@@ -3,29 +3,32 @@
 #include <iostream>
 #include "gcd.h"
 #include <math.h>
-
+#include <queue>
 using namespace std;
 
-void gmpExample() {
-	mpz_t r, n;
-	mpz_init (r);
-	mpz_init_set_str (n, "123456", 10);
-	mpz_out_str (stdout, 10, n); printf("\n");
+struct mpz_node{
+	mpz_t number;
+	mpz_t * next;
+	mpz_t * prev;
+
+	mpz_node(mpz_t N){
+		mpz_init_set(number,N);
+	}
+};
+
+void pollard_roh(mpz_t & a, mpz_t & N){
+	mpz_init_set(a,N);
+}
 	
-	gmp_scanf("%Zd", n);
-	printf("\nThe number you entered = ");
-	printf("\nThe number is prime? %i\n", mpz_probab_prime_p(n, 5));
-	
-	mpz_out_str (stdout, 10, n); printf("\n\nx2 = ");
-	
-	mpz_mul_ui(r, n, 2);
-	mpz_out_str (stdout, 10, r); printf("\n");
-
-
-
-}	
-
 int main(int argc, char **argv){
-	gmpExample();	
+	mpz_t N,curr;
+	gmp_scanf("%Zd",N);
+	mpz_init_set(curr,N);
+
+	
+	mpz_init_set_str(N,"9999",10);
+	mpz_t a;
+	pollard_roh(a,N); 
+	mpz_out_str(stdout, 10,a);
 	return 0;
 }
