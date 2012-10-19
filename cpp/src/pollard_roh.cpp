@@ -6,16 +6,6 @@
 #include <queue>
 using namespace std;
 
-struct mpz_node{
-	mpz_t number;
-	mpz_t * next;
-	mpz_t * prev;
-
-	mpz_node(mpz_t N){
-		mpz_init_set(number,N);
-	}
-};
-
 void pollard_roh(mpz_t & a, mpz_t & N){
 	mpz_init_set(a,N);
 }
