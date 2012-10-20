@@ -54,12 +54,43 @@ void trial_division(mpz_t N){
 	
 	pollard_roh(N);
 }
+
+void perfect_squares(mpz_t N) {
+	mpz_t x;
+	mpz_t init(x);
+	if(mpz_sqrt(x, N)) { // If x is perfect sqrt(N)
+		mpz_set(x, N);
+		trial_division(x);
+		trial_division(N);
+		return;
+	}
+	else {
+		mpz_t x2, y2;
+		mpz_t init(x2); mpz_t init(y2);
+		int i;
+		for(i = 0; i<5; i++) {	
+			mpz_add_ui(x,x,1); 
+			mpz_pow_ui(x2,x,2);
+			mpz_sub(y2, x2, N);
+			if(mpz_perfect_square_p(y2)) {
+				mpz_sqrt(y2,y2); // y2 = y
+				mpz_add(N, x, y2);
+				mpz_sub(x, x, y2);
+				mpz_clear(x2); mpz_clear(y2);
+				factorize(N);
+				factorize(x);	
+			}
+		}		
+	}
+}
+
 int main(int argc, char **argv){
 	mpz_t N;
 	mpz_init (N);
-	gmp_scanf("%Zd",N);
-	
-	trial_division(N);	
-
+	int i;
+	for(i = 0; i<100; i++) {
+		gmp_scanf("%Zd",N);
+		trial_division(N);	
+	}
 	return 0;
 }
