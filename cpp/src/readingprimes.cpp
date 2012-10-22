@@ -8,7 +8,7 @@ int main(){
 	fp=fopen("10000primes","r");
 	fw=fopen("primes.h","w");
 	int prime;
-	int numPrimes = 1500;
+	int numPrimes = 10000;
 
 	fprintf(fw,"static int NUM_PRIMES = %d;\n", numPrimes);
 	fprintf(fw,"int primes[] = {");

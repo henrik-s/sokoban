@@ -8,100 +8,86 @@
 #include "primes.h"
 using namespace std;
 void f(mpz_t x, mpz_t N);
-void factorize(mpz_t N);
-#define db(i) cout<<"Debug: "<<i <<endl;
+void factorize(mpz_t N, int number);
+void perfect_squares(mpz_t N, int number);
+vector<mpz_class> output_mpz;
+vector<int> output_int;
+int fail;
+static int LOOPS =  202000;
 
-#define print(N) mpz_out_str(stdout, 10,N); printf("\n");
-
-time_t start;
-
-void pollard_roh(mpz_t  N){
-
+void addFactors(mpz_t N, int i) {
+	for (int j = 0; j<i; j++) {
+			output_mpz.push_back(mpz_class(N));
+	}
+}
+void addIntFactors(int factor, int number) {
+	for(int i = 0; i<number;i++) {
+			output_int.push_back(factor);
+	}
+}
+void pollard_roh(mpz_t  N, int number){
+	if(mpz_probab_prime_p(N,10)){
+		addFactors(N, number);
+		mpz_clear(N);
+		return;
+	}
 	mpz_t x,y,d, abs;
-	mpz_init_set_str (x, "2", 10);		
-	mpz_init_set_str (y, "2", 10);
-	mpz_init_set_str(d,"1",10); 
+	mpz_init_set_ui (x, 7);		
+	mpz_init_set_ui (y, 7);
+	mpz_init_set_ui(d, 1); 
 	mpz_init (abs);
-	while(!mpz_cmp_ui(d,1)){
+	int counter = 0;
+	while(!mpz_cmp_ui(d,1) && counter < LOOPS ){
 		f(x, N);
 		f(y, N); f(y, N); 
 		mpz_sub(abs, x, y);
 		mpz_abs(abs, abs);
 		mpz_gcd(d, abs, N);
-	}
-	if(!mpz_cmp(d,N)) {
-		cout << "fail" << endl;
-		return;
+		counter++;
 	}
 	mpz_clear(x); mpz_clear(y);				
+	if(!mpz_cmp(d,N) || counter == LOOPS) {
+		 mpz_clear(d); mpz_clear(abs);
+		cout << "fail" << endl;
+		mpz_clear(N);
+		fail = 1;
+		return;
+	}
 	mpz_cdiv_q(abs, N, d);
 	mpz_clear(N);
-	//pollard_roh(abs); // Pollard rho for the rest: N/d
-	//pollard_roh(d);	// PRoh for a divisor d
-	factorize(abs);
-	factorize(d);
+	perfect_squares(abs, number); perfect_squares(d, number);
 }
 
 void f(mpz_t x, mpz_t N) {
 	mpz_pow_ui(x, x, 2);
-	mpz_add_ui(x,x,2);
+	mpz_add_ui(x,x,1);
 	mpz_mod(x,x,N);
 }
-
-void perfect_squares(mpz_t N) {
-	if(mpz_probab_prime_p(N,5)){	
-		mpz_out_str(stdout, 10,N); printf("\n");
+void perfect_squares(mpz_t N, int number) {
+	if(mpz_probab_prime_p(N,10)){	
+		addFactors(N, number);
 		mpz_clear(N);
 		return;
-	}	
-	mpz_t x, tmp;
-	mpz_init(x); mpz_init_set(tmp, N);
-	if(mpz_root(x, N, 2)) { 	// x = sqrt(N), no rest?
-		mpz_set(N, x); 		// N = sqrt(N)
-		factorize(N);
-		factorize(x);
-		mpz_clear(tmp);
-		return;
 	}
-	else { // N is not a perfect, let's try find x^2-y^2 = N
-		mpz_t x2, y2;
-		mpz_init(x2); mpz_init(y2);
-		for(int i = 0; i<5; i++) {	
-			mpz_add_ui(x,x,1); 		// x = x + 1 
-			mpz_pow_ui(x2,x,2); 		// x^2 = x^2
-			mpz_sub(y2, x2, N);		// y^2 = x^2 - N
-			if(mpz_perfect_square_p(y2)) {
-				mpz_sqrt(y2,y2); 	// y2 = sqrt(y^2)
-				mpz_add(N, x, y2); 	// N = (x+y)
-				mpz_sub(x, x, y2); 	// x = (x-y)
-				
-				mpz_clear(x2); mpz_clear(y2); mpz_clear(tmp);
-				factorize(N);
-				factorize(x);
-				return;
-			}
-		}		
-	}
-	mpz_clear(x);
-	mpz_clear(N);
-	pollard_roh(tmp);
+	mpz_t root; mpz_init(root);
+	if(mpz_root(root, N, 2)) {
+		mpz_clear(N);
+		perfect_squares(root, number*2);
+		}
+	pollard_roh(N, number);
 }
 
-
-void factorize(mpz_t N){
-	if(mpz_probab_prime_p(N,5)){	
-		mpz_out_str(stdout, 10,N); printf("\n");
+void factorize(mpz_t N, int number){
+	if(mpz_probab_prime_p(N,10)){	
+		addFactors(N, number);
 		mpz_clear(N);
 		return;
 	}
-	mpz_t tmp;
-	mpz_t curr;
-
-	mpz_init(tmp);
-	mpz_init_set(curr,N);
+	mpz_t tmp; mpz_init(tmp);
+	mpz_t curr;	mpz_init_set(curr,N);
 	for(int i = 0; i < NUM_PRIMES; i++){
 		if(mpz_cdiv_q_ui(tmp,curr,primes[i]) == 0){
-			cout << primes[i] << endl;
+			addIntFactors(primes[i], number);
 			if(!mpz_cmp_ui(tmp,1)){
 				mpz_clear(tmp);
 				mpz_clear(N);
@@ -113,33 +99,27 @@ void factorize(mpz_t N){
 	}
 	mpz_clear(tmp);
 	mpz_clear(N);
-	perfect_squares(curr);
+	perfect_squares(curr, number);
 }
-
-
-void resign(int i) {
-	for(int j = i; j < 100; j++) {
-		cout<< "fail" << endl << endl;
+void print_output() {
+	for(unsigned int i = 0; i<output_mpz.size(); i++) {
+		cout<<output_mpz[i]<<endl;
+	}
+	for(unsigned int j = 0; j<output_int.size(); j++) {
+		cout<<output_int[j]<<endl;
 	}
 }	
-
-int timeIsUp() {
-	if (time (NULL) - start > 13)
-		return 1;
-	return 0;
-}
-
 int main(){
-	start = time (NULL);
 	for(int i = 0; i < 100;i++){
-		if( time (NULL) - start > 7) {
-			resign(i);
-			return 0;
-		}	
-		mpz_t N;
-		mpz_init (N);
+		mpz_t N; mpz_init (N);
 		gmp_scanf("%Zd",N);
-		factorize(N);
+		fail = 0;
+		output_mpz.clear();
+		output_int.clear();
+		factorize(N, 1);
+		if(!fail) {
+			print_output();
+		}
 		cout << endl;	
 	}
 	return 0;
