@@ -26,7 +26,6 @@ void pollard_roh(mpz_t  N){
 	mpz_init_set_str (y, "2", 10);
 	mpz_init_set_str(d,"1",10); 
 	mpz_init (abs);
-	
 	while(!mpz_cmp_ui(d,1)){
 		f(x, N);
 		f(y, N); f(y, N); 
@@ -75,7 +74,7 @@ void trial_division(mpz_t N){
 }
 
 void resign(int i) {
-	for(int j = 0; j < i; j++) {
+	for(int j = i; j < 100; j++) {
 		cout<< "fail" << endl << endl;
 	}
 }	
@@ -92,7 +91,7 @@ int main(){
 		if( time (NULL) - start > 13) {
 			resign(i);
 			return 0;
-		}
+		}	
 		mpz_t N;
 		mpz_init (N);
 		gmp_scanf("%Zd",N);
