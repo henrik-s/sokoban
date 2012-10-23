@@ -13,7 +13,7 @@ void perfect_squares(mpz_t N, int number);
 vector<mpz_class> output_mpz;
 vector<int> output_int;
 int fail;
-static int LOOPS =  202000;
+static int LOOPS =  380000;
 
 void addFactors(mpz_t N, int i) {
 	for (int j = 0; j<i; j++) {
@@ -25,24 +25,33 @@ void addIntFactors(int factor, int number) {
 			output_int.push_back(factor);
 	}
 }
+
 void pollard_roh(mpz_t  N, int number){
 	if(mpz_probab_prime_p(N,10)){
 		addFactors(N, number);
 		mpz_clear(N);
 		return;
 	}
-	mpz_t x,y,d, abs;
+	mpz_t x,y,d, abs, sum;
 	mpz_init_set_ui (x, 7);		
 	mpz_init_set_ui (y, 7);
 	mpz_init_set_ui(d, 1); 
-	mpz_init (abs);
-	int counter = 0;
+	mpz_init (abs);	
+	mpz_init_set_ui(sum,1);
+	int counter = 0; int i = 0;
 	while(!mpz_cmp_ui(d,1) && counter < LOOPS ){
 		f(x, N);
 		f(y, N); f(y, N); 
 		mpz_sub(abs, x, y);
 		mpz_abs(abs, abs);
-		mpz_gcd(d, abs, N);
+		mpz_mul(sum, sum, abs);
+		mpz_mod(sum, sum, N);
+		i++;
+		if(i == 100) {
+			mpz_gcd(d, sum, N);
+			mpz_set_ui(sum, 1);
+			i = 0;
+		}
 		counter++;
 	}
 	mpz_clear(x); mpz_clear(y);				
@@ -69,12 +78,21 @@ void perfect_squares(mpz_t N, int number) {
 		mpz_clear(N);
 		return;
 	}
-	mpz_t root; mpz_init(root);
-	if(mpz_root(root, N, 2)) {
-		mpz_clear(N);
-		perfect_squares(root, number*2);
+	if(mpz_perfect_power_p(N)) {
+		mpz_t root; mpz_init(root);
+		int	found = 0; int i = 2;
+		while(!found) {
+			if(mpz_root(root, N, i)) {
+				found = 1;
+				mpz_clear(N);
+				perfect_squares(root, number*i);
+			}
+			i++;
 		}
-	pollard_roh(N, number);
+	}
+	else {
+		pollard_roh(N, number);
+	}
 }
 
 void factorize(mpz_t N, int number){
@@ -116,7 +134,13 @@ int main(){
 		fail = 0;
 		output_mpz.clear();
 		output_int.clear();
-		factorize(N, 1);
+//		if(mpz_sizeinbase(N, 2) >100) {
+//			fail = 1;
+//			cout<<"fail"<<endl;
+//		}
+//		else {
+			factorize(N, 1);
+//		}
 		if(!fail) {
 			print_output();
 		}
