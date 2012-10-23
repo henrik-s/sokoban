@@ -1,0 +1,18 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.2}Problem Statement}{1}
+\contentsline {section}{\numberline {2}Background}{2}
+\contentsline {subsection}{\numberline {2.1}Trial Division}{2}
+\contentsline {subsection}{\numberline {2.2}Perfect Powers}{2}
+\contentsline {subsection}{\numberline {2.3}Fermat's Factorization Method}{2}
+\contentsline {subsection}{\numberline {2.4}Cycle Detection}{2}
+\contentsline {subsubsection}{\numberline {2.4.1}Floyd's Cycle Finding Algorithm}{2}
+\contentsline {subsection}{\numberline {2.5}Pollard's Rho Algorithm}{2}
+\contentsline {section}{\numberline {3}Approach}{3}
+\contentsline {subsection}{\numberline {3.1}Design Approaches}{3}
+\contentsline {subsection}{\numberline {3.2}Our Approach}{3}
+\contentsline {subsection}{\numberline {3.3}Pseudo code}{3}
+\contentsline {section}{\numberline {4}Results}{3}
+\contentsline {section}{\numberline {5}Discussion}{3}
+\contentsline {section}{\numberline {6}Conclusion}{4}
