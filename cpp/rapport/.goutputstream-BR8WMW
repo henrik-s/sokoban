@@ -1,0 +1,124 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{listings}
+\usepackage{moreverb}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage[final]{pdfpages}
+\usepackage{url}
+\usepackage{listings}
+
+
+\textheight=21.0cm
+\textwidth=15.1cm
+
+\topmargin=-1.0cm
+\headsep=0.7cm
+\oddsidemargin=0.4cm
+\evensidemargin=0.4cm
+
+\footskip=1.0cm
+\setcounter{secnumdepth}{3}
+
+\fancyhf{}
+\fancyhead[LE,RO]{\slshape \rightmark}
+\fancyhead[LO,RE]{\slshape \leftmark}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\begin{titlepage}
+
+%forside
+\thispagestyle{empty}
+\begin{center}        % sentrerer teksten
+  \vspace{58mm}          % vertikalt mellomrom
+
+\vspace{23mm}
+  \Large
+  \textbf{\\$ $\\$ $\\Project 1: Factoring} \\ $ $ \\
+  \large
+  \vspace{5mm}
+  \textbf{by} \\$ $\\$ $\\ $ $ \\
+
+  \vspace{5mm}
+  %Forfatter
+  \large
+  \textbf{Mårten Pålsson} 8802030539 $<$mpals@kth.se$>$ \\
+\textbf{Henrik Sohlberg} 8805080531 $<$hsoh@kth.se$>$ \\
+
+ \vspace{25mm}
+  \vspace{2mm}
+
+ 
+  \vspace{5mm}
+  \vspace{8mm}
+  \vspace{0mm}
+	\textbf{KTH Computer Science and Communication\\}
+	\emph{DD2440 - avalg12} \\
+  \vspace{15mm}
+ \vspace{30mm}
+
+  \textsl{2012-10-24} \\
+\end{center}
+
+\end{titlepage}
+\pagestyle{empty}
+\clearpage
+$ $
+\clearpage
+
+\abstract
+asdasd\\\\\\
+
+\newpage
+\tableofcontents
+\newpage
+\pagestyle{fancy}
+\setcounter{page}{1} % sets the current page number to 32 
+
+\section{Introduction}
+\subsection{Introduction}
+The purpose of this project was to investigate different methods and algorithms for prime factorization. Prime factorization, or Prime decomposition as it is also called, is the practice of splitting an integer into a series of prime factors that when multiplied together form the original number\cite{one}.
+There are many algorithms for factoring integers into primes but the one we have used and will discuss in the greatest detail in this report is Pollard Rho's algorithm for factoring numbers. 
+
+\subsection{Problem Statement}
+As stated above the problem in this case consists of factoring numbers into their constituent primes. The number of integers to be factorized are 100 and the time limit of doing so is 15 seconds. There is also a limit of 32 MB of memory that can be allocated to the program.
+\newpage
+\section{Background}
+This section briefly discuss some algorithms used to factorize numbers.
+
+\subsection{Trial Division}
+Trial Division is a naive approach where an integer is divided by a series of precomputed prime numbers to discover small factors quickly. If the rest of such a division is 0 then we know that the prime in question is a factor of the given integer. The resulting  quotient is then sent back to Trial Division to try to break it down even further.
+This is a quick way of finding small prime factors and reducing the magnitude of the given Integer.
+
+\subsection{Perfect Powers}
+Perfect power refers to integers that can be written on the form $N = m^k$ where $m > 1$ and $k \geq2$ \cite{two}. If $N$ is found to be a perfect power it is only necessary to continue the factorization using $m$ as the input and store any found factors $k$ times before printing. This is because any factors found in $m$ would have been found $k$ times in $N$ since $m$ is the $k$:th root of $N$.
+This further lessens the magnitude of $N$ and reduces thus the computation time.
+
+\subsection{Fermat's Factorization Method}
+Pierre de Fermat's method to factorize a number is to represent it as the difference between two squares.\\\\
+$N=a^2-b^2=(a+b)(a-b)$\\\\
+To factorize $N$, start with a value $\lfloor{\sqrt{N}}\rfloor{} + 1 = a$. Then $b = a^2 - N$, if $b$ is a perfect square, you have found two factors $(a+b)$ and $(a-b)$ to $N$.
+
+\subsection{Cycle Detection}
+Cycle detection refers to the problem of finding a cycle in a sequence of iterated function values. \cite{cycle}
+
+\subsubsection{Floyd's Cycle Finding Algorithm}
+Also known as ''tortoise and the hare'' algorithm \cite{cycle} which finds a cycle in a sequence. It uses two pointer, where one pointer (the hare) moves with double the speed to the other pointer (the tortoise) through the elements of the sequence. The algorithm detects the occurrence when the hare has sprinted exactly one whole cycle further than the tortoise, and uses this information to calculate the length of the found cycle. If the hare reaches the end of the sequence first, there is no cycle.
+
+\subsection{Pollard's Rho Algorithm}
+Pollard's rho algorithm is especially effective at finding small prime factors and is based on the concept of the existence of an subgroup to the group $N$ \cite{pollard1}\cite{pollard2}. The algorithm first makes the assumption that for an integer $N$ there exists a factor $d$. Secondly, it uses a pseudo-random function to generate ''random'' numbers together with an implementation of the Floyd's cycle finding algorithm [2.1.3]. An iteration consist of generating two random numbers, $x_k$ and $x_{k/2}$, and performing a greatest common divisor operation between the absolute value $(x-y)$ and the number to be factorized, $N$. Pollard's rho algorithm succeeds when:
+\begin{itemize}
+\item gcd($x_k-x_{k/2}$ 
+and N
+
+is > 1, != N.
+
+Behind the scene, we know that n is a multiple of d. When xk = xk/2 mod d, xk-xk/2 is a multiple of d. If gcd(xk-xk/2, N) > n, we find a factor. 
+
+The time complexity of Pollard Rho using a random function f mod p to find the factor p is, according to Håstad \cite[avalg], O(p)  = O(N). Since p is unknown, this function is not possible to use, but experience shows that the 
