@@ -9,10 +9,18 @@
 \contentsline {subsection}{\numberline {2.4}Cycle Detection}{2}
 \contentsline {subsubsection}{\numberline {2.4.1}Floyd's Cycle Finding Algorithm}{2}
 \contentsline {subsection}{\numberline {2.5}Pollard's Rho Algorithm}{2}
-\contentsline {section}{\numberline {3}Approach}{3}
-\contentsline {subsection}{\numberline {3.1}Design Approaches}{3}
-\contentsline {subsection}{\numberline {3.2}Our Approach}{3}
-\contentsline {subsection}{\numberline {3.3}Pseudo code}{3}
-\contentsline {section}{\numberline {4}Results}{3}
-\contentsline {section}{\numberline {5}Discussion}{3}
-\contentsline {section}{\numberline {6}Conclusion}{4}
+\contentsline {section}{\numberline {3}Method}{4}
+\contentsline {subsection}{\numberline {3.1}Our Approach}{4}
+\contentsline {subsection}{\numberline {3.2}Pseudo code}{4}
+\contentsline {section}{\numberline {4}Results}{6}
+\contentsline {subsection}{\numberline {4.1}First Implementation}{6}
+\contentsline {subsection}{\numberline {4.2}Second Implementation}{6}
+\contentsline {subsection}{\numberline {4.3}Third Implementation}{6}
+\contentsline {subsection}{\numberline {4.4}Fourth Implementation}{6}
+\contentsline {subsection}{\numberline {4.5}Fifth Implementation}{7}
+\contentsline {subsection}{\numberline {4.6}Sixth Implementation}{7}
+\contentsline {subsection}{\numberline {4.7}Seventh Implementation}{7}
+\contentsline {subsection}{\numberline {4.8}Eighth Implementation}{7}
+\contentsline {subsection}{\numberline {4.9}Ninth Implementation}{8}
+\contentsline {section}{\numberline {5}Discussion}{9}
+\contentsline {section}{\numberline {6}Conclusion}{10}

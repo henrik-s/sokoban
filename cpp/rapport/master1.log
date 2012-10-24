@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.6.14)  23 OCT 2012 21:25
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.6.14)  24 OCT 2012 12:25
 entering extended mode
  %&-line parsing enabled.
 **master1.tex
@@ -255,6 +255,9 @@ Package pdfpages Warning: I will use a dummy \includepdf command
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
+(/usr/share/texmf-texlive/tex/generic/genmisc/nth.sty
+Package: nth 2002/02/27
+)
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 29.
@@ -323,17 +326,17 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [1]
-Underfull \hbox (badness 10000) in paragraph at lines 104--107
+Underfull \hbox (badness 10000) in paragraph at lines 110--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--107
+Underfull \hbox (badness 10000) in paragraph at lines 110--113
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--116
+Underfull \hbox (badness 10000) in paragraph at lines 124--125
 
  []
 
@@ -344,12 +347,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 117--118
+Underfull \hbox (badness 10000) in paragraph at lines 126--127
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--121
+Underfull \hbox (badness 10000) in paragraph at lines 128--130
 
  []
 
@@ -361,28 +364,233 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [3]
 
+LaTeX Warning: Reference `pseudo' on page 4 undefined on input line 132.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--145
+
+ []
+
+
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[4]
+[4
+
+]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[5] (/usr/share/texmf-texlive/tex/latex/listings/lstlang1.sty
+[5]
+
+LaTeX Warning: Citation `kattis' on page 6 undefined on input line 166.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--174
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--174
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 177--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 177--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--195
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--195
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[6
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 198--202
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 198--202
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 212--217
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 212--217
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--224
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--224
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 227--232
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 227--232
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[7]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--243
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 246--248
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[10]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[11] (/usr/share/texmf-texlive/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
-) (./master1.aux) ) 
+) (./master1.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 4271 strings out of 493849
- 57158 string characters out of 1152846
- 141060 words of memory out of 3000000
- 7488 multiletter control sequences out of 15000+50000
+ 4312 strings out of 493849
+ 57659 string characters out of 1152846
+ 141442 words of memory out of 3000000
+ 7525 multiletter control sequences out of 15000+50000
  12577 words of font info for 45 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 28i,11n,43p,739b,503s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 28i,11n,43p,729b,630s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on master1.dvi (9 pages, 16320 bytes).
+Output written on master1.dvi (15 pages, 34480 bytes).
