@@ -14,6 +14,12 @@
 \usepackage{listings}
 \usepackage{nth}
 
+
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
 \textheight=21.0cm
 \textwidth=15.1cm
 
@@ -71,13 +77,24 @@
 \clearpage
 $ $
 \clearpage
-
 \abstract
-asdasd\\\\\\
-
-\newpage
+The subject of this report is the creation of a program that factorizes numbers into their constituent primes and also different ways of doing so. The requirements of our program was that it had 15 seconds to factorize 100 numbers up to 100 bits in length using at most 32 MB of memory. Our solution used a combination of several methods to factorize integers. During the project we tried a few different variations but for our final version we used Pollard's rho algorithm using Floyds Circle detection algorithm together with Trial Division and finding Perfect Powers.
+What we discovered were that Pollard's rho is good for the factorization of integers with small prime factors and that the most important feature of a program of this type, besides the algorithm itself, is to be able to control how the limited execution time is spent.
+\clearpage
+$ $
+\clearpage
+\begin{center}
+\section*{Statement Of Collaboration}
+\end{center}
+Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to factorize large numbers. Later in the process (the implementation phase) Mårten implemented the Trial Division method, Henrik implemented the Perfect Power and the Fermat's Factorization methods, while both wrote the code to the Pollard's rho method.\\\\
+Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results, Discussion, and Conclusion. Henrik wrote parts of the background and parts of the method. 
+\clearpage
+$ $
+\clearpage
 \tableofcontents
-\newpage
+\clearpage
+$ $
+\clearpage
 \pagestyle{fancy}
 \setcounter{page}{1} % sets the current page number to 32 
 
@@ -90,7 +107,9 @@ There are many algorithms for factoring integers into primes but the one we have
 \subsection{Problem Statement}
 \label{problem_statement}
 As stated above the problem in this case consists of factoring numbers into their constituent primes. The number of integers to be factorized are 100 and the time limit of doing so is 15 seconds. There is also a limit of 32 MB of memory that can be allocated to the program.
-\newpage
+\clearpage
+$ $
+\clearpage
 \section{Background}
 \label{background}
 This section briefly discuss some algorithms used to factorize numbers.
@@ -121,12 +140,20 @@ Also known as ''tortoise and the hare'' algorithm \cite{cycle} which finds a cyc
 
 \subsection{Pollard's Rho Algorithm}
 \label{pollard}
-Pollard's rho algorithm (PR) is especially effective at finding small prime factors and is based on the concept of the existence of an subgroup to the group $N$ \cite{pollard1}\cite{pollard2}. The algorithm first makes the assumption that for an integer $N$ there exists a factor $d$. Secondly, it uses a pseudo-random function to generate ''random'' numbers together with an implementation of the Floyd's cycle finding algorithm, sec. \ref{floyd}. An iteration consist of generating two random numbers, $x_k$ ($x$) and $x_{k/2}$ ($y$), and performing a greatest common divisor operation between the absolute value $(x-y)$ and the number to be factorized, $N$. PR succeeds when gcd($|x-y|, N)=d$ where \\
+Pollard's rho algorithm (PR) is especially effective at finding small prime factors and is based on the concept of the existence of an subgroup to the group $N$ \cite{pollard1}\cite{pollard2}. The algorithm first makes the assumption that for an integer $N$ there exists a factor $d$. Secondly, it uses a pseudo-random function to generate ''random'' numbers together with an implementation of the Floyd's cycle finding algorithm, sec. \ref{floyd}. An iteration consist of generating two random numbers, $x_k$ ($x$) and $x_{k/2}$ ($y$), and performing a greatest common divisor (GCD) operation between the absolute value $(x-y)$ and the number to be factorized, $N$. PR succeeds when GCD($|x-y|, N)=d$ where \\
 \begin{enumerate}
 \item{$d > 1$, and $d\neq{N}$}\\
 \end{enumerate}
-(\emph{Behind the scene}), we know that $N$ is a multiple of $d$. When $x = y\mod{d}\rightarrow (x-y)$ is a multiple of $d$. If gcd($|x-y|, N) > 1$) and $\neq{N}$ we find a factor.\\\\
+(\emph{Behind the scene}), we know that $N$ is a multiple of $d$. When $x = y\mod{d}\rightarrow (x-y)$ is a multiple of $d$. If GCD($|x-y|, N) > 1$) and $\neq{N}$ we find a factor.\\\\
 The time complexity of PR using a random function $f\mod{p}$ to find the factor $p$ is, according to Hastad \cite{avalg}, $O(\sqrt{p}) = O(\sqrt{N})$. Since $p$ is unknown, this function is not possible to use, but experience shows that the ''random'' function $x_{i+1}\equiv{x_{i}{^2}+1}$ also behaves this way.
+
+\subsubsection{A Pollard And Brent Improvement}
+Pollard and Brent \cite{pollard1} found out that if GCD$(a,n)>1$, then GCD$(ab, n)>1$ for any positive integer $b$. This yields that instead of computing a GCD operation each iteration of PR, it is sufficient to only perform a GCD every \nth{100} iteration using GCD$(z,n)$, where $z$ is the product of 100 consecutive $|x-y| \mod{N}$. 
+
+\subsection{GMP library}
+To be able to work with and factorize large integers we have used Bjorn Granlunds GmpLib. This library gives us the functionality we need to perform integer operations with very large integers. All integers to be factorized and are stored in \emph{mpz\_t} structs to allow them to be up to 100 bits in length.
+The two functions we have used from this library that are of special note are \emph{mpz\_probab\_prime()} \cite{gmp1} and \emph{mpz\_perfect\_power\_p()} \cite{gmp2}. \emph{mpz\_probab\_prime()} is used to find whether an integer is prime or not, and \emph{mpz\_perfect\_power()} is used to find out if an integer is a perfect power or not.
+All other functions except integer operations we have written ourselves.
 \clearpage
 \section{Method} \label{method}
 This section describes our approach in text, sec. \ref{our_approach}, and in pseudo code, sec. \ref{pseudo}.
@@ -138,29 +165,109 @@ First we check whether the integer received is prime or not. If it is not we use
 Then we attempt to find out whether the resulting integer $N$ from trial division is a perfect power, sec. \ref{perfect_power}, on the form $N = m^k$ or not. If $N$ is prime it is stored as a factor and the the function returns. If it is not prime but it is a perfect power we send the resulting $\sqrt{m}$ to PR with $k$ as a parameter specifying the order of the root. Otherwise we send $N$ to PR with $k =  1$ as the order of the root.\\\\
 Then when we have broken down $N$ as much as we can we run it through PR. If $N$ is prime when it reaches PR it is added as a factor $k$ times and the function returns.\\\\
 Since we have time limit on our program and we want to factor as many numbers as possible we have put a limit on the amount of time spent on factoring each integer $N$. This time limit is implemented by only allowing PR to run an already specified amount of times before returning fail instead of a prime factor. 
-Also instead of calculating the gcd$(|x-y|, N)$ in every iteration of the loop we store 99 multiplications of $|x-y| \mod{N}$ and then calculating a single gcd. 
+Also instead of calculating the GCD$(|x-y|, N)$ in every iteration of the loop we store 99 multiplications of $|x-y| \mod{N}$ and then calculating a single GCD. 
 When (and if) PR finds a factor it sends it to our perfect square function with any parameter $k$ it has picked up on the way and the process starts over. 
 This process is repeated until either we have run the specified max amount of loops or we have factored $N$ into its prime factors.
 If we run out of time or a factor cannot be found fail is returned and the program continues on to the next number. Otherwise the found factors are printed and the whole process is repeated for the next number.
 \subsection{Pseudo code}
+\label{pseudo}
 \begin{algorithmic}
-\STATE Find the winning map
-\STATE $currentState \leftarrow startMap$
-	\WHILE{$newStates$}
-		\STATE $currentState \leftarrow prioQueue.remove;$
-		\FOR{$all$ $moves$ $in$ $currentState$} 
-			\STATE $nextMap \leftarrow new Map(move)$
-			\IF{$nextMap$ $is$ $winning$ $state$}
-				\RETURN $nextMap$
-			\ELSIF{$nextMap$ $has$ $moves$ $\&$ $!visited$}
-			\STATE $prioQueue \leftarrow nextMap$
-			\ENDIF
-		\ENDFOR
-	\ENDWHILE
+\STATE $Factorize$ $a$ $integer$ $N$
+\STATE  
+\STATE Initialize a vector $V$
+\FOR{$i \gets 1 \to 100$}
+	\STATE $N\gets$ input integer
+	\STATE clear $V$
+	\STATE $fail \gets false$
+	\STATE $Factorize(N, 1)$
+	\IF{$\neg{fail}$}
+		\STATE Print all the elements in $V$
+	\ENDIF
+\ENDFOR
 \RETURN
+\STATE
+\STATE
+\STATE $Factorize(N, number)$
+\IF{$mpz\_probab\_prime(N,10)$}
+	\STATE Add $N$, $number$ times, to $V$
+	\RETURN
+\ENDIF
+\STATE $primes$ = vector of precalculated primes
+\FOR{$i \gets 0 \to sizeof(primes)$}
+	\IF{$primes[i]|N$}
+		\STATE Add $primes[i]$ to $V$
+		\STATE $N\gets N/primes[i]$
+		\IF{$N=1$}
+			\RETURN
+		\ENDIF		
+	\ENDIF
+\ENDFOR
+\STATE $perfect\_powers(N, number)$
+\RETURN
+\STATE
+\STATE
+\STATE $perfect\_powers(N, number)$
+\IF{$mpz\_probab\_prime(N,10)$}
+	\STATE Add $N$, $number$ times, to $V$
+	\RETURN
+\ENDIF
+\IF{mpz\_perfect\_power\_p(N)}
+	\STATE $found\gets false$
+	\STATE $i\gets2$	
+	\WHILE{$\neg found$}
+		\IF{$\sqrt[i]{N}=$ a even integer}
+			\STATE $found\gets true$
+			\STATE $perfect\_powers(\sqrt[i]{N}, i\cdot number)$
+		\RETURN
+		\ENDIF
+		\STATE $i$++
+	\ENDWHILE
+\ELSE
+	\STATE $Pollard's$ $rho$ $(N, number)$
+\ENDIF
+\STATE
+\STATE
+\STATE $Pollard's$ $rho$ $(N, number)$
+\IF{$mpz\_probab\_prime(N,10)$}
+	\STATE Add $N$, $number$ times, to $V$
+	\RETURN
+\ENDIF
+\STATE $x\gets 7$
+\STATE $y\gets 7$
+\STATE $sum\gets 1$
+\STATE $d\gets 1$
+\STATE $counter\gets 0$
+\STATE $LOOPS\gets$ 380,000
+\WHILE{$d = 1 \wedge counter<LOOPS$}
+	\STATE $counter$++
+	\STATE $x\gets f(x, N)$
+	\STATE $y\gets f(f(y, N), N)$
+	\STATE $sum\gets sum\cdot{|x-y|} \mod{N}$
+	\IF{$counter \mod{100} = 0$}
+		\STATE $d\gets$ GCD$(sum,N)$
+		\STATE $sum\gets 1$
+	\ENDIF
+\ENDWHILE
+\IF{$d\neq{N} || counter=LOOPS$}
+	\STATE $fail \gets true$
+	\RETURN "fail"
+\ELSE
+	\STATE $perfect\_powers(N/d, number)$
+	\STATE $perfect\_powers(d, number)$
+	\RETURN
+\ENDIF
+\STATE
+\STATE
+\STATE $f(x, N)$
+	\STATE $x\gets x^2$
+	\STATE $x\gets x+1$
+	\STATE $x\gets x\mod{N}$
+	\RETURN
 \end{algorithmic}
-\clearpage
 
+\clearpage
+$ $
+\clearpage
 \section{Results}
 \label{results}
 Below are accounts of the changes in the submissions where mayor implementation changes were made during the course of this project, and the results of their Kattis \cite{kattis} submissions. If something is not described in one of the implementation accounts it has remained as it was in the last implementation. E.g. the initialization values of $x$ and $y$ in our first and second implementation were the same and as such we only mention them in the first implementation, but not the second.
@@ -224,30 +331,37 @@ PR is only allowed to run 1 time for a number and using a maximum of 202,000 loo
 
 \subsection{Ninth Implementation}
 \label{res_9}
-\textbf{Kattis submission ID}: 308558\\
-\textbf{Description}: Perfect power finds roots up to order $k$. In the main PR loop 99 multiples of $|x - y| \mod{N}$ are stored and one gcd is calculated every 100 loops instead of calculating a gcd in every loop. PR is allowed to run for a maximum of 380,000 loops. 
+\textbf{Kattis submission ID}: 308558 (our best submission)\\
+\textbf{Description}: Perfect power finds roots up to order $k$. In the main PR loop 99 multiples of $|x - y| \mod{N}$ are stored and one GCD is calculated every 100 loops instead of calculating a GCD in every loop. PR is allowed to run for a maximum of 380,000 loops. 
 Numbers of any bit length are allowed.	\\\\
 \textbf{Number solved}: 79\\
 \textbf{CPU time used}: 14.58 seconds\\
+\clearpage
+$ $
 \clearpage
 \section{Discussion}
 \label{discussion}
 Changing from using system time to keep our execution time in check to using a limited amount of loops for PR freed a lot of time for our program. This becomes apparent between the \nth{1} and \nth{3} implementation. This is because now every number we received get the same amount of time instead of the whole program only getting 14 seconds in which to run. This means that instead of potentially getting stuck on a large complicated number for a large amount of time we can instead solve several smaller less complicated numbers.\\\\
 Increasing the amount of precomputed prime numbers used in Trial Division is useful to quickly factorize numbers with many small factors. It does not however affect the computation time to the same degree in the factorization of numbers with larger prime factors as can be seen between the \nth{5} and \nth{6} implementation. This conclusion can be drawn since between the \nth{5} and \nth{6}  implementation we only factorize one more number in the same amount of time, significantly more numbers are only factorized when other optimization have been implemented. This means that most numbers that are greatly affected by Trial Division have already been factorized when only using 3000 precomputed primes.\\\\
 Having the initial values of $x$ and $y$ changing dynamically did not have any greater effect on the solver either as we can see between the \nth{4}  and \nth{5} implementation. While the amount of successfully factorized numbers increased the time doing so also increased greatly.\\\\
-The single biggest time gain can be seen between the \nth{6} and \nth{7} implementation when we only allowed PR to run once. This meant that even less time was spent on numbers that our algorithm was unable to factorize and left more time for numbers that we could. Through testing we found the optimal starting value of $x$ and $y$ to be 7.\\\\
-Only factorizing one of the roots when a perfect power is also a time saver as can be seen between the \nth{6} and \nth{7} implementation. This is because now you only have to factorize an integer with half the magnitude (in the case of a square root, less if a root of a higher order is found). This gains us a lot of time if a perfect power is found.\\\\
-Limiting the solver to smaller numbers was found to be a bad idea as can be seen between the \nth{7} and \nth{8} implementation. This means that our solver does not have any bigger problems solving number up to 100 bits in length in the allotted time and time can be spared for larger and more complicated numbers.\\\\
-The final time gain found was in storing up multiples of $|x - y| \mod{N}$ and calculating fewer gcd operations. Since finding the gcd of two numbers is time consuming it is important to to this as few times as possible. Reducing the amount of times we calculated a gcd sped up our algorithm significantly and allowed us to solve 5 more numbers.\\\\
-When we implemented Fermats Factorization algorithm it only slowed our solution down. So while Fermats algorithm is an interesting concept it was found to be too costly to be effectively used for our input data.
-\newpage
+The single greatest time gain can be seen between the \nth{6} and \nth{7} implementation when we only allowed PR to run once. This meant that even less time was spent on numbers that our algorithm was unable to factorize and left more time for numbers that we could. Through testing we found the optimal starting value of $x$ and $y$ to be 7.\\\\
+Only factorizing one of the roots when a perfect power is found is also a time saver as can be seen between the \nth{6} and \nth{7} implementation. This is because now you only have to factorize an integer with half the magnitude (in the case of a square root, less if a root of a higher order is found). This gains us a lot of time if a perfect power is found.\\\\
+Limiting the solver to smaller numbers was found to be a bad idea as can be seen between the \nth{7} and \nth{8} implementation. This means that our solver does not have any major problems solving number up to 100 bits in length in the allotted time and time can be spared for larger and more complicated numbers.\\\\
+The final time gain found was in storing up multiples of $|x - y| \mod{N}$ and calculating fewer GCD operations. Since finding the GCD of two numbers is time consuming it is important to this as few times as possible. Reducing the amount of times we calculated a GCD speeded up our algorithm significantly and allowed us to solve 5 more numbers.\\\\
+When we implemented Fermats Factorization algorithm it only slowed our solution down. So while Fermats algorithm is an interesting concept it was found to be too costly to be effectively used in combination with our implementation and the input.
+\clearpage
+$ $
+\clearpage
 \section{Conclusion}
 \label{conclusion}
-The single biggest factor of our success was the fact that we were able to control the time spent on each number. It was when we were able to do this that other optimizations started taking effect on our computation time. This is because we could then control the amount of time spent on numbers that we are never going to be able to solve, i.e we will not get stuck.\\\\
+The single greatest factor of our success was the fact that we were able to control the time spent on each number. It was when we were able to do this that other optimizations started taking effect on our computation time. This is because we could then control the amount of time spent on numbers that we are never going to be able to solve, i.e we will not get stuck.\\\\
 Another important conclusion we can draw is that Pollard's rho is best at factoring relatively simple numbers (numbers with small prime factors). We can see the proof of this when we limited the length of the given integers to 100 bits. When we did this we factorized 8 less numbers than before, which is a significant amount. This means that length is not a deciding factor for Pollard's rho. Also since we use Trial Division, numbers who are Perfect Powers with relatively small roots (not one of the first 10,000 primes) are not a big problem either. This leads to the conclusion that we have difficulties factoring composite numbers with large prime factors and large pseudo prime numbers.
 
-\newpage
+\clearpage
+$ $
+\clearpage
 \begin{thebibliography}{9}
+
 
 \bibitem{one} Prime Factorization [Homepage on the Internet]. [cited 10/10/23]. Available from: \url{http://mathworld.wolfram.com/PrimeFactorization.html}
 
@@ -259,31 +373,41 @@ Another important conclusion we can draw is that Pollard's rho is best at factor
 
 \bibitem{pollard2} Pollard's Rho Method [Homepage on the Internet]. [cited 10/10/23]. Available from: \url{http://www.csh.rit.edu/~pat/math/quickies/rho/}
 
+\bibitem{gmp1} Number Theoretic Functions [Homepage on the Internet]. [cited 10/10/24]. Available from: \url{http://gmplib.org/manual/Number-Theoretic-Functions.html#Number-Theoretic-Functions}
+
+\bibitem{gmp2} Root Extraction Functions [Homepage on the Internet]. [cited 10/10/23]. Available from: \url{http://gmplib.org/manual/Integer-Roots.html#Integer-Roots}
+
 \bibitem{avalg} Notes for the course advanced algorithms [Homepage on the Internet]. [cited 10/10/23]. Available from: \url{http://www.csc.kth.se/utbildning/kth/kurser/DD2440/avalg07/algnotes.pdf}
+
+\bibitem{kattis} KATTIS [Homepage on the Internet]. [cited 10/10/24]. Available from: \url{https://kth.kattis.scrool.se/}
 
 
 \end{thebibliography}
 \clearpage
 \appendix
-%\lstset{language=Java, numbers=left, frame=single}
-
-\definecolor{javared}{rgb}{0.6,0,0} % for strings
-\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
-\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
-\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
-
-\lstset{language=Java,
-basicstyle=\ttfamily,
-keywordstyle=\color{javapurple}\bfseries,
-stringstyle=\color{javared},
-commentstyle=\color{javagreen},
-morecomment=[s][\color{javadocblue}]{/**}{*/},
-numbers=left,
-numberstyle=\tiny\color{black},
-stepnumber=1,
-numbersep=10pt,
-tabsize=4,
-showspaces=false,
-showstringspaces=false}
-
+\section{C++ code}
+\lstset{
+	language=[Visual]C++,
+	keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+	identifierstyle=\ttfamily,
+	commentstyle=\color[rgb]{0.133,0.545,0.133},
+	stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+	showstringspaces=false,
+	basicstyle=\small,
+	numberstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	numbersep=10pt,
+	tabsize=2,
+	breaklines=true,
+	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	breakatwhitespace=false,
+	aboveskip={1.5\baselineskip},
+  columns=fixed,
+  upquote=true,
+  extendedchars=true,
+% frame=single,
+% backgroundcolor=\color{lbcolor},
+}
+\lstinputlisting{pollard_roh.cpp}
 \end{document}

@@ -1,0 +1,81 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage{listings}
+\usepackage{moreverb}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage[final]{pdfpages}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{nth}
+
+
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\textheight=21.0cm
+\textwidth=15.1cm
+
+\topmargin=-1.0cm
+\headsep=0.7cm
+\oddsidemargin=0.4cm
+\evensidemargin=0.4cm
+
+\footskip=1.0cm
+\setcounter{secnumdepth}{3}
+
+\fancyhf{}
+\fancyhead[LE,RO]{\slshape \rightmark}
+\fancyhead[LO,RE]{\slshape \leftmark}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\begin{titlepage}
+
+%forside
+\thispagestyle{empty}
+\begin{center}        % sentrerer teksten
+  \vspace{58mm}          % vertikalt mellomrom
+
+\vspace{23mm}
+  \Large
+  \textbf{\\$ $\\$ $\\Project 1: Factoring} \\ $ $ \\
+  \large
+  \vspace{5mm}
+  \textbf{by} \\$ $\\$ $\\ $ $ \\
+
+  \vspace{5mm}
+  %Forfatter
+  \large
+  \textbf{Mårten Pålsson} 8802030539 $<$mpals@kth.se$>$ \\
+\textbf{Henrik Sohlberg} 8805080531 $<$hsoh@kth.se$>$ \\
+
+ \vspace{25mm}
+  \vspace{2mm}
+
+ 
+  \vspace{5mm}
+  \vspace{8mm}
+  \vspace{0mm}
+	\textbf{KTH Computer Science and Communication\\}
+	\emph{DD2440 - avalg12} \\
+  \vspace{15mm}
+ \vspace{30mm}
+
+  \textsl{2012-10-24} \\
+\end{center}
+
+\end{titlepage}
+\pagestyle{empty}
+\clearpage
+$ $
+\clearpage
+\abstract
+The subject of this report is the creation of a program that factorizes numbers into their constituent primes and also different ways of doing so. The requirements of our program was that it had 15 seconds to factorize 100 numbers up to 100 bits in length using at most 32 MB of memory. Our solution used a combination of several methods to factorize integers, one of them were Pollard
