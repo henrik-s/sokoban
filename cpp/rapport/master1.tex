@@ -89,7 +89,7 @@ There are many algorithms for factoring integers into primes but the one we have
 
 \subsection{Problem Statement}
 \label{problem_statement}
-As stated above the problem in this case consists of factoring numbers into their constituent primes. The number of integers to be factorized are 100 and the time limit of doing so is 15 seconds. There is also a limit of 32 MB of memory that can be allocated to the program.
+As stated above the problem in this case consists of factoring numbers into their constituent primes. The number of integers to be factorized are 100 and the time limit of doing so is 15 seconds. The program will need to be able to handle integers up to 100 bits in length. There is also a limit of 32 MB of memory that can be allocated to the program.
 \newpage
 \section{Background}
 \label{background}
@@ -134,7 +134,7 @@ This section describes our approach in text, sec. \ref{our_approach}, and in pse
 \subsection{Our Approach}
 \label{our_approach}
 For our final implementation we have used PR, sec. \ref{pollard}, for prime factorization with some slight modifications. During the entire process when a factor is found it is added to a factor list that is printed at program termination.\\\\
-First we check whether the integer received is prime or not. If it is not we use Trial Division, sec. \ref{trial_division}, with the first 1000 primes to attempt to quickly break down the given integer $N$ into smaller components. This is to reduce the magnitude of $N$ and thus lessen the time spent factoring. If it is prime it is stored as the only factor of itself and the program stops.\\\\
+First we check whether the integer received is prime or not. If it is not we use Trial Division, sec. \ref{trial_division}, with the first 10000 primes to attempt to quickly break down the given integer $N$ into smaller components. This is to reduce the magnitude of $N$ and thus lessen the time spent factoring. If it is prime it is stored as the only factor of itself and the program stops.\\\\
 Then we attempt to find out whether the resulting integer $N$ from trial division is a perfect power, sec. \ref{perfect_power}, on the form $N = m^k$ or not. If $N$ is prime it is stored as a factor and the the function returns. If it is not prime but it is a perfect power we send the resulting $\sqrt{m}$ to PR with $k$ as a parameter specifying the order of the root. Otherwise we send $N$ to PR with $k =  1$ as the order of the root.\\\\
 Then when we have broken down $N$ as much as we can we run it through PR. If $N$ is prime when it reaches PR it is added as a factor $k$ times and the function returns.\\\\
 Since we have time limit on our program and we want to factor as many numbers as possible we have put a limit on the amount of time spent on factoring each integer $N$. This time limit is implemented by only allowing PR to run an already specified amount of times before returning fail instead of a prime factor. 

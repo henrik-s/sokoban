@@ -2,11 +2,6 @@
 #include <gmpxx.h>
 #include <iostream>
 #include <math.h>
-<<<<<<< HEAD
-#include <stdlib.h>
-
-using namespace std;
-=======
 #include <queue>
 #include <vector>
 #include <time.h>
@@ -71,7 +66,6 @@ void pollard_roh(mpz_t  N, int number){
 	mpz_clear(N);
 	perfect_squares(abs, number); perfect_squares(d, number);
 }
->>>>>>> 658f5660993e70b3cc02215da32e35289ca21b7f
 
 void f(mpz_t x, mpz_t N) {
 	mpz_pow_ui(x, x, 2);
