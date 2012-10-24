@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.10.24)  24 OCT 2012 14:28
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.10.24)  24 OCT 2012 14:30
 entering extended mode
  %&-line parsing enabled.
 **master1.tex
@@ -238,20 +238,18 @@ Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
 (/usr/share/texmf-texlive/tex/latex/pdfpages/pppdftex.def
 File: pppdftex.def 2009/02/07 v0.4g Pdfpages driver for pdfTeX (AM)
 
-(/usr/share/texmf-texlive/tex/latex/pdfpages/ppnull.def
-File: ppnull.def 2009/02/07 v0.4g Pdfpages dummy driver (AM)
 
+! Package pdfpages Error: The graphics package was loaded with driver
+(pdfpages)                `dvips.def', which cannot be used with pdfTeX.
 
-Package pdfpages Warning: I will use a dummy \includepdf command
-(pdfpages)                which will NOT insert any pages, because
-(pdfpages)                you are producing DVI output.
-
-))
-\AM@pagebox=\box32
-\AM@toc@title=\toks28
-\c@AM@survey=\count119
-\AM@templatesizebox=\box33
-) (/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+See the pdfpages package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.53   \aftergroup\endinput}{}
+                              
+? 
+)) (/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
@@ -266,7 +264,7 @@ less on input line 29.
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 30.
 
-No file master1.aux.
+(./master1.aux)
 \openout1 = `master1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
@@ -281,21 +279,35 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
-\c@lstlisting=\count120
-ABD: EveryShipout initializing macros
+\c@lstlisting=\count119
+ ABD: EveryShipout initializing macros
 (/usr/share/texmf-texlive/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
 (/etc/texmf/tex/latex/config/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
-Package color Info: Driver file: dvips.def on input line 130.
+Package color Info: Driver file: pdftex.def on input line 130.
 
-(/usr/share/texmf-texlive/tex/latex/graphics/dvipsnam.def
-File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
-)) [1
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+\Gread@gobject=\count120
 
-] [1
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count121
+\scratchdimen=\dimen123
+\scratchbox=\box32
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen124
+\MPnumerator=\count125
+\everyMPtoPDFconversion=\toks29
+))) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 76--77
@@ -314,15 +326,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--77
 
 [2
 
-]
-No file master1.toc.
+] (./master1.toc)
 \tf@toc=\write4
 \openout4 = `master1.toc'.
 
-[3]
-
-LaTeX Warning: Citation `one' on page 1 undefined on input line 87.
-
+ [3]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -330,10 +338,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [1]
-
-LaTeX Warning: Citation `two' on page 2 undefined on input line 105.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 110--113
 
  []
@@ -342,21 +346,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 110--113
 Underfull \hbox (badness 10000) in paragraph at lines 110--113
 
  []
-
-
-LaTeX Warning: Citation `cycle' on page 2 undefined on input line 116.
-
-
-LaTeX Warning: Citation `cycle' on page 2 undefined on input line 120.
-
-
-LaTeX Warning: Citation `pollard1' on page 2 undefined on input line 124.
-
-
-LaTeX Warning: Citation `pollard2' on page 2 undefined on input line 124.
-
-
-LaTeX Warning: Reference `floyd' on page 2 undefined on input line 124.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 124--125
@@ -375,9 +364,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 126--127
  []
 
 
-LaTeX Warning: Citation `avalg' on page 3 undefined on input line 129.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 128--130
 
  []
@@ -390,21 +376,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [3]
 
-LaTeX Warning: Reference `our_approach' on page 4 undefined on input line 132.
-
-
 LaTeX Warning: Reference `pseudo' on page 4 undefined on input line 132.
-
-
-LaTeX Warning: Reference `pollard' on page 4 undefined on input line 136.
-
-
-LaTeX Warning: Reference `trial_division' on page 4 undefined on input line 137
-.
-
-
-LaTeX Warning: Reference `perfect_power' on page 4 undefined on input line 138.
-
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 136--145
@@ -623,17 +595,31 @@ File: lstlang1.sty 2004/09/05 1.3 listings language file
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 4308 strings out of 493849
- 57611 string characters out of 1152845
- 141195 words of memory out of 3000000
- 7525 multiletter control sequences out of 15000+50000
+ 4134 strings out of 493848
+ 53715 string characters out of 1152822
+ 140048 words of memory out of 3000000
+ 7344 multiletter control sequences out of 15000+50000
  12577 words of font info for 45 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 28i,11n,43p,734b,630s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 28i,11n,43p,729b,630s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
+re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
+xlive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts
+/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/publ
+ic/amsfonts/cm/cmmi7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/
+cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb
+></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/
+texmf-texlive/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/share/texmf-texli
+ve/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/
+amsfonts/cm/cmti10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb
+>
+Output written on master1.pdf (15 pages, 206654 bytes).
+PDF statistics:
+ 107 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on master1.dvi (15 pages, 27264 bytes).
