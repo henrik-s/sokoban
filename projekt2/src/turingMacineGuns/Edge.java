@@ -8,6 +8,6 @@ public class Edge {
 	Edge(Node a, Node b){
 		this.a = a;
 		this.b = b;
-		distance = Utility.calculateDistance(a,b);
+		distance = Util.dist(a,b);
 	}
 }
