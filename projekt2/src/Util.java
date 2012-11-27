@@ -1,17 +1,3 @@
-import java.util.List;
-
-import javax.security.auth.login.CredentialException;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DatasetChangeListener;
-import org.jfree.data.general.DatasetGroup;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 
 
@@ -40,4 +26,24 @@ public class Util {
 		double distance = Math.sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y));
 		return distance;
 	}
+	
+	public static void swap(int x2, int y1, int[] T) {
+		//System.out.println("SWAP: x2: "+ x2 + " y1: " + y1);
+		int x = x2;
+		int y = y1;
+		int tmp = 0;
+		while(x < y){
+			tmp = T[y];
+			T[y] = T[x];
+			T[x] = tmp;
+			x++;
+			y--;
+		}
+	}
+	
+	public static void plot(int[] tour, Map map){
+		
+	}
+	
+	
 }

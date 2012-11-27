@@ -8,6 +8,9 @@ import java.io.IOException;
 public class Map {
 	int numNodes = 0;
 	Node[] nodes;
+	
+	double maxX = 0;
+	double maxY = 0;
 
 	Map(BufferedReader in) {
 		try {
@@ -17,7 +20,10 @@ public class Map {
 			String[] points;
 			for(int i = 0; i< numNodes; ++i){
 				points = in.readLine().split(" ");
-				nodes[i] = new Node(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
+				double x = Double.parseDouble(points[0]);
+				double y = Double.parseDouble(points[1]);
+				
+				nodes[i] = new Node(x,y);
 			}			
 			
 		} catch (NumberFormatException e) {
@@ -40,7 +46,14 @@ public class Map {
 			for(int i = 0; i< numNodes; ++i){
 				inLine = br.readLine();
 				points = inLine.split(" ");
-				nodes[i] = new Node(Double.parseDouble(points[0]),Double.parseDouble(points[1]));
+				
+				double x = Double.parseDouble(points[0]);
+				double y = Double.parseDouble(points[1]);
+				
+				if(maxX < x) maxX = x;
+				if(maxY < y) maxY = y;
+				
+				nodes[i] = new Node(x,y);
 			}			
 			
 		} catch (NumberFormatException e) {
@@ -49,5 +62,5 @@ public class Map {
 			System.out.println("No input stream in constructor: Map");
 		}
 	}
-
+	
 }
