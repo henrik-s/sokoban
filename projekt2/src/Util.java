@@ -1,3 +1,5 @@
+import java.util.Random;
+
 
 
 
@@ -28,7 +30,6 @@ public class Util {
 	}
 	
 	public static void swap(int x2, int y1, int[] T) {
-		//System.out.println("SWAP: x2: "+ x2 + " y1: " + y1);
 		int x = x2;
 		int y = y1;
 		int tmp = 0;
@@ -43,6 +44,14 @@ public class Util {
 	
 	public static void plot(int[] tour, Map map){
 		
+	}
+
+	public static void randomMove(int[] tour) {
+		Random rand = new Random();
+		
+		int x = rand.nextInt(tour.length-3);
+		int y = x + 2;
+		swap(x,y,tour);
 	}
 	
 	
