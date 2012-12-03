@@ -2,6 +2,7 @@
 import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class TSP {
 
@@ -34,27 +35,19 @@ public class TSP {
 		if (LOCAL)
 			print_tour(tour, map);
 		
-		for(int i = 0; i < 	10; i++){
+		for(int i = 0; i < 	5; i++){
 			tour = twoOpt(tour, map);
-			curr = Util.dist(tour, map);
 		}
-//			
-//			if(curr == prev && i < 8){
-//				//System.out.println("RANDOM");
-//				//Util.randomMove(tour);
-//			}
-//				
-//			prev = curr;
-////		}
-//		for(int i = 0; i < 3; i++)
-//			tour = threeOpt(tour, map);
-//		
-//		for(int i = 0; i < 	5; i++)
-//			tour = twoOpt(tour, map);
 		
-		//FIXA LOOPEN!!!
-		if (LOCAL)
+		for(int j = 0; j < 5; j++){
+			for(int k = 0; k < 	5; k++){
+				tour = twoOpt(tour, map);
+			}
+		}
+
+		if (LOCAL){
 			pl = new Plot(tour, map);
+		}
 		print_tour(tour, map);
 	}
 
@@ -71,8 +64,7 @@ public class TSP {
 				if (!used[j]) {
 					if (best == -1) {
 						best = j;
-					} else if ((Util.dist(map.nodes[tour[i - 1]], map.nodes[j]) < Util
-							.dist(map.nodes[tour[i - 1]], map.nodes[best]))) {
+					} else if (map.dist_vec[tour[i - 1]][j] < map.dist_vec[tour[i - 1]][best]) {
 						best = j;
 					}
 				}
@@ -99,9 +91,6 @@ public class TSP {
 					if (LOCAL)
 						print_tour(T, map);
 				}
-//				else if(x1 % 100 == 0){
-//					Util.swap(x2,y1,T);
-//				}
 			}
 		}
 		return T;
@@ -149,13 +138,12 @@ public class TSP {
 	}
 
 	public double dist(int x1, int x2, int y1, int y2, int[] T, Map map) {
-		return Util.dist(T[x1], T[x2], map) + Util.dist(T[y1], T[y2], map);
+		return map.dist_vec[T[x1]][T[x2]] + map.dist_vec[T[y1]][T[y2]];
 	}
 
 	public double dist(int x1, int x2, int y1, int y2, int z1, int z2, int[] T,
 			Map map) {
-		return Util.dist(T[x1], T[x2], map) + Util.dist(T[y1], T[y2], map)
-				+ Util.dist(T[z1], T[z2], map);
+		return map.dist_vec[T[x1]][T[x2]] + map.dist_vec[T[y1]][T[y2]]	+ map.dist_vec[T[z1]][T[z2]];
 	}
 
 	public void print_tour(int[] tour, Map map) {

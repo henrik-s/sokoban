@@ -11,11 +11,14 @@ public class Map {
 	
 	double maxX = 0;
 	double maxY = 0;
+	
+	double[][] dist_vec;
 
 	Map(BufferedReader in) {
 		try {
 			numNodes = Integer.parseInt(in.readLine());
 			nodes = new Node[numNodes];
+			dist_vec = new double[numNodes][numNodes];
 			
 			String[] points;
 			for(int i = 0; i< numNodes; ++i){
@@ -23,8 +26,14 @@ public class Map {
 				double x = Double.parseDouble(points[0]);
 				double y = Double.parseDouble(points[1]);
 				
-				nodes[i] = new Node(x,y);
-			}			
+				nodes[i] = new Node(x,y,i);
+			}
+			
+			for(int i = 0; i < numNodes; i++){
+				for(int j = 0; j < numNodes; j++){
+					dist_vec[i][j] = Util.dist(nodes[i], nodes[j]);
+				}
+			}
 			
 		} catch (NumberFormatException e) {
 			System.out.println("Problem formatting string to number in constructor: Map");
@@ -39,7 +48,9 @@ public class Map {
 			BufferedReader br = new BufferedReader(FR);
 			
 			numNodes = Integer.parseInt(br.readLine());
-			nodes = new Node[numNodes];			
+			nodes = new Node[numNodes];	
+			dist_vec = new double[numNodes][numNodes];
+			
 			String inLine = "";
 			String[] points;
 			
@@ -53,8 +64,14 @@ public class Map {
 				if(maxX < x) maxX = x;
 				if(maxY < y) maxY = y;
 				
-				nodes[i] = new Node(x,y);
-			}			
+				nodes[i] = new Node(x,y,i);
+			}		
+			
+			for(int i = 0; i < numNodes; i++){
+				for(int j = 0; j < numNodes; j++){
+					dist_vec[i][j] = Util.dist(nodes[i], nodes[j]);
+				}
+			}
 			
 		} catch (NumberFormatException e) {
 			System.out.println("Problem formatting string to number in constructor: Map");

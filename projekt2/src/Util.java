@@ -49,7 +49,7 @@ public class Util {
 	public static void randomMove(int[] tour) {
 		Random rand = new Random();
 		
-		int x = rand.nextInt(tour.length-3);
+		int x = rand.nextInt(tour.length-4);
 		int y = x + 2;
 		swap(x,y,tour);
 	}

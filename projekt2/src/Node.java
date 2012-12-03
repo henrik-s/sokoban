@@ -5,15 +5,36 @@ import java.util.ArrayList;
 public class Node {
 	double x;
 	double y;
+	int num;
+	int[] neighbours = new int[20];
 	
-	ArrayList<Edge> edges = new ArrayList<Edge>();
-	
-	Node(double x, double y){
+	Node(double x, double y,int num){
 		this.x = x;
 		this.y = y;
+		this.num = num;
+		for(int i = 0; i < 20; i++){
+			neighbours[i] = -1;
+		}
 	}
 	
-	public void addNeighbour(Node x){
-		edges.add(new Edge(this, x));
+	public void addClosestNeighbour(int node, int[][] dist_vec){
+		int curr = node;
+		int tmp = 0;
+		for(int i = 0; i < neighbours.length; i++){
+			if(dist_vec[num][curr] < dist_vec[num][neighbours[i]]){
+				tmp = neighbours[i];
+				neighbours[i] = curr;
+				curr = tmp;
+			}
+		}
+	}
+	
+	int numNeighbours(){
+		int size = 0;
+		for(int i = 0; i < neighbours.length; i++){
+			if( neighbours[i] > -1)
+				size++;
+		}
+		return size;
 	}
 }
