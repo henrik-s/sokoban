@@ -80,7 +80,8 @@ public class Map {
 			
 			for(int i = 0; i < numNodes; i++){
 				for(int j = 0; j< numNodes; j++){
-					nodes[i].addClosestNeighbour(j, dist_vec);
+					if(j != i)
+						nodes[i].addClosestNeighbour(j, dist_vec);
 				}
 			}
 			

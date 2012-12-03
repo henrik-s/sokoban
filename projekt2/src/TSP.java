@@ -7,7 +7,7 @@ import java.util.Random;
 public class TSP {
 
 	static boolean LOCAL = true;
-	static int NUMBER_OF_GREEDY = 5;
+	static int NUMBER_OF_GREEDY = 20;
 	Plot pl;
 
 	TSP() {
@@ -30,7 +30,8 @@ public class TSP {
 		}
 		int[][] listOfTours = getGreedyTours(NUMBER_OF_GREEDY, map);
 		for(int n = 0; n < NUMBER_OF_GREEDY; n++) {
-			listOfTours[n] = findLocalMin(listOfTours[n], map);
+			System.out.println("är det här jag ballar?");
+			listOfTours[n] = findLocalMin(listOfTours[n], map);			
 		}
 		
 		int[] tour = getBestTour(listOfTours, map);
@@ -71,10 +72,11 @@ public class TSP {
 	
 	public int[] findLocalMin(int[] tour, Map map) {
 		double best =  Util.tourDist(tour, map);
-		double tmp = -1;
+		double tmp = 0;
 		
 		while(true) {			
 			tour = twoOptWithNeighbourListButNotLinkedNeighbourList(tour, map);
+			System.out.println("är det här jag ballar?");
 			tmp = Util.tourDist(tour, map);
 			if(best == tmp) {
 				if (LOCAL) {					
@@ -148,24 +150,32 @@ public class TSP {
 	
 	public int[] twoOptWithNeighbourListButNotLinkedNeighbourList(int[] tour, Map map) {
 		int[] T = tour.clone();
-		Node tmp;
-		
+		Node tmp;		
 		int x1, x2, y1, y2;
 		for (x1 = 0; x1 < tour.length - 1; x1++) {
-			tmp = map.nodes[tour[x1]];
-			x2 = x1 + 1;
-			
+			tmp = map.nodes[T[x1]];
+			print_tour_l(T, map);
+			System.out.println("Node(x1): " + tmp.num + " Nod(x2): " + map.nodes[T[x1+1]].num);
+			tmp.printGrannar();
+			x2 = x1 + 1;			
 			for (int i = 0; i < tmp.neighbours.length; i++) {
-				y1 = tmp.neighbours[i];
-				
-				y2 = findNextNode(y1, T);
-				
+				y1 = findNode(tmp.neighbours[i], T);				
+				y2 = findNextNode(tmp.neighbours[i], T);	
+				System.out.println("y1, y2 = "+ y1 + " "+ y2);
 				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
 					Util.swap(x2, y1, T);
 				}
 			}
 		}
 		return T;
+	}
+	int findNode(int y1, int[] tour){
+		int index = 0;
+		for(int i = 0; i < tour.length;i++){
+			if(tour[i] == y1)
+				index = i;
+		}
+		return tour[index];
 	}
 	
 	int findNextNode(int y1, int[] tour){
@@ -243,6 +253,14 @@ public class TSP {
 		}
 
 	}
+	public void print_tour_l(int[] tour, Map map) {
+		System.out.print("Tour: [");
+		for (int i = 0; i < tour.length; ++i) {
+				System.out.print(tour[i] + " ");
+			}
+		System.out.println("]");
+	}
+
 
 	public static void main(String argv[]) {
 		if (LOCAL)

@@ -3,7 +3,7 @@
 import java.util.ArrayList;
 
 public class Node {
-	static int NUM_GRANNAR = 10;
+	static int NUM_GRANNAR = 9;
 	double x;
 	double y;
 	int num;
@@ -44,5 +44,11 @@ public class Node {
 				size++;
 		}
 		return size;
+	}
+	public void printGrannar() {
+		for(int i = 0; i< NUM_GRANNAR; i++) {
+			System.out.print(neighbours[i] + " ");
+		}
+		System.out.println();
 	}
 }
