@@ -3,16 +3,17 @@
 import java.util.ArrayList;
 
 public class Node {
+	static int NUM_GRANNAR = 10;
 	double x;
 	double y;
 	int num;
-	int[] neighbours = new int[20];
+	int[] neighbours = new int[NUM_GRANNAR];
 	
 	Node(double x, double y,int num){
 		this.x = x;
 		this.y = y;
 		this.num = num;
-		for(int i = 0; i < 20; i++){
+		for(int i = 0; i < NUM_GRANNAR; i++){
 			neighbours[i] = -1;
 		}
 	}
@@ -20,6 +21,7 @@ public class Node {
 	public void addClosestNeighbour(int node, double[][] dist_vec){
 		int curr = node;
 		int tmp = 0;
+		
 		for(int i = 0; i < neighbours.length; i++){
 			
 			if(neighbours[i] == -1){

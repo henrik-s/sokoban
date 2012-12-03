@@ -7,7 +7,7 @@ import java.util.Random;
 public class TSP {
 
 	static boolean LOCAL = true;
-	static int NUMBER_OF_GREEDY = 20;
+	static int NUMBER_OF_GREEDY = 5;
 	Plot pl;
 
 	TSP() {
@@ -23,26 +23,27 @@ public class TSP {
 		solve(map);
 	}
 
-	public void solve(Map map) {		
+	public void solve(Map map) {	
+		if(map.numNodes == 1) {
+			System.out.println("0");
+			return;
+		}
 		int[][] listOfTours = getGreedyTours(NUMBER_OF_GREEDY, map);
 		for(int n = 0; n < NUMBER_OF_GREEDY; n++) {
-			findLocalMin(listOfTours[n], map);
+			listOfTours[n] = findLocalMin(listOfTours[n], map);
 		}
 		
 		int[] tour = getBestTour(listOfTours, map);
 		double best = Util.tourDist(tour, map);
 		
-		if(tour.length == 1) {
-			print_tour(tour, map);
-			return;
-		}
+		
 		
 		int[] current = tour.clone();
 		double tmp;	
 				
-		for(int j = 0; j < 5; j++){
+		for(int j = 0; j < 1; j++){
 			Util.randomMove(current);
-			findLocalMin(current, map);
+			current = findLocalMin(current, map);
 			tmp = Util.tourDist(current, map);
 			if(tmp < best) {
 				tour = current.clone();
@@ -68,22 +69,22 @@ public class TSP {
 		return listOfTours[res];
 	}
 	
-	public void findLocalMin(int[] tour, Map map) {
+	public int[] findLocalMin(int[] tour, Map map) {
 		double best =  Util.tourDist(tour, map);
-		double tmp = 0;	
-		int counter = 1;
+		double tmp = -1;
 		
 		while(true) {			
-			tour = twoOpt(tour, map);
+			tour = twoOptWithNeighbourListButNotLinkedNeighbourList(tour, map);
 			tmp = Util.tourDist(tour, map);
-			if(best == tmp)
-				return;
+			if(best == tmp) {
+				if (LOCAL) {					
+					System.out.println("Found a local min = " + best);
+				}			
+				return tour;
+			}
 			else
 				best = tmp;			
-			if (LOCAL) {
-				print_tour(tour, map);
-				System.out.println("Counter = " + counter++);
-			}
+			
 		}
 	}
 	
@@ -156,6 +157,7 @@ public class TSP {
 			
 			for (int i = 0; i < tmp.neighbours.length; i++) {
 				y1 = tmp.neighbours[i];
+				
 				y2 = findNextNode(y1, T);
 				
 				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
@@ -170,7 +172,7 @@ public class TSP {
 		int index = 0;
 		for(int i = 0; i < tour.length;i++){
 			if(tour[i] == y1)
-				index = i+1;;
+				index = i+1;
 			if(i == tour.length - 1)
 				index = 0;
 		}
