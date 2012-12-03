@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class TSP {
 
-	static boolean LOCAL = true;
+	static boolean LOCAL = false;
 	static int NUMBER_OF_GREEDY = 20;
 	Plot pl;
 
@@ -30,7 +30,7 @@ public class TSP {
 		}
 		int[][] listOfTours = getGreedyTours(NUMBER_OF_GREEDY, map);
 		for(int n = 0; n < NUMBER_OF_GREEDY; n++) {
-			System.out.println("är det här jag ballar?");
+			//System.out.println("är det här jag ballar?");
 			listOfTours[n] = findLocalMin(listOfTours[n], map);			
 		}
 		
@@ -76,11 +76,11 @@ public class TSP {
 		
 		while(true) {			
 			tour = twoOptWithNeighbourListButNotLinkedNeighbourList(tour, map);
-			System.out.println("är det här jag ballar?");
+			//System.out.println("är det här jag ballar?");
 			tmp = Util.tourDist(tour, map);
 			if(best == tmp) {
 				if (LOCAL) {					
-					System.out.println("Found a local min = " + best);
+					//System.out.println("Found a local min = " + best);
 				}			
 				return tour;
 			}
@@ -154,14 +154,18 @@ public class TSP {
 		int x1, x2, y1, y2;
 		for (x1 = 0; x1 < tour.length - 1; x1++) {
 			tmp = map.nodes[T[x1]];
-			print_tour_l(T, map);
-			System.out.println("Node(x1): " + tmp.num + " Nod(x2): " + map.nodes[T[x1+1]].num);
-			tmp.printGrannar();
+			//print_tour_l(T, map);
+			//System.out.println("Node(x1): " + tmp.num + " Nod(x2): " + map.nodes[T[x1+1]].num);
+			//tmp.printGrannar();
 			x2 = x1 + 1;			
 			for (int i = 0; i < tmp.neighbours.length; i++) {
-				y1 = findNode(tmp.neighbours[i], T);				
-				y2 = findNextNode(tmp.neighbours[i], T);	
-				System.out.println("y1, y2 = "+ y1 + " "+ y2);
+				y1 = findNode(tmp.neighbours[i], T);
+				if(y1 == T.length -1)
+					y2 = 0;
+				else 
+					y2 = y1 + 1; 
+				//y2 = findNextNode(tmp.neighbours[i], T);	
+				//System.out.println("y1, y2 = "+ y1 + " "+ y2);
 				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
 					Util.swap(x2, y1, T);
 				}
@@ -175,7 +179,7 @@ public class TSP {
 			if(tour[i] == y1)
 				index = i;
 		}
-		return tour[index];
+		return index;
 	}
 	
 	int findNextNode(int y1, int[] tour){
