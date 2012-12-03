@@ -127,6 +127,26 @@ public class TSP {
 		}
 		return T;
 	}
+	
+	public int[] twoOptWithNeighbourListButNotLinkedNeighbourList(int[] tour, Map map) {
+		int[] T = tour.clone();
+		int x1, x2, y1, y2;
+		for (x1 = 0; x1 < tour.length - 1; x1++) {
+			x2 = x1 + 1;
+			for (y1 = x2; y1 < tour.length; y1++) {
+				if (y1 == (tour.length - 1))
+					y2 = 0;
+				else
+					y2 = y1 + 1;
+				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
+					Util.swap(x2, y1, T);
+					//if (LOCAL)
+						//print_tour(T, map);
+				}
+			}
+		}
+		return T;
+	}
 
 	public int[] threeOpt(int[] tour, Map map) {
 		int[] T = tour.clone();

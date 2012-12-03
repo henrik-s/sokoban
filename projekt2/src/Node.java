@@ -17,10 +17,16 @@ public class Node {
 		}
 	}
 	
-	public void addClosestNeighbour(int node, int[][] dist_vec){
+	public void addClosestNeighbour(int node, double[][] dist_vec){
 		int curr = node;
 		int tmp = 0;
 		for(int i = 0; i < neighbours.length; i++){
+			
+			if(neighbours[i] == -1){
+				neighbours[i] = curr;
+				break;
+			}
+			
 			if(dist_vec[num][curr] < dist_vec[num][neighbours[i]]){
 				tmp = neighbours[i];
 				neighbours[i] = curr;
