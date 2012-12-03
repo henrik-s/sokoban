@@ -32,7 +32,13 @@ public class Map {
 					dist_vec[i][j] = dist;
 					dist_vec[j][i] = dist;
 				}
-			}			
+			}	
+			
+			for(int i = 0; i < numNodes; i++){
+				for(int j = 0; j< numNodes; j++){
+					nodes[i].addClosestNeighbour(j, dist_vec);
+				}
+			}
 		} catch (NumberFormatException e) {
 			System.out.println("Problem formatting string to number in constructor: Map");
 		} catch (IOException e) {
