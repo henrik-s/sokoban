@@ -4,6 +4,15 @@ import java.util.Random;
 public class Util {
 	
 	
+	public static double tourDist(int[] tour, Map map) {
+		double res = 0;
+		for (int i = 0; i<tour.length-1; i++) {
+			res += map.dist_vec[tour[i]][tour[i+1]];
+		}
+		res += map.dist_vec[tour[tour.length-1]][tour[0]];
+		return res;
+	}
+	
 	public static double dist(int[] tour, Map map){
 		double dist = 0;
 		int x1,x2;

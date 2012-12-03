@@ -23,45 +23,63 @@ public class TSP {
 	}
 
 	public void solve(Map map) {
+		
 		int[] tour = greedyTour(map);
+		double best =  Util.tourDist(tour, map);
+		double tmp = 0;
 		
-		double curr = 0;
-		double prev =  Util.dist(tour, map);
+				
+		boolean atLocalMin = false;
+		int counter = 1;
 		
-		if (LOCAL)
-			print_tour(tour, map);
-		
-		for(int i = 0; i < 	7; i++){
+		while(!atLocalMin) {			
 			tour = twoOpt(tour, map);
+			tmp = Util.tourDist(tour, map);
+			if(best == tmp)
+				atLocalMin = true;
+			else
+				best = tmp;
+			if (LOCAL) {
+				print_tour(tour, map);
+				System.out.println("Counter = " + counter++);
+			}
 		}
 		
-		// Nuke da local mini dick
-		double best = Util.dist(tour, map);
-		double tmp;
-		int[] current = tour.clone();
 		
+		// Nuke da local mini dick		
+		int[] current = tour.clone();
 		
 		if(tour.length == 1) {
 			print_tour(tour, map);
 			return;
 		}
-		for(int j = 0; j < 5; j++){
-			//Util.randomMove(current);
-			Util.truePseudoRandomMove(current);
-			for(int k = 0; k < 	7; k++){	
+		
+		atLocalMin = false;
+		double currentRandom;
+		tmp = 0;
+		
+		for(int j = 0; j < 100; j++){
+			Util.randomMove(current);
+			
+			while(!atLocalMin) {
 				current = twoOpt(current, map);
+				currentRandom = Util.tourDist(current, map);
+				if(currentRandom == tmp)
+					atLocalMin = true;
+				else
+					tmp = currentRandom;
 			}
-			tmp = Util.dist(current, map);
+						
 			if(tmp < best) {
 				tour = current.clone();
 				best = tmp;
 			}
-			//else
-				//current = tour.clone();
+			else
+				current = tour.clone();
 		}
 
 		if (LOCAL){
-			pl = new Plot(tour, map);
+			//pl = new Plot(tour, map);
 		}
 		print_tour(tour, map);
 	}
@@ -102,8 +120,8 @@ public class TSP {
 					y2 = y1 + 1;
 				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
 					Util.swap(x2, y1, T);
-					if (LOCAL)
-						print_tour(T, map);
+					//if (LOCAL)
+						//print_tour(T, map);
 				}
 			}
 		}
@@ -161,13 +179,12 @@ public class TSP {
 	}
 
 	public void print_tour(int[] tour, Map map) {
-		// int distance = 0;
 		if (LOCAL) {
 			for (int i = 0; i < tour.length; ++i) {
 				System.out.print(tour[i] + " ");
 			}
 			System.out.println();
-			System.out.println("Distance: " + Util.dist(tour, map));
+			System.out.println("Distance: " + Util.tourDist(tour, map));
 		} else {
 			for (int i = 0; i < tour.length; ++i) {
 				System.out.println(tour[i]);
