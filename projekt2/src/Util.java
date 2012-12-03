@@ -1,8 +1,6 @@
 import java.util.Random;
 
 
-
-
 public class Util {
 	
 	
@@ -49,9 +47,18 @@ public class Util {
 	public static void randomMove(int[] tour) {
 		Random rand = new Random();
 		
-		int x = rand.nextInt(tour.length-4);
-		int y = x + 2;
-		swap(x,y,tour);
+		int x = rand.nextInt(tour.length-1);
+		int y = rand.nextInt(tour.length-1);
+		if(x<y) 
+			swap(x,y,tour);
+		else
+			swap(y,x,tour);
+		
+		
+	}
+
+	public static void truePseudoRandomMove(int[] current) {
+		swap(current.length-2, current.length-1, current);		
 	}
 	
 	

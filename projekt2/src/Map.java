@@ -21,20 +21,18 @@ public class Map {
 			dist_vec = new double[numNodes][numNodes];
 			
 			String[] points;
+			double x, y, dist;
 			for(int i = 0; i< numNodes; ++i){
 				points = in.readLine().split(" ");
-				double x = Double.parseDouble(points[0]);
-				double y = Double.parseDouble(points[1]);
-				
+				x = Double.parseDouble(points[0]);
+				y = Double.parseDouble(points[1]);
 				nodes[i] = new Node(x,y,i);
-			}
-			
-			for(int i = 0; i < numNodes; i++){
-				for(int j = 0; j < numNodes; j++){
-					dist_vec[i][j] = Util.dist(nodes[i], nodes[j]);
+				for(int j = 0; j < i; j++) {
+					dist = Util.dist(nodes[i], nodes[j]);
+					dist_vec[i][j] = dist;
+					dist_vec[j][i] = dist;
 				}
-			}
-			
+			}			
 		} catch (NumberFormatException e) {
 			System.out.println("Problem formatting string to number in constructor: Map");
 		} catch (IOException e) {

@@ -12,18 +12,14 @@ public class TSP {
 	TSP() {
 		Map map;
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		for (int i = 0; i < 1; ++i) {
-			map = new Map(in);
-			solve(map);
-		}
+		map = new Map(in);
+		solve(map);
 	}
 
 	TSP(String fileName) {
 		Map map;
-		for (int i = 0; i < 1; ++i) {
-			map = new Map(fileName);
-			solve(map);
-		}
+		map = new Map(fileName);
+		solve(map);
 	}
 
 	public void solve(Map map) {
@@ -35,14 +31,33 @@ public class TSP {
 		if (LOCAL)
 			print_tour(tour, map);
 		
-		for(int i = 0; i < 	5; i++){
+		for(int i = 0; i < 	7; i++){
 			tour = twoOpt(tour, map);
 		}
 		
+		// Nuke da local mini dick
+		double best = Util.dist(tour, map);
+		double tmp;
+		int[] current = tour.clone();
+		
+		
+		if(tour.length == 1) {
+			print_tour(tour, map);
+			return;
+		}
 		for(int j = 0; j < 5; j++){
-			for(int k = 0; k < 	5; k++){
-				tour = twoOpt(tour, map);
+			//Util.randomMove(current);
+			Util.truePseudoRandomMove(current);
+			for(int k = 0; k < 	7; k++){	
+				current = twoOpt(current, map);
 			}
+			tmp = Util.dist(current, map);
+			if(tmp < best) {
+				tour = current.clone();
+				best = tmp;
+			}
+			//else
+				//current = tour.clone();
 		}
 
 		if (LOCAL){
@@ -85,7 +100,6 @@ public class TSP {
 					y2 = 0;
 				else
 					y2 = y1 + 1;
-
 				if (dist(x1, x2, y1, y2, T, map) > (dist(x1, y1, x2, y2, T, map))) {
 					Util.swap(x2, y1, T);
 					if (LOCAL)
