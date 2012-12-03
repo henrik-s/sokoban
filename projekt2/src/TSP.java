@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class TSP {
 
-	static boolean LOCAL = false;
+	static boolean LOCAL = true;
+	static int NUMBER_OF_GREEDY = 20;
 	Plot pl;
 
 	TSP() {
@@ -22,54 +23,27 @@ public class TSP {
 		solve(map);
 	}
 
-	public void solve(Map map) {
-		
-		int[] tour = greedyTour(map);
-		double best =  Util.tourDist(tour, map);
-		double tmp = 0;
-		
-				
-		boolean atLocalMin = false;
-		int counter = 1;
-		
-		while(!atLocalMin) {			
-			tour = twoOpt(tour, map);
-			tmp = Util.tourDist(tour, map);
-			if(best == tmp)
-				atLocalMin = true;
-			else
-				best = tmp;
-			if (LOCAL) {
-				print_tour(tour, map);
-				System.out.println("Counter = " + counter++);
-			}
+	public void solve(Map map) {		
+		int[][] listOfTours = getGreedyTours(NUMBER_OF_GREEDY, map);
+		for(int n = 0; n < NUMBER_OF_GREEDY; n++) {
+			findLocalMin(listOfTours[n], map);
 		}
 		
-		
-		// Nuke da local mini dick		
-		int[] current = tour.clone();
+		int[] tour = getBestTour(listOfTours, map);
+		double best = Util.tourDist(tour, map);
 		
 		if(tour.length == 1) {
 			print_tour(tour, map);
 			return;
 		}
 		
-		atLocalMin = false;
-		double currentRandom;
-		tmp = 0;
-		
-		for(int j = 0; j < 100; j++){
+		int[] current = tour.clone();
+		double tmp;	
+				
+		for(int j = 0; j < 5; j++){
 			Util.randomMove(current);
-			
-			while(!atLocalMin) {
-				current = twoOpt(current, map);
-				currentRandom = Util.tourDist(current, map);
-				if(currentRandom == tmp)
-					atLocalMin = true;
-				else
-					tmp = currentRandom;
-			}
-						
+			findLocalMin(current, map);
+			tmp = Util.tourDist(current, map);
 			if(tmp < best) {
 				tour = current.clone();
 				best = tmp;
@@ -83,13 +57,56 @@ public class TSP {
 		}
 		print_tour(tour, map);
 	}
+	
+	public int[] getBestTour(int[][] listOfTours, Map map) {
+		double best = Double.MAX_VALUE;
+		int res = 0;
+		for(int i = 0; i < NUMBER_OF_GREEDY; i++) {
+			if(best > Util.tourDist(listOfTours[i], map))
+				res = i; 
+		}
+		return listOfTours[res];
+	}
+	
+	public void findLocalMin(int[] tour, Map map) {
+		double best =  Util.tourDist(tour, map);
+		double tmp = 0;	
+		int counter = 1;
+		
+		while(true) {			
+			tour = twoOpt(tour, map);
+			tmp = Util.tourDist(tour, map);
+			if(best == tmp)
+				return;
+			else
+				best = tmp;			
+			if (LOCAL) {
+				print_tour(tour, map);
+				System.out.println("Counter = " + counter++);
+			}
+		}
+	}
+	
+	public int[][] getGreedyTours(int n, Map map) {
+		int[][] res = new int[n][map.numNodes];
+		int[] newTour;
+		for(int i = 0; i < n; i++) {
+			newTour = greedyTour(map); 
+			for(int j = 0; j < map.numNodes; j++) {
+				res[i][j] = newTour[j];
+			}
+		}
+		return res;
+	}
 
 	public int[] greedyTour(Map map) {
 		int[] tour = new int[map.numNodes];
-		boolean[] used = new boolean[map.numNodes];
+		boolean[] used = new boolean[map.numNodes];		
+		Random rand = new Random();		
+		int x = rand.nextInt(map.numNodes-1);
 
-		tour[0] = 0;
-		used[0] = true;
+		tour[0] = x;
+		used[x] = true;
 		int best;
 		for (int i = 1; i < map.numNodes; i++) {
 			best = -1;
