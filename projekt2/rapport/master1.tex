@@ -2,7 +2,7 @@
 \usepackage[english]{babel}
 %\usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[dvips]{graphicx}
+\usepackage{graphicx}
 \usepackage{listings}
 \usepackage{moreverb}
 \usepackage{float}
@@ -45,14 +45,14 @@
 \clearpage
 \pagestyle{empty}
 \abstract
-The subject of this report is the creation of a program that factorizes numbers into their constituent primes and also different ways of doing so. The requirements of our program was that it had 15 seconds to factorize 100 numbers up to 100 bits in length using at most 32 MB of memory. Our solution used a combination of several methods to factorize integers. During the project we tried a few different variations but for our final version we used Pollard's rho algorithm using Floyds Circle detection algorithm together with Trial Division and finding Perfect Powers.
-What we discovered were that Pollard's rho is good for the factorization of integers with small prime factors and that the most important feature of a program of this type, besides the algorithm itself, is to be able to control how the limited execution time is spent.
+The subject of this report is the creation of a program that solves the Traveling Salesman Problem, otherwise known as TSP, and different ways of doing so. The constraints on our program was that it had 2 seconds to find as short tours as possible for 50 maps of up to 1000 nodes using at most 32 MB of memory. Our solution used a combination of different techniques in order to try to create as short tours as possible. During the project we tried many different techniques but the approach that gave us the best result was using a naive greedy construction algorithm using Two-Opt local optimization and Tabu-search.\\
+What we discovered was that to do well with this approach a more time efficient program is needed. Basically we found that our approach was sound but our implementation was too slow.
 \clearpage
 \begin{center}
 \section*{Statement Of Collaboration}
 \end{center}
-Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to factorize large numbers. Later in the process (the implementation phase) Mårten implemented the Trial Division method, Henrik implemented the Perfect Power and the Fermat's Factorization methods, while both wrote the code to the Pollard's rho method.\\\\
-Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results, Discussion, and Conclusion. Henrik wrote parts of the background and parts of the method. 
+Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to find as short a tour as possible. Later in the process (the implementation phase) Mårten implemented the Two and Three - Opt methods while Henrik implemented the Greedy construction algorithm as well as map creation and the general solution Methods.\\\\
+Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results. Henrik wrote parts of the background, parts of the method. Conclusion and Discussion was written together. 
 \clearpage
 
 \tableofcontents
@@ -110,20 +110,99 @@ The time complexity is $O(N^2 \log{N})$, thus slower than nearest neighbour, but
 Below are accounts of the changes in the submissions where mayor implementation changes were made during the course of this project, and the results of their Kattis submissions. If something is not described in one of the implementation accounts, it has remained as it was in the last implementation. All results are abbreviated to the nearest decimal point.
 \subsection{First Implementation}
 \label{res_1}
-\textbf{Kattis submission ID}: 306422 \\
-\textbf{Description}:  Our first implementation used a system timer of 14 seconds to make sure we did not fail because of time issues. We also had no perfect power check and we only used the primes found between $[0,1000]$ for our Trial Division. The initialization values $x$ and $y$ in PR were $= 2$ and $c =1$.\\\\
-\textbf{Number solved}: 50\\
-\textbf{CPU time used}: 13.80 seconds\\
+\textbf{Kattis submission ID}: 321642 \\
+\textbf{Description}: Only using Nearest neighbour construction algorithm with dynamic distance calculation.\\
+\textbf{Score}: 3\\
+\textbf{CPU time used}: 0.3 seconds\\\\
+%
+\textbf{Kattis submission ID}: 323418 \\
+\textbf{Description}: One iteration of Two-Opt is used after construction.\\
+\textbf{Score}: 3.7\\
+\textbf{CPU time used}: 0.34 seconds\\\\
+%
+\textbf{Kattis submission ID}: 324104   \\
+\textbf{Description}: 5 Two-Opt iterations\\
+\textbf{Score}: 18.7\\
+\textbf{CPU time used}: 0.46 seconds\\\\
+%
+\textbf{Kattis submission ID}: 324079 \\
+\textbf{Description}: No Two-Opt, instead 1 Three opt is used \\
+\textbf{Score}: 0\\
+\textbf{CPU time used}: Time Limit Exceeded\\\\
+%
+\textbf{Kattis submission ID}: 326889  \\
+\textbf{Description}: 30 Two-Opts are used. Precomputed distances are used.\\
+\textbf{Score}: 18.7\\
+\textbf{CPU time used}: 1.3 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328260 (BEST SUBMISSION) \\
+\textbf{Description}: 6 Two-Opt + 7*(random move + 6*two opt). \\
+\textbf{Score}: 21.7\\
+\textbf{CPU time used}: 1.97 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328320 \\
+\textbf{Description}: While loops are used instead of for loops. If a local minimum is found the while loop breaks. Inside the while loops Two-Opt is still used. \\
+\textbf{Score}: 19.5\\
+\textbf{CPU time used}: 0.78 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328342  \\
+\textbf{Description}: while(!localMin) + 100*(randomMove + while(!localMin)).\\
+\textbf{Score}: 19.3\\
+\textbf{CPU time used}: 0.98 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328589 \\
+\textbf{Description}: Instead of iterating over every conceivable edge pair combination neighbour lists are used so that only the closest 20 nodes are checked in Two-Opt. Also we compute 5 different Greedy Tours with random starting nodes and choose the best one.\\\\
+5 Greedy maps are computed and the best one is chosen.\\
+3 * (randomMove + while(!localMin))\\
+\textbf{Score}: 10.9\\
+\textbf{CPU time used}: 1.59 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328752 \\
+\textbf{Description}: Normal Two-Opt is used instead of neighbour lists
+	1 Greedy Tour is computed
+	1 random move\\
+\textbf{Score}: 19.7\\
+\textbf{CPU time used}: 0.87 seconds\\\\
+%
+\textbf{Kattis submission ID}: 328772 \\
+\textbf{Description}: 1 Greedy\\
+	findLocalMin med vanlig two opt\\
+	4 * (Random move med 1 iteration av grannliste-twoOpt)\\
+\textbf{Score}: 18.4\\
+\textbf{CPU time used}: 1.75 seconds\\\\
+%
+\textbf{Best Submission}:\\
+\textbf{Kattis submission ID}: 328260 \\
+\textbf{Description}: 6 Two-Opt + 7*(random move + 6*two opt)\\ 
+Precomputed distances are used.\\
+\textbf{Score}: 21.7\\
+\textbf{CPU time used}: 1.97 seconds\\
 
 \clearpage
 
 \section{Discussion}
 \label{discussion}
-
+Our initial approach, using only Nearest Neighbour algorithm taken from the KATTIS \cite{seven}, managed to solve the problem quickly but with poor results (3.0 p).\\\\
+%
+Introducing Two-Opt increased our score total from 3 -> 18.7 points. What we did notice however was that running it more than 5 times per tour did not yield any noticeably better results. Actually after 6-7 runs the points did not increase at all, as can be seen between submission 3 and 5. This means that Two-Opt has reached a local minimum where it cannot optimize the tour any more.\\\\
+%
+To get out of the local minimums we used the theory of Tabu Search where we allow the algorithm to reach a state with a worse solution so that we from there can reach a better one. Once we implemented Random Swaps it increased out point total from around 19 to 22 as can be seen in submission 6.\\\\
+%
+To not waste time doing unnecessary reiterations of Two-Opt, but still reaching local minimums, we implemented \textbf{while} loops instead of \textbf{for} loops. In the while loops we compared the lengths of the resulting tours of the reiterations and when we had reached a local minimum the loop was stopped. In this way we saved a lot of time as can be seen between submission 6,7 and 8. This meant that we could do more cycles of making random moves and then finding a new local minimum and thus hopefully, find a better solution.\\\\
+%
+Another way to try to get out of local minimums was that we tried implementing a Three-Opt algorithm to complement Two-Opt. It turned out however that running Three-Opt was way too slow and only resulted in Time Limit Exceeded in Kattis.\\\\
+%
+We also tried to improve our solution by computing several different Greedy Tours from randomized starting nodes and selecting the shortest one. Our program ran out of time when trying to generate 10-20 maps (combined with the rest of the execution), but it was feasible to create 5 maps and perform our Two-Opt algorithm. This however yielded no boost in terms of score. \\\\
+%
+Another strategy to decrease running time was the implementation of pre computed distances between all nodes. This did not however give us any noticeable decrease in computation time.\\\\
+%
+Since pre-computed distances did not do the trick of giving us the needed decrease in computation time so that we could run Three-Opt we decided to implement neighbour list so that we did not need to iterate over all node pairs but instead only those closest to the chosen node. The theory behind this was that we were more likely to find a shorter tour by looking to make optimizations to the nodes closest to each other. Unfortunately we failed in implementing neighbour lists and it simply slowed our program down as can be seen in submission 9,10 and 11.\\\\
 \clearpage
 
 \section{Conclusion}
 \label{conclusion}
+What we can deduce from our results is that to improve a tour we need to first improve it until  a local minimum is found. This state then needs to be broken in some way and the new tour reiterated to try to find  a new and better solution. The more times this can be done the better a solution will be found. This is kind of solution is based on local optimization algorithms and may or may not work with other approaches.\\
+Unfortunately we were unable to implement this strategy with any greater success. We believe however that if we had been able to successfully use closest neighbour lists we would have had a lot more success. This is based on the fact that we would have been able to perform more improvements in the time gained with this technique.
 
 \clearpage
 
@@ -135,6 +214,9 @@ Below are accounts of the changes in the submissions where mayor implementation 
 \bibitem{two} \textsl{Tour construction heuristics} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://www.csc.kth.se/utbildning/kth/kurser/DD2440/avalg07/algnotes.pdf}
 
 \bibitem{three} David S. Johnson. Lyle A. McGeoch. The Traveling Salesman Problem: \textsl{A Case Study in Local Optimization} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://www2.research.att.com/~dsj/papers/TSPchapter.pdf}
+
+\bibitem{seven} \text{Greedy Construction Algorithm} [Homepage on the Internet]. [cited 2012-12-05]. 
+Available from: \url{https://kth.kattis.scrool.se/problems/oldkattis:tsp}
 
 \end{thebibliography}
 \clearpage
