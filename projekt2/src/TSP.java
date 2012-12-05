@@ -7,7 +7,7 @@ import java.util.Random;
 public class TSP {
 
 	static boolean LOCAL = false;
-	static int NUMBER_OF_GREEDY = 20;
+	static int NUMBER_OF_GREEDY = 1;
 	Plot pl;
 
 	TSP() {
@@ -42,9 +42,10 @@ public class TSP {
 		int[] current = tour.clone();
 		double tmp;	
 				
-		for(int j = 0; j < 1; j++){
+		for(int j = 0; j < 4; j++){
 			Util.randomMove(current);
-			current = findLocalMin(current, map);
+			//current = findLocalMin(current, map);
+			current = twoOptWithNeighbourListButNotLinkedNeighbourList(current, map);
 			tmp = Util.tourDist(current, map);
 			if(tmp < best) {
 				tour = current.clone();
@@ -75,8 +76,9 @@ public class TSP {
 		double tmp = 0;
 		
 		while(true) {			
-			tour = twoOptWithNeighbourListButNotLinkedNeighbourList(tour, map);
+			//tour = twoOptWithNeighbourListButNotLinkedNeighbourList(tour, map);
 			//System.out.println("är det här jag ballar?");
+			tour = twoOpt(tour, map);
 			tmp = Util.tourDist(tour, map);
 			if(best == tmp) {
 				if (LOCAL) {					
