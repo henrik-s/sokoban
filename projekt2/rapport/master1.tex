@@ -65,7 +65,7 @@ Both contributed to the content of the whole report. Mårten wrote the sections: 
 The purpose of this project is to investigate different methods, heuristics and algorithms for solving the Traveling Salesman Problem, which will from now on be known simple as TSP. TSP is a problem where you want to find the shortest possible tour between the nodes in a graph. Or as the extended title says, the shortest route between a number of cities for a traveling salesman. 
 \subsection{Problem Statement}
 \label{problem_statement}
-As stated above the subject of this report is the creation of an agent that solves TSP, the NP-hard\cite{one} problem of a salesman traveling around the country visiting cities. The salesman must visit each city (node) once and the task is to find the optimal tour, a sequence of nodes, where the distance (the set of edges) is as small as possible. The scope of this project is solving 50 instances of at most 1000 nodes each. The time and memory limit for our solution are limited to at most 2 seconds and 32 MB respectively. 
+As stated above the subject of this report is the creation of an agent that solves TSP, the NP-hard \cite{one} problem of a salesman traveling around the country visiting cities. The salesman must visit each city (node) once and the task is to find the optimal tour, a sequence of nodes, where the distance (the set of edges) is as small as possible. The scope of this project is solving 50 instances of at most 1000 nodes each. The time and memory limit for our solution are limited to at most 2 seconds and 32 MB respectively. 
 
 \clearpage
 
@@ -84,25 +84,86 @@ The Greedy algorithm is similar to Nearest Neighbour \ref{nearest_neighbour}, bu
 
 The time complexity is $O(N^2 \log{N})$, thus slower than nearest neighbour, but its worst case tour is better than NN.
 
-\subsection{Our Approach}
-\label{our_approach}
+\subsection{Local Optimization}
+\label{local_optimization}
+A tour constructed using the above algorithms is seldom very good and can be optimized by local optimization algorithms. This means splitting the problem into smaller components and evaluating them locally without comparing them to the rest of the problem.
 
+\subsubsection{Two-Opt}
+\label{two_opt}
+In two-opt every pair of edges is evaluated to see if the tour can be made shorter by exchanging them while still maintaining a complete tour \cite{four}. What this means is that the edges are re-drawn between the four nodes and the product of the length of the resulting edges is compared to the product of the length of the original edges. If the resulting length is shorter, the edges are exchanged. This process is then reiterated until all different edge combinations have been tried and the shortest ones have been found. Since you iterate over every edge pair the worst time complexitity of two-opt is $O(n)\cdot O(n)$ which is $O(n^2)$.
+
+\subsubsection{Three-Opt}
+\label{three_opt}
+Three-Opt works in much the same way as two-opt except that it compares all triples of edges instead of only pairs. Delete the three chosen edges and try to put them together in different ways and choose the one that has the shortest length. \cite{two}
+
+\subsubsection{Tabu Search}
+\label{tabu_search}
+The problem with local searches like two and three opt is that they can find themselves in a local minimum. This means that they can reach a state where they cannot improve the tour any more but it may not be the overall shortest tour, i.e a local minimum. To break these local minimums, Tabu Search allows the algorithm to reach a worse solution from where it can produce an in the end better solution. \cite{five}
+
+\section{Method}
+\label{method}
+For our best implementation we used a simple solution algorithm was used.  A nearest neighbour algorithm was used as a construction algorithm and then two opt was used together with tabu search to improve the initial guess. 
+
+First of all a map was constructed by reading the node information from stdin and creating a vector of nodes from the input. This vector is then used to create our initial starting guess using a nearest neighbour algorithm. A precomputed matrix of distances is created on map creation so that the distances between nodes only need to be calculated once.
+
+
+If the tour only consists of one node this node is simply printed and the program continues on to the next map to be solved.
+
+This starting guess is then improved by reiterating Two-Opt six times. This number was chosen because after testing we found that Two-Opt usually reached a local-minimum after this amount of reiterations. The length of the current tour  and the tour itself is saved for later comparison.
+The algorithm then enters into a static loop.:
+First a swap identical to the swap used in Two and Three-Opt, only using randomly generated, is used to break any possible local minimum we might have found ourselves in. Then we reiterate Two-Opt six more times to find a new local minimum. If the new tour is shorter than the old one it is saved as the best tour otherwise we continue with the loop.
+This cycle of performing random swaps and then reiterating Two-Opt is repeated 7 times.
+
+These static loops are there to control the time spent on each map. When one map has been solved the result is printed and the program continues on to the next map.
 \subsection{Pseudo code}
 \label{pseudo}
+In this section, we present our implementation in pseudo code.
+%
+\subsubsection*{Greedy Tour(Map)}
 \begin{algorithmic}
-\STATE $Factorize$ $a$ $integer$ $N$
-\STATE  
-\STATE Initialize a vector $V$
-\FOR{$i \gets 1 \to 100$}
-	\STATE $N\gets$ input integer
-	\STATE clear $V$
-	\STATE $fail \gets false$
-	\STATE $Factorize(N, 1)$
-	\IF{$\neg{fail}$}
-		\STATE Print all the elements in $V$
+\STATE $tour[0] \gets 0$
+\STATE $used[0] \gets true$
+\FOR{$i \gets 1 \to n-1$}
+	\STATE $best \gets -1$
+	\FOR{$j \gets 0 \to n-1$}
+		\IF{$\neg used[j] \wedge \left( best = -1 \vee dist\left(tour[i-1],j\right) < dist\left(tour[i-1],best\right)\right)$}
+			\STATE $best \gets j$
+		\ENDIF
+		\STATE $tour[i] \gets best$
+		\STATE $used[best] \gets true$
+	\ENDFOR
+\ENDFOR
+\RETURN $tour$
+\end{algorithmic}
+%
+\subsubsection*{twoOpt(Tour T, Map map)}
+\begin{algorithmic}
+\FOR{each edge pair $x_1,x_2$ and $y_1,y_2$}
+	\IF{$\left(distance\left(x_1,x_2\right) + distance \left(y_1,y_2\right)\right) > \left(distance\left(x_1,y_1\right) + distance\left(x_2,y_2\right)\right)$}
+		\STATE $T \gets swap(x_2,y_1,T)$
 	\ENDIF
 \ENDFOR
-\RETURN
+\RETURN $T$
+\end{algorithmic}
+%
+\subsubsection*{threeOpt(Tour T, Map map)}
+\begin{algorithmic}
+\FOR{each edge triple $x_1,x_2$ and $y_1,y_2$ and $z_1,z_2$}
+	\IF{$\big(dist(x_1, x_2) + dist(y_1, y_2)  + dist(z_1, z_2)) > dist(x_1, z_1) + dist(y_2, x_2) +  dist(y_1, z_2)$}
+		\STATE$T \gets swap(x_2, z_1, T)$
+		\STATE$T \gets swap(x_2, y_1, T)$
+	\ENDIF
+	\IF{$dist(x_1, z_1) + dist( y_2, x_2) +  dist(y_1, z_2) > dist(x_1, y_2) + dist(z_1, y_1) + dist(x_2, z_2)$}
+		\STATE $T\gets swap(x_2, z_1, T)$
+		\STATE $T\gets swap(y_2, z_1, T)$
+	\ENDIF
+\ENDFOR
+\RETURN $T$
+\end{algorithmic}
+%
+\subsubsection*{Solve(Map map)}
+\begin{algorithmic}
+\STATE hej 
 \end{algorithmic}
 
 \section{Results}
@@ -135,6 +196,10 @@ Below are accounts of the changes in the submissions where mayor implementation 
 \bibitem{two} \textsl{Tour construction heuristics} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://www.csc.kth.se/utbildning/kth/kurser/DD2440/avalg07/algnotes.pdf}
 
 \bibitem{three} David S. Johnson. Lyle A. McGeoch. The Traveling Salesman Problem: \textsl{A Case Study in Local Optimization} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://www2.research.att.com/~dsj/papers/TSPchapter.pdf}
+
+\bibitem{four} \textsl{Improving Solutions} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://www-e.uni-magdeburg.de/mertens/TSP/node3.html}
+
+\bibitem{five} \textsl{Tabu Search} [Homepage on the Internet]. [cited 2012-12-05]. Available from: \url{http://mathworld.wolfram.com/TabuSearch.html}
 
 \end{thebibliography}
 \clearpage
