@@ -45,20 +45,22 @@
 \clearpage
 \pagestyle{empty}
 \abstract
-The subject of this report is the creation of a program that solves the Traveling Salesman Problem, otherwise known as TSP, and different ways of doing so. The constraints on our program was that it had 2 seconds to find as short tours as possible for 50 maps of up to 1000 nodes using at most 32 MB of memory. Our solution used a combination of different techniques in order to try to create as short tours as possible. During the project we tried many different techniques but the approach that gave us the best result was using a naive greedy construction algorithm using Two-Opt local optimization and Tabu-search.\\
+The subject of this report is the creation of a program that solves the Traveling Salesman Problem (TSP) and different ways of doing so. The constraints on our program was that it had 2 seconds to find a short tours as possible for 50 maps of up to 1000 nodes using at most 32 MB of memory. Our solution used a combination of different techniques in order to try to create as short tours as possible. During the project we tried many different techniques but the approach that gave us the best result was using a naive greedy construction algorithm using Two-Opt local optimization and Tabu-search.
+
 What we discovered was that to do well with this approach a more time efficient program is needed. Basically we found that our approach was sound but our implementation was too slow.
 \clearpage
 \begin{center}
 \section*{Statement Of Collaboration}
 \end{center}
-Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to find as short a tour as possible. Later in the process (the implementation phase) Mårten implemented the Two and Three - Opt methods while Henrik implemented the Greedy construction algorithm as well as map creation and the general solution Methods.\\\\
-Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results. Henrik wrote parts of the background, parts of the method. Conclusion and Discussion was written together. 
+Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to find as short a tour as possible. Later in the process (the implementation phase) Mårten implemented the Two- and Three-Opt methods while Henrik implemented the Greedy construction algorithm as well as map creation and the general solution Methods.
+
+Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results. Henrik wrote parts of the Background, parts of the Method. Conclusion and Discussion was written together. 
 \clearpage
 
 \tableofcontents
 \clearpage
 \pagestyle{fancy}
-\setcounter{page}{1} % sets the current page number to 32 
+\setcounter{page}{1} % sets the current page number to 1
 
 \section{Introduction}
 \label{introduction}
@@ -66,23 +68,21 @@ The purpose of this project is to investigate different methods, heuristics and 
 \subsection{Problem Statement}
 \label{problem_statement}
 As stated above the subject of this report is the creation of an agent that solves TSP, the NP-hard \cite{one} problem of a salesman traveling around the country visiting cities. The salesman must visit each city (node) once and the task is to find the optimal tour, a sequence of nodes, where the distance (the set of edges) is as small as possible. The scope of this project is solving 50 instances of at most 1000 nodes each. The time and memory limit for our solution are limited to at most 2 seconds and 32 MB respectively. 
-
 \clearpage
-
 \section{Background}
 \label{background}
 The fact that the optimization version of TSP belongs to the family of NP-hard problems, there are no efficient algorithms that finds the optimal solution to TSP-instances. However, there are several algorithms solving smaller TSP instances more or less successfully. This section discuss a handful algorithms used in our approach. 
 
 \subsection{Nearest Neighbour}
 \label{nearest_neighbour}
-Nearest neighbour is a naive algorithm for finding a solution to TSP. It works by selecting a starting node and then drawing an edge between it and its closest neighbour that has not yet been selected. Then you repeat the process for the node that was chosen as its closest neighbour until all nodes have been visited. 
+Nearest Neighbour (NN) is a naive algorithm for finding a solution to TSP. It works by selecting a starting node and then drawing an edge between it and its closest neighbour that has not yet been selected. Then you repeat the process for the node that was chosen as its closest neighbour until all nodes have been visited. 
 This solution is not very efficient as it has a worst case time complexity of $O(n^2)$ time, and it does not provide a very good solution. \cite{two}
 
 \subsection{Greedy}
 \label{greedy}
 The Greedy algorithm is similar to Nearest Neighbour \ref{nearest_neighbour}, but instead of progressing from node to node, it chooses among edges. Initially, all the $N$ cities with paths to each other is a complete graph and a Hamiltonian cycle will represent the tour the greedy algorithm creates. The cycle is built up by selecting the shortest edge available, where  \emph{"...an edge is available if it is not yet in the tour and if adding it would not create a degree-3 vertex or a cycle of length less than $N$."} \cite{three} 
 
-The time complexity is $O(N^2 \log{N})$, thus slower than nearest neighbour, but its worst case tour is better than NN.
+The time complexity is $O(N^2 \log{N})$, thus slower than NN, but its worst case tour is better.
 
 \subsection{Local Optimization}
 \label{local_optimization}
@@ -90,29 +90,31 @@ A tour constructed using the above algorithms is seldom very good and can be opt
 
 \subsubsection{Two-Opt}
 \label{two_opt}
-In two-opt every pair of edges is evaluated to see if the tour can be made shorter by exchanging them while still maintaining a complete tour \cite{four}. What this means is that the edges are re-drawn between the four nodes and the product of the length of the resulting edges is compared to the product of the length of the original edges. If the resulting length is shorter, the edges are exchanged. This process is then reiterated until all different edge combinations have been tried and the shortest ones have been found. Since you iterate over every edge pair the worst time complexitity of two-opt is $O(n)\cdot O(n)$ which is $O(n^2)$.
+In Two-Opt every pair of edges is evaluated to see if the tour can be made shorter by exchanging them while still maintaining a complete tour \cite{four}. What this means is that the edges are re-drawn between the four nodes and the product of the length of the resulting edges is compared to the product of the length of the original edges. If the resulting length is shorter, the edges are exchanged. This process is then reiterated until all different edge combinations have been tried and the shortest ones have been found. Since you iterate over every edge pair the worst time complexitity of Two-Opt is $O(n)\cdot O(n)$ which is $O(n^2)$.
 
 \subsubsection{Three-Opt}
 \label{three_opt}
-Three-Opt works in much the same way as two-opt except that it compares all triples of edges instead of only pairs. Delete the three chosen edges and try to put them together in different ways and choose the one that has the shortest length. \cite{two}
+Three-Opt works in much the same way as Two-Opt except that it compares all triples of edges instead of only pairs. Delete the three chosen edges and try to put them together in different ways and choose the one that has the shortest length. \cite{two}
 
 \subsubsection{Tabu Search}
 \label{tabu_search}
-The problem with local searches like two and three opt is that they can find themselves in a local minimum. This means that they can reach a state where they cannot improve the tour any more but it may not be the overall shortest tour, i.e a local minimum. To break these local minimums, Tabu Search allows the algorithm to reach a worse solution from where it can produce an in the end better solution. \cite{five}
+The problem with local searches like Two- and Three-Opt is that they can find themselves in a local minimum. This means that they can reach a state where they cannot improve the tour any more but it may not be the overall shortest tour, i.e a local minimum. To break these local minimums, Tabu Search allows the algorithm to reach a worse solution from where it can produce an in the end better solution. \cite{five} In this project, \emph{random swap} refers to this method - meaning a random change in the path sequence of a tour.
 
+\subsubsection{Miscellaneous}
+
+\clearpage
 \section{Method}
 \label{method}
-For our best implementation we used a simple solution algorithm was used.  A nearest neighbour algorithm was used as a construction algorithm and then two opt was used together with tabu search to improve the initial guess. 
+For our best implementation we used a simple solution algorithm was used.  A Nearest Neighbour algorithm was used as a construction algorithm and then Two-Opt was used together with tabu search to improve the initial guess. 
 
-First of all a map was constructed by reading the node information from stdin and creating a vector of nodes from the input. This vector is then used to create our initial starting guess using a nearest neighbour algorithm. A precomputed matrix of distances is created on map creation so that the distances between nodes only need to be calculated once.
-
+First of all a map was constructed by reading the node information from stdin and creating a vector of nodes from the input. This vector is then used to create our initial starting guess using a Nearest Neighbour algorithm. A precomputed matrix of distances is created on map creation so that the distances between nodes only need to be calculated once.
 
 If the tour only consists of one node this node is simply printed and the program continues on to the next map to be solved.
 
 This starting guess is then improved by reiterating Two-Opt six times. This number was chosen because after testing we found that Two-Opt usually reached a local-minimum after this amount of reiterations. The length of the current tour  and the tour itself is saved for later comparison.
-The algorithm then enters into a static loop.:
-First a swap identical to the swap used in Two and Three-Opt, only using randomly generated, is used to break any possible local minimum we might have found ourselves in. Then we reiterate Two-Opt six more times to find a new local minimum. If the new tour is shorter than the old one it is saved as the best tour otherwise we continue with the loop.
-This cycle of performing random swaps and then reiterating Two-Opt is repeated 7 times.
+The algorithm then enters into a static loop.
+
+First a swap identical to the swap used in Two and Three-Opt, only using randomly generated, is used to break any possible local minimum we might have found ourselves in. Then we reiterate Two-Opt six more times to find a new local minimum. If the new tour is shorter than the old one it is saved as the best tour otherwise we continue with the loop. This cycle of performing random swaps and then reiterating Two-Opt is repeated 7 times.
 
 These static loops are there to control the time spent on each map. When one map has been solved the result is printed and the program continues on to the next map.
 \subsection{Pseudo code}
@@ -136,24 +138,24 @@ In this section, we present our implementation in pseudo code.
 \RETURN $tour$
 \end{algorithmic}
 %
-\subsubsection*{twoOpt(Tour T, Map map)}
+\subsubsection*{Two-Opt(Tour T, Map map)}
 \begin{algorithmic}
 \FOR{each edge pair $x_1,x_2$ and $y_1,y_2$}
-	\IF{$\left(distance\left(x_1,x_2\right) + distance \left(y_1,y_2\right)\right) > \left(distance\left(x_1,y_1\right) + distance\left(x_2,y_2\right)\right)$}
+	\IF{$\big(distance\left(x_1,x_2\right) + distance \left(y_1,y_2\right)\big) > \big(distance\left(x_1,y_1\right) + distance\left(x_2,y_2\right)\big)$}
 		\STATE $T \gets swap(x_2,y_1,T)$
 	\ENDIF
 \ENDFOR
 \RETURN $T$
 \end{algorithmic}
 %
-\subsubsection*{threeOpt(Tour T, Map map)}
+\subsubsection*{Three-Opt(Tour T, Map map)}
 \begin{algorithmic}
 \FOR{each edge triple $x_1,x_2$ and $y_1,y_2$ and $z_1,z_2$}
-	\IF{$\big(dist(x_1, x_2) + dist(y_1, y_2)  + dist(z_1, z_2)) > dist(x_1, z_1) + dist(y_2, x_2) +  dist(y_1, z_2)$}
+	\IF{$\big(dist(x_1, x_2) + dist(y_1, y_2)  + dist(z_1, z_2)\big) > \big(dist(x_1, z_1) + dist(y_2, x_2) +  dist(y_1, z_2)\big)$}
 		\STATE$T \gets swap(x_2, z_1, T)$
 		\STATE$T \gets swap(x_2, y_1, T)$
 	\ENDIF
-	\IF{$dist(x_1, z_1) + dist( y_2, x_2) +  dist(y_1, z_2) > dist(x_1, y_2) + dist(z_1, y_1) + dist(x_2, z_2)$}
+	\IF{$\big(dist(x_1, z_1) + dist( y_2, x_2) +  dist(y_1, z_2)\big) > \big(dist(x_1, y_2) + dist(z_1, y_1) + dist(x_2, z_2)\big)$}
 		\STATE $T\gets swap(x_2, z_1, T)$
 		\STATE $T\gets swap(y_2, z_1, T)$
 	\ENDIF
@@ -161,18 +163,20 @@ In this section, we present our implementation in pseudo code.
 \RETURN $T$
 \end{algorithmic}
 %
-\subsubsection*{Solve(Map map)}
-\begin{algorithmic}
-\STATE hej 
-\end{algorithmic}
-
+\subsubsection{Our General Solution Algorithm}
+\begin{enumerate}
+\item Read the input from \emph{stdin} and store it as a \emph{Map}
+\item Generate 1-5 tours using \textbf{Greedy Tour(}\emph{Map}\textbf{)}
+\item Optimize the tour with \textbf{Two-Opt} until local minimum is reached. If more than 1 tours was created in 2, select the best tour and continue
+\item Force the tour the get worse by performing one or several random swaps
+\item Optimize the new tour with \textbf{Two-Opt}
+\end{enumerate}
+\clearpage
 \section{Results}
 \label{results}
-Below are accounts of the changes in the submissions where mayor implementation changes were made during the course of this project, and the results of their Kattis submissions. If something is not described in one of the implementation accounts, it has remained as it was in the last implementation. All results are abbreviated to the nearest decimal point.
-\subsection{First Implementation}
-\label{res_1}
+Below are accounts of the changes in the submissions where mayor implementation changes were made during the course of this project, and the results of their Kattis submissions. If something is not described in one of the implementation accounts, it has remained as it was in the last implementation. All results are rounded off to the nearest decimal point.\\\\
 \textbf{Kattis submission ID}: 321642 \\
-\textbf{Description}: Only using Nearest neighbour construction algorithm with dynamic distance calculation.\\
+\textbf{Description}: Only using Nearest Neighbour construction algorithm with dynamic distance calculation.\\
 \textbf{Score}: 3\\
 \textbf{CPU time used}: 0.3 seconds\\\\
 %
@@ -187,8 +191,8 @@ Below are accounts of the changes in the submissions where mayor implementation 
 \textbf{CPU time used}: 0.46 seconds\\\\
 %
 \textbf{Kattis submission ID}: 324079 \\
-\textbf{Description}: No Two-Opt, instead 1 Three opt is used \\
-\textbf{Score}: 0\\
+\textbf{Description}: No Two-Opt, instead 1 Three-Opt is used \\
+\textbf{Score}: -\\
 \textbf{CPU time used}: Time Limit Exceeded\\\\
 %
 \textbf{Kattis submission ID}: 326889  \\
@@ -196,8 +200,8 @@ Below are accounts of the changes in the submissions where mayor implementation 
 \textbf{Score}: 18.7\\
 \textbf{CPU time used}: 1.3 seconds\\\\
 %
-\textbf{Kattis submission ID}: 328260 (BEST SUBMISSION) \\
-\textbf{Description}: 6 Two-Opt + 7*(random move + 6*two opt). \\
+\textbf{Kattis submission ID}: 328260 \emph{Best submission} \\
+\textbf{Description}: 6 Two-Opt + 7$\cdot$(random swaps + 6$\cdot$Two-Opt). \\
 \textbf{Score}: 21.7\\
 \textbf{CPU time used}: 1.97 seconds\\\\
 %
@@ -207,14 +211,15 @@ Below are accounts of the changes in the submissions where mayor implementation 
 \textbf{CPU time used}: 0.78 seconds\\\\
 %
 \textbf{Kattis submission ID}: 328342  \\
-\textbf{Description}: while(!localMin) + 100*(randomMove + while(!localMin)).\\
+\textbf{Description}: while(!localMin) + 100$\cdot$(randomMove + while(!localMin)).\\
 \textbf{Score}: 19.3\\
 \textbf{CPU time used}: 0.98 seconds\\\\
 %
 \textbf{Kattis submission ID}: 328589 \\
-\textbf{Description}: Instead of iterating over every conceivable edge pair combination neighbour lists are used so that only the closest 20 nodes are checked in Two-Opt. Also we compute 5 different Greedy Tours with random starting nodes and choose the best one.\\\\
-5 Greedy maps are computed and the best one is chosen.\\
-3 * (randomMove + while(!localMin))\\
+\textbf{Description}: Instead of iterating over every conceivable edge pair combination neighbour lists are used so that only the closest 20 nodes are checked in Two-Opt. Also we compute 5 different Greedy Tours with random starting nodes and choose the best one.
+
+5 Greedy maps are computed and the best one is chosen.
+3 $\cdot$ (randomMove + while(!localMin))\\
 \textbf{Score}: 10.9\\
 \textbf{CPU time used}: 1.59 seconds\\\\
 %
@@ -227,14 +232,14 @@ Below are accounts of the changes in the submissions where mayor implementation 
 %
 \textbf{Kattis submission ID}: 328772 \\
 \textbf{Description}: 1 Greedy\\
-	findLocalMin med vanlig two opt\\
-	4 * (Random move med 1 iteration av grannliste-twoOpt)\\
+	findLocalMin with Two-Opt\\
+	4 $\cdot$ (Random move med 1 iteration av grannliste Two-Opt)\\
 \textbf{Score}: 18.4\\
 \textbf{CPU time used}: 1.75 seconds\\\\
 %
-\textbf{Best Submission}:\\
+\subsection{Best Submission}
 \textbf{Kattis submission ID}: 328260 \\
-\textbf{Description}: 6 Two-Opt + 7*(random move + 6*two opt)\\ 
+\textbf{Description}: 6 Two-Opt + 7$\cdot$(random move + 6$\cdot$Two-Opt)\\ 
 Precomputed distances are used.\\
 \textbf{Score}: 21.7\\
 \textbf{CPU time used}: 1.97 seconds\\
@@ -243,26 +248,27 @@ Precomputed distances are used.\\
 
 \section{Discussion}
 \label{discussion}
-Our initial approach, using only Nearest Neighbour algorithm taken from the KATTIS \cite{seven}, managed to solve the problem quickly but with poor results (3.0 p).\\\\
-%
-Introducing Two-Opt increased our score total from 3 -> 18.7 points. What we did notice however was that running it more than 5 times per tour did not yield any noticeably better results. Actually after 6-7 runs the points did not increase at all, as can be seen between submission 3 and 5. This means that Two-Opt has reached a local minimum where it cannot optimize the tour any more.\\\\
-%
-To get out of the local minimums we used the theory of Tabu Search where we allow the algorithm to reach a state with a worse solution so that we from there can reach a better one. Once we implemented Random Swaps it increased out point total from around 19 to 22 as can be seen in submission 6.\\\\
-%
-To not waste time doing unnecessary reiterations of Two-Opt, but still reaching local minimums, we implemented \textbf{while} loops instead of \textbf{for} loops. In the while loops we compared the lengths of the resulting tours of the reiterations and when we had reached a local minimum the loop was stopped. In this way we saved a lot of time as can be seen between submission 6,7 and 8. This meant that we could do more cycles of making random moves and then finding a new local minimum and thus hopefully, find a better solution.\\\\
-%
-Another way to try to get out of local minimums was that we tried implementing a Three-Opt algorithm to complement Two-Opt. It turned out however that running Three-Opt was way too slow and only resulted in Time Limit Exceeded in Kattis.\\\\
-%
-We also tried to improve our solution by computing several different Greedy Tours from randomized starting nodes and selecting the shortest one. Our program ran out of time when trying to generate 10-20 maps (combined with the rest of the execution), but it was feasible to create 5 maps and perform our Two-Opt algorithm. This however yielded no boost in terms of score. \\\\
-%
-Another strategy to decrease running time was the implementation of pre computed distances between all nodes. This did not however give us any noticeable decrease in computation time.\\\\
-%
-Since pre-computed distances did not do the trick of giving us the needed decrease in computation time so that we could run Three-Opt we decided to implement neighbour list so that we did not need to iterate over all node pairs but instead only those closest to the chosen node. The theory behind this was that we were more likely to find a shorter tour by looking to make optimizations to the nodes closest to each other. Unfortunately we failed in implementing neighbour lists and it simply slowed our program down as can be seen in submission 9,10 and 11.\\\\
+Our initial approach, using only Nearest Neighbour algorithm taken from the Kattis \cite{seven}, managed to solve the problem quickly but with poor results (3.0 points).
+
+Introducing Two-Opt increased our score total from 3 $\rightarrow$ 18.7 points. What we did notice however was that running it more than 5 times per tour did not yield any noticeably better results. Actually after 6-7 runs the points did not increase at all, as can be seen between submission 3 and 5. This means that Two-Opt has reached a local minimum where it cannot optimize the tour any more.
+
+To get out of the local minimums we used the theory of Tabu Search where we allow the algorithm to reach a state with a worse solution so that we from there can reach a better one. Once we implemented random swaps it increased out point total from around 19 to 22 as can be seen in submission 6.
+
+To not waste time doing unnecessary reiterations of Two-Opt, but still reaching local minimums, we implemented \textbf{while} loops instead of \textbf{for} loops. In the while loops we compared the lengths of the resulting tours of the reiterations and when we had reached a local minimum the loop was stopped. In this way we saved a lot of time as can be seen between submission 6,7 and 8. This meant that we could do more cycles of making random swaps and then finding a new local minimum and thus hopefully, find a better solution.
+
+Another way to try to get out of local minimums was that we tried implementing a Three-Opt algorithm to complement Two-Opt. It turned out however that running Three-Opt was way too slow and only resulted in Time Limit Exceeded in Kattis.
+
+We also tried to improve our solution by computing several different Greedy Tours from randomized starting nodes and selecting the shortest one. Our program ran out of time when trying to generate 10-20 maps (combined with the rest of the execution), but it was feasible to create 5 maps and perform our Two-Opt algorithm. This however yielded no boost in terms of score.
+
+Another strategy to decrease running time was the implementation of precomputed distances between all nodes. This did not however give us any noticeable decrease in computation time.
+
+Since pre-computed distances did not do the trick of giving us the needed decrease in computation time so that we could run Three-Opt we decided to implement neighbour list so that we did not need to iterate over all node pairs but instead only those closest to the chosen node. The theory behind this was that we were more likely to find a shorter tour by looking to make optimizations to the nodes closest to each other. Unfortunately we failed in implementing neighbour lists and it simply slowed our program down as can be seen in submission 9,10 and 11.
 \clearpage
 
 \section{Conclusion}
 \label{conclusion}
-What we can deduce from our results is that to improve a tour we need to first improve it until  a local minimum is found. This state then needs to be broken in some way and the new tour reiterated to try to find  a new and better solution. The more times this can be done the better a solution will be found. This is kind of solution is based on local optimization algorithms and may or may not work with other approaches.\\
+What we can deduce from our results is that to improve a tour we need to first improve it until  a local minimum is found. This state then needs to be broken in some way and the new tour reiterated to try to find  a new and better solution. The more times this can be done the likelihood of finding a better solution will increase. This conclusion is based on local optimization algorithms and may or may not work with other approaches.
+
 Unfortunately we were unable to implement this strategy with any greater success. We believe however that if we had been able to successfully use closest neighbour lists we would have had a lot more success. This is based on the fact that we would have been able to perform more improvements in the time gained with this technique.
 
 \clearpage
@@ -285,10 +291,7 @@ Unfortunately we were unable to implement this strategy with any greater success
 Available from: \url{https://kth.kattis.scrool.se/problems/oldkattis:tsp}
 
 \end{thebibliography}
-\clearpage
 
-\appendix
-\section{Java implementation}
 \lstset{
 	language=[Visual]C++,
 	keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
