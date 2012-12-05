@@ -14,19 +14,21 @@ import java.util.ArrayList;
  * 		
  * 		- A list of all the boxes
  * 		- The position of the players 
- * 	
- *  
- * @author MacHenriks
- *
  */
 
-public class Map {
-	
-	final Map prevMap;
+public class Map implements Comparable<Map>{
+	final Map prevMap; // pointer to parentmap
+	public Map nextMap; // Pointer to childmap
 	private char[][] map;
 	private int rows, cols;
 	private Position playerPos;
 	private ArrayList<Box> boxes;
+	public Move withMove;
+	public boolean hasNextMap = false;
+	public boolean hasPrevMap = false;
+	private ArrayList<Move> moves;
+	public int value;
+	private ArrayList<Position> goals;
 	
 
 	
@@ -39,10 +41,12 @@ public class Map {
 	 */
 	public Map(int rows, int cols) {
 		prevMap = null;
+		nextMap = null;
 		map = new char[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
 		boxes = new ArrayList<Box>();
+		goals = new ArrayList<Position>();
 	}
 	
 	/**
@@ -53,48 +57,100 @@ public class Map {
 	 * @param withMove = new Move
 	 */
 	public Map(Map fromMap, Move withMove) {
+		// point
 		prevMap = fromMap;
-		this.map = fromMap.getMap().clone();
+		hasPrevMap = true;
+		nextMap = null;
+		this.withMove = withMove;
+		// map
 		this.rows = fromMap.getRows();
-		this.cols = fromMap.getCols();		
+		this.cols = fromMap.getCols();
+		this.map = new char[rows][cols];
+		cloneMap(fromMap.getMap()); 
+		
+		// boxes
+		boxes = new ArrayList<Box>(); 
+		for(int i = 0; i<fromMap.getAllBoxes().size(); i++) {
+			Box newB = new Box(fromMap.getAllBoxes().get(i));
+			boxes.add(newB);
+		}	
+		
+		playerPos = new Position(); // player pos
+		playerPos.set(fromMap.getPlayerPosition());
 		doMove(withMove);
+		
 	}
 	
+	public void evaluateMap() {
+		int moveVal = 0;
+		int boxVal = 0;
+		int distanceVal = Distances.getDistance(playerPos);
+		moves = Utility.findPossibleMoves(this);
+		moveVal = moves.size();
+		distanceVal = Distances.getDistance(playerPos);
+ 		for(int box = 0; box < boxes.size(); box++){
+			if(boxes.get(box).isOnGoal()){
+				boxVal++;
+			}
+		}
+		value = moveVal + 5*boxVal - distanceVal;
+	}
+
 	/**
 	 * Perform a move (push-a-box) and update 
 	 * the map. This method assume that the move is valid
 	 * @param move = the move
 	 */
 	private void doMove(Move move) {
-		Position fromPos = boxes.get(move.getID()).getPosition();
+		Box currentBox = boxes.get(move.getID());
+		Position fromPos = currentBox.getPosition();
 		Position toPos = move.getPosition();
 		char from = map[fromPos.getRow()][fromPos.getCol()];
 		char to = map[toPos.getRow()][toPos.getCol()];
 		
-		// Update from position on map
-		if(from == '*') {
-			map[fromPos.getRow()][fromPos.getCol()] = '+';
-		}
-		else if(from == '$') {
-			map[fromPos.getRow()][fromPos.getCol()] = '@';
+		// Clear players prevoius position fram the map
+		if (map[playerPos.getRow()][playerPos.getCol()] == '+') {
+			map[playerPos.getRow()][playerPos.getCol()] = '.';
 		}
 		else {
-			throw new RuntimeException("Pushed a box when there was no box there!")
+			map[playerPos.getRow()][playerPos.getCol()] = ' ';
 		}
 		
-		// 
-		if(to == ' ') {
-			map[toPos.getRow()][toPos.getCol()] = '$';
-		}
-		else if(to == '.') {
-			map[fromPos.getRow()][toPos.getCol()] = '*';
-		}
-		else {
-			throw new RuntimeException("Pushed a box to an illegal position!")
+		// Update 'from'-position on map
+		switch (from) {
+		case '*':
+			map[fromPos.getRow()][fromPos.getCol()] = '+'; break;
+		case '$':
+			map[fromPos.getRow()][fromPos.getCol()] = '@'; break;
+		default:
+			throw new RuntimeException("Pushed a box when there " +
+					"was no box there!");
 		}
 		
-
+		// Update 'to'-position on map
+		boolean toGoal = false;
+		switch (to) {
+		case ' ':
+			map[toPos.getRow()][toPos.getCol()] = '$'; break;
+		case '@':
+			map[toPos.getRow()][toPos.getCol()] = '$'; break;
+		case '.':
+			map[toPos.getRow()][toPos.getCol()] = '*';
+			toGoal = true;
+			break;
+		case '+':
+			map[toPos.getRow()][toPos.getCol()] = '*';
+			toGoal = true;
+			break;
+		default:
+			throw new RuntimeException("Pushed a box to an " +
+					"illegal position!");
+		}
+		
+		// update player and the moved box's positions
 		playerPos.set(fromPos);
+		currentBox.setPosition(move.getPosition());
+		currentBox.setIsOnGoal(toGoal);
 	}
 	
 	/**
@@ -113,11 +169,17 @@ public class Map {
 				case '@':
 					playerPos = new Position(cRow, i); break;
 				case '+':
+					goals.add(new Position(cRow, i));
 					playerPos = new Position(cRow, i); break;
 				case '$':
-					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+					boxes.add(new Box(boxes.size(), 
+							new Position(cRow, i), false)); break;
 				case '*':
-					boxes.add(new Box(boxes.size(), new Position(cRow, i))); break;
+					goals.add(new Position(cRow, i));
+					boxes.add(new Box(boxes.size(), 
+							new Position(cRow, i), true)); break;
+				case '.':
+					goals.add(new Position(cRow, i)); break;
 				default:
 					break;
 			}
@@ -129,6 +191,11 @@ public class Map {
 	// Return all the boxes for the map
 	public ArrayList<Box> getAllBoxes() {
 		return boxes;
+	}
+	
+	// Return a specific box
+	public Box getBox(int id) {
+		return boxes.get(id);
 	}
 	
 	// Return this map's char matrix
@@ -151,8 +218,12 @@ public class Map {
 		return this.rows;
 	}
 	
+	// Return pointer to parent
+	public Map getPrevMap() {
+		return prevMap;
+	}
+	
 	// Return a string of the map
-
 	public String print() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < rows; i++) {
@@ -163,5 +234,46 @@ public class Map {
 		}
 		sb.append('\n');
 		return sb.toString();
+	}
+	
+	// Clone a char matrix into this map object
+	private void cloneMap(char [][] fromMap) {
+		for (int i = 0; i < rows; i++) {
+			for(int j = 0; j < cols; j++) {
+				this.map[i][j] = fromMap[i][j];
+			}
+		}
+	}
+	
+	// Return true if this board is winning one!
+	public boolean isWon() {
+		for(int i = 0; i<boxes.size(); i++) {
+			if(!boxes.get(i).isOnGoal()) 
+				return false;
+		}
+		return true;
+	}
+	/**
+	 * Compares the value of two different maps
+	 * returns 1 if the current map is better than 
+	 * the one being compared, 0 otherwise.
+	 */
+	
+	public int compareTo(Map map){
+		return map.value - value;
+	}
+	/**
+	 * Get all moves for this map
+	 * @return moves
+	 */
+	public ArrayList<Move> getMoves(){
+		return moves;
+	}
+	/**
+	 * Return all the goal positions of this map
+	 * @return
+	 */
+	public ArrayList<Position> getGoals(){
+		return goals;
 	}
 }

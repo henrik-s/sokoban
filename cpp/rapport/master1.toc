@@ -1,0 +1,29 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.2}Problem Statement}{1}
+\contentsline {section}{\numberline {2}Background}{3}
+\contentsline {subsection}{\numberline {2.1}Trial Division}{3}
+\contentsline {subsection}{\numberline {2.2}Perfect Powers}{3}
+\contentsline {subsection}{\numberline {2.3}Fermat's Factorization Method}{3}
+\contentsline {subsection}{\numberline {2.4}Cycle Detection}{3}
+\contentsline {subsubsection}{\numberline {2.4.1}Floyd's Cycle Finding Algorithm}{3}
+\contentsline {subsection}{\numberline {2.5}Pollard's Rho Algorithm}{3}
+\contentsline {subsubsection}{\numberline {2.5.1}A Pollard And Brent Improvement}{4}
+\contentsline {subsection}{\numberline {2.6}GMP library}{4}
+\contentsline {section}{\numberline {3}Method}{5}
+\contentsline {subsection}{\numberline {3.1}Our Approach}{5}
+\contentsline {subsection}{\numberline {3.2}Pseudo code}{5}
+\contentsline {section}{\numberline {4}Results}{9}
+\contentsline {subsection}{\numberline {4.1}First Implementation}{9}
+\contentsline {subsection}{\numberline {4.2}Second Implementation}{9}
+\contentsline {subsection}{\numberline {4.3}Third Implementation}{9}
+\contentsline {subsection}{\numberline {4.4}Fourth Implementation}{9}
+\contentsline {subsection}{\numberline {4.5}Fifth Implementation}{10}
+\contentsline {subsection}{\numberline {4.6}Sixth Implementation}{10}
+\contentsline {subsection}{\numberline {4.7}Seventh Implementation}{10}
+\contentsline {subsection}{\numberline {4.8}Eighth Implementation}{10}
+\contentsline {subsection}{\numberline {4.9}Ninth Implementation}{11}
+\contentsline {section}{\numberline {5}Discussion}{13}
+\contentsline {section}{\numberline {6}Conclusion}{15}
+\contentsline {section}{\numberline {A}C++ code}{19}

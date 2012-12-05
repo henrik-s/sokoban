@@ -2,14 +2,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-/**
- * HW1 test command: 
-   java Client dd2380.csc.kth.se 5001 2sdsd
- * 
- * @author MacHenrik
- *
- */
-
 public class Client {	
 	public static void main(String[] pArgs) 
 	{
@@ -23,7 +15,8 @@ public class Client {
 		{
 			Socket lSocket=new Socket(pArgs[0],Integer.parseInt(pArgs[1]));
 			PrintWriter lOut=new PrintWriter(lSocket.getOutputStream());
-			BufferedReader lIn=new BufferedReader(new InputStreamReader(lSocket.getInputStream()));
+			BufferedReader lIn=new BufferedReader(new InputStreamReader(
+					lSocket.getInputStream()));
 	
             lOut.println(pArgs[2]);
             lOut.flush();
@@ -45,16 +38,9 @@ public class Client {
             	inputLine=lIn.readLine();
             	map.insertRow(inputLine, i);
             }
-            
-            String lMySol = "";
-            
-            System.out.println(map.print());
-            
-            //we've found our solution
-            //String lMySol="U R R U U L D L L U L L D R R R R L D D R U R U D L L U R";
-            //these formats are also valid:
-            //String lMySol="URRUULDLLULLDRRRRLDDRURUDLLUR";
-            //String lMySol="0 3 3 0 0 2 1 2 2 0 2 2 1 3 3 3 3 2 1 1 3 0 3 0 1 2 2 0 3";
+            Solver solver = new Solver(map);
+            String lMySol = solver.solve();
+            System.out.println(lMySol);
 
             //send the solution to the server
             lOut.println(lMySol);

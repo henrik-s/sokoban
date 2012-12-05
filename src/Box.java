@@ -1,20 +1,26 @@
 /**
  * A box in the game, holding information of 
- * 		- where the player is standing
  * 		- what box is supposed to be moved
  * 		- to what position the box will be pushed
- * @author MacHenrik
- *
  */
 
 public class Box {
 	private final int id;
 	private Position currentPosition;
+	private boolean onGoal;
 	
-	// Constructor
-	public Box(int id, Position startPos) {
+	// Constructor, id of box, start position and boolean 
+	public Box(int id, Position startPos, boolean onGoal) {
 		this.id = id; 
 		this.currentPosition = startPos;
+		this.onGoal = onGoal;
+	}
+	
+	// Construct new box from another box
+	public Box(Box box) {
+		this.id = box.getID();
+		currentPosition = new Position(box.getPosition());
+		onGoal = box.isOnGoal();
 	}
 	
 	// Return the box's id
@@ -31,4 +37,15 @@ public class Box {
 	public void setPosition(Position newPos) {
 		currentPosition = newPos;
 	}
+	
+	// Get boolean if the box is standing on a goal
+	public boolean isOnGoal() {
+		return onGoal;
+	}
+	
+	// Set if the box is on a goal 
+	public void setIsOnGoal(boolean bool) {
+		this.onGoal = bool;
+	}
+	
 }
