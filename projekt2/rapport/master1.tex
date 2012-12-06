@@ -52,7 +52,7 @@ What we discovered was that to do well with this approach a more time efficient 
 \begin{center}
 \section*{Statement Of Collaboration}
 \end{center}
-Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to find as short a tour as possible. Later in the process (the implementation phase) Mårten implemented the Two- and Three-Opt methods while Henrik implemented the Nearest Neighbour construction algorithm as well as map creation and the general solution Methods.
+Both Henrik Sohlberg and Mårten Pålsson have participated equally in the process of finding a solution to the main problem of this project, how to find a short tour as possible. Later in the process (the implementation phase) Mårten implemented the Two- and Three-Opt methods while Henrik implemented the Nearest Neighbour construction algorithm as well as map creation and the general solution Methods.
 
 Both contributed to the content of the whole report. Mårten wrote the sections: Introduction, parts of Background, parts of Method, Results. Henrik wrote parts of the Background, parts of the Method. Conclusion and Discussion was written together. 
 \clearpage
@@ -111,9 +111,9 @@ This section contains terms that will be used later in the report and that might
 \clearpage
 \section{Method}
 \label{method}
-For our best implementation we used a simple solution algorithm was used.  A Nearest Neighbour algorithm was used as a construction algorithm and then Two-Opt was used together with tabu search to improve the initial guess. 
+For our best implementation we used a simple solution algorithm was used.  A Nearest Neighbour algorithm was used as a construction algorithm and then Two-Opt was used together with Tabu Search to improve the initial guess. 
 
-First of all a map was constructed by reading the node information from stdin and creating a vector of nodes from the input. This vector is then used to create our initial starting guess using a Nearest Neighbour algorithm. A precomputed matrix of distances is created on map creation so that the distances between nodes only need to be calculated once.
+First of all a map was constructed by reading the node information from \emph{stdin} and creating a vector of nodes from the input. This vector is then used to create our initial starting guess using a Nearest Neighbour algorithm. A precomputed matrix of distances is created on map creation so that the distances between nodes only need to be calculated once.
 
 If the tour only consists of one node this node is simply printed and the program continues on to the next map to be solved.
 
